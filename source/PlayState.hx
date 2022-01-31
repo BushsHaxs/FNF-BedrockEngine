@@ -285,6 +285,7 @@ class PlayState extends MusicBeatState
 	private var luaDebugGroup:FlxTypedGroup<DebugLuaText>;
 
 	public var introSoundsSuffix:String = '';
+	public var opponentdiscordtxt:String = "";
 
 	// Debug buttons
 	private var debugKeysChart:Array<FlxKey>;
@@ -413,6 +414,9 @@ class PlayState extends MusicBeatState
 				opponent: [100, 100]
 			};
 		}
+
+		if (opponentChart)
+			opponentdiscordtxt = " - Playing as Opponent";
 
 		defaultCamZoom = stageData.defaultZoom;
 		isPixelStage = stageData.isPixelStage;
@@ -1164,7 +1168,9 @@ class PlayState extends MusicBeatState
 		beWatermark.scrollFactor.set();
 		beWatermark.visible = false;
 
-		if (ClientPrefs.watermarkPreferences == 'Both' || ClientPrefs.watermarkPreferences == 'Only Bedrock' || ClientPrefs.watermarkPreferences == 'All')
+		if (ClientPrefs.watermarkPreferences == 'Both'
+			|| ClientPrefs.watermarkPreferences == 'Only Bedrock'
+			|| ClientPrefs.watermarkPreferences == 'All')
 			beWatermark.visible = true;
 
 		// And this is for Psych Engine
@@ -1172,8 +1178,10 @@ class PlayState extends MusicBeatState
 		peWatermark.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		peWatermark.scrollFactor.set();
 
-		if (ClientPrefs.watermarkPreferences == 'Both' || ClientPrefs.watermarkPreferences == 'Only Psych' || ClientPrefs.watermarkPreferences == 'All')
-		peWatermark.visible = true;
+		if (ClientPrefs.watermarkPreferences == 'Both'
+			|| ClientPrefs.watermarkPreferences == 'Only Psych'
+			|| ClientPrefs.watermarkPreferences == 'All')
+			peWatermark.visible = true;
 
 		// This is for the Song
 		songNameTxt = new FlxText(0, FlxG.height - 24, 0, SONG.song + " - " + CoolUtil.difficultyString(), 16);
@@ -1391,6 +1399,11 @@ class PlayState extends MusicBeatState
 		CoolUtil.precacheSound('missnote1');
 		CoolUtil.precacheSound('missnote2');
 		CoolUtil.precacheSound('missnote3');
+		if (ClientPrefs.playHitSounds)
+		{
+			CoolUtil.precacheSound('Tick');
+			FlxG.sound.play(Paths.sound('Tick'), 0);
+		}
 
 		#if desktop
 		// Updating Discord Rich Presence.
@@ -2084,9 +2097,7 @@ class PlayState extends MusicBeatState
 
 		#if desktop
 		// Updating Discord Rich Presence (with Time Left)
-		DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconP2.getCharacter(), true, songLength);
-		if (opponentChart)
-			DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")" + " - Playing as Opponent", iconP2.getCharacter(), true,
+			DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")" + opponentdiscordtxt, iconP2.getCharacter(), true,
 				songLength);
 		#end
 		setOnLuas('songLength', songLength);
@@ -2471,28 +2482,19 @@ class PlayState extends MusicBeatState
 			#if desktop
 			if (startTimer.finished)
 			{
-				DiscordClient.changePresence(detailsText, SONG.song
-					+ " ("
-					+ storyDifficultyText
-					+ ")", iconP2.getCharacter(), true,
-					songLength
-					- Conductor.songPosition
-					- ClientPrefs.noteOffset);
-				if (opponentChart)
 					DiscordClient.changePresence(detailsText, SONG.song
 						+ " ("
 						+ storyDifficultyText
 						+ ")"
-						+ " - Playing as Opponent ", iconP2.getCharacter(),
+						+ opponentdiscordtxt, iconP2.getCharacter(),
 						true, songLength
 						- Conductor.songPosition
 						- ClientPrefs.noteOffset);
 			}
 			else
 			{
-				DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconP2.getCharacter());
-				if (opponentChart)
-					DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")" + " - Playing as Opponent ", iconP2.getCharacter());
+
+					DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")" + opponentdiscordtxt, iconP2.getCharacter());
 			}
 			#end
 		}
@@ -2509,25 +2511,16 @@ class PlayState extends MusicBeatState
 			{
 				DiscordClient.changePresence(detailsText, SONG.song
 					+ " ("
-					+ storyDifficultyText
-					+ ")", iconP2.getCharacter(), true,
-					songLength
+						+ storyDifficultyText
+					+ ")"
+					+ opponentdiscordtxt, iconP2.getCharacter(),
+					true, songLength
 					- Conductor.songPosition
 					- ClientPrefs.noteOffset);
-				if (opponentChart)
-					DiscordClient.changePresence(detailsText, SONG.song
-						+ " ("
-						+ storyDifficultyText
-						+ ")"
-						+ " - Playing as Opponent ", iconP2.getCharacter(),
-						true, songLength
-						- Conductor.songPosition
-						- ClientPrefs.noteOffset);
 			}
 			else
 			{
-				if (opponentChart)
-					DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")" + " - Playing as Opponent ", iconP2.getCharacter());
+				DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")" + opponentdiscordtxt, iconP2.getCharacter());
 			}
 		}
 		#end
@@ -2540,9 +2533,7 @@ class PlayState extends MusicBeatState
 		#if desktop
 		if (health > 0 && !paused)
 		{
-			DiscordClient.changePresence(detailsPausedText, SONG.song + " (" + storyDifficultyText + ")", iconP2.getCharacter());
-			if (opponentChart)
-				DiscordClient.changePresence(detailsPausedText, SONG.song + " (" + storyDifficultyText + ")" + " - Playing as Opponent ", iconP2.getCharacter());
+			DiscordClient.changePresence(detailsPausedText, SONG.song + " (" + storyDifficultyText + ")" + opponentdiscordtxt, iconP2.getCharacter());
 		}
 		#end
 
@@ -2823,9 +2814,7 @@ class PlayState extends MusicBeatState
 				// }
 
 				#if desktop
-				DiscordClient.changePresence(detailsPausedText, SONG.song + " (" + storyDifficultyText + ")", iconP2.getCharacter());
-				if (opponentChart)
-					DiscordClient.changePresence(detailsPausedText, SONG.song + " (" + storyDifficultyText + ")" + " - Playing as Opponent ",
+					DiscordClient.changePresence(detailsPausedText, SONG.song + " (" + storyDifficultyText + ")" + opponentdiscordtxt,
 						iconP2.getCharacter());
 				#end
 			}
