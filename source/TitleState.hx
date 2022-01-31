@@ -278,8 +278,8 @@ class TitleState extends MusicBeatState
 		logoBl.animation.play('bump');
 		logoBl.updateHitbox();
 		FlxTween.tween(logoBl, {
-			y: logoBl.y + 50,
-			x: logoBl.x + 50,
+			y: logoBl.y + 120,
+			x: logoBl.x + 150,
 			angle: -4,
 			alpha: 1
 		}, 1.4, {ease: FlxEase.expoInOut});
