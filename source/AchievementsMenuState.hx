@@ -66,6 +66,13 @@ class AchievementsMenuState extends MusicBeatState
 			add(icon);
 		}
 
+		descBox = new FlxSprite().makeGraphic(1, 1, FlxColor.BLACK);
+		descBox.alpha = 0.6;
+		descBox.setPosition(descText.x - 10, descText.y - 10);
+		descBox.setGraphicSize(Std.int(descText.width + 20), Std.int(descText.height + 25));
+		descBox.updateHitbox();
+        add(descBox);
+
 		descText = new FlxText(150, 600, 980, "", 32);
 		descText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		descText.scrollFactor.set();
@@ -74,13 +81,6 @@ class AchievementsMenuState extends MusicBeatState
 		descText.y += 270;
 		add(descText);
 		changeSelection();
-
-		descBox = new FlxSprite().makeGraphic(1, 1, FlxColor.BLACK);
-		descBox.alpha = 0.6;
-		descBox.setPosition(descText.x - 10, descText.y - 10);
-		descBox.setGraphicSize(Std.int(descText.width + 20), Std.int(descText.height + 25));
-		descBox.updateHitbox();
-        add(descBox);
 
 		super.create();
 	}
@@ -100,6 +100,8 @@ class AchievementsMenuState extends MusicBeatState
 		if (controls.BACK) {
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			MusicBeatState.switchState(new MainMenuState());
+			if (ClientPrefs.lowEndMode)
+				MusicBeatState.switchState(new SimpleMenuState());
 		}
 	}
 

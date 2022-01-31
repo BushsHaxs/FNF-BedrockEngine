@@ -415,6 +415,12 @@ class FreeplayState extends MusicBeatState
 			}
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			MusicBeatState.switchState(new MainMenuState());
+			if (ClientPrefs.lowEndMode)
+				persistentUpdate = false;
+				if(colorTween != null) {
+				colorTween.cancel();
+				}
+				MusicBeatState.switchState(new SimpleMenuState());
 		}
 
 		if (ctrl)
