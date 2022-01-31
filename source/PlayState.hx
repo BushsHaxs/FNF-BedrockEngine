@@ -1162,93 +1162,32 @@ class PlayState extends MusicBeatState
 		beWatermark = new FlxText(0, FlxG.height - 64, 0, "Bedrock Engine: v" + MainMenuState.bedrockEngineVersion, 16);
 		beWatermark.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		beWatermark.scrollFactor.set();
+		beWatermark.visible = false;
 
-		if (ClientPrefs.watermarkPreferences == 'Only Bedrock')
-		{
-			beWatermark = new FlxText(0, FlxG.height - 24, 0, "Bedrock Engine: v" + MainMenuState.bedrockEngineVersion, 16);
-			beWatermark.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-			beWatermark.scrollFactor.set();
-		}
-
-		if (ClientPrefs.watermarkPreferences == 'Both')
-		{
-			beWatermark = new FlxText(0, FlxG.height - 44, 0, "Bedrock Engine: v" + MainMenuState.bedrockEngineVersion, 16);
-			beWatermark.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-			beWatermark.scrollFactor.set();
-		}
+		if (ClientPrefs.watermarkPreferences == 'Both' || ClientPrefs.watermarkPreferences == 'Only Bedrock' || ClientPrefs.watermarkPreferences == 'All')
+			beWatermark.visible = true;
 
 		// And this is for Psych Engine
 		peWatermark = new FlxText(0, FlxG.height - 44, 0, "Psych Engine: v" + MainMenuState.psychEngineVersion, 16);
 		peWatermark.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		peWatermark.scrollFactor.set();
 
-		if (ClientPrefs.watermarkPreferences == 'Only Psych')
-		{
-			peWatermark = new FlxText(0, FlxG.height - 24, 0, "Psych Engine: v" + MainMenuState.psychEngineVersion, 16);
-			peWatermark.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-			peWatermark.scrollFactor.set();
-		}
-
-		if (ClientPrefs.watermarkPreferences == 'Both')
-		{
-			peWatermark = new FlxText(0, FlxG.height - 24, 0, "Psych Engine: v" + MainMenuState.psychEngineVersion, 16);
-			peWatermark.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-			peWatermark.scrollFactor.set();
-		}
+		if (ClientPrefs.watermarkPreferences == 'Both' || ClientPrefs.watermarkPreferences == 'Only Psych' || ClientPrefs.watermarkPreferences == 'All')
+		peWatermark.visible = true;
 
 		// This is for the Song
 		songNameTxt = new FlxText(0, FlxG.height - 24, 0, SONG.song + " - " + CoolUtil.difficultyString(), 16);
 		songNameTxt.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		songNameTxt.scrollFactor.set();
+		songNameTxt.visible = false;
+
+		if (ClientPrefs.watermarkPreferences == 'Only Song' || ClientPrefs.watermarkPreferences == 'All')
+			songNameTxt.visible = true;
 
 		// we add them first, so the options can work
 		add(beWatermark);
 		add(peWatermark);
 		add(songNameTxt);
-
-		// Watermark Preferences
-
-		if (ClientPrefs.watermarkPreferences == 'Both')
-		{
-			add(beWatermark);
-			add(peWatermark);
-			remove(songNameTxt);
-		}
-
-		if (ClientPrefs.watermarkPreferences == 'Only Bedrock')
-		{
-			add(beWatermark);
-			remove(peWatermark);
-			remove(songNameTxt);
-		}
-
-		if (ClientPrefs.watermarkPreferences == 'Only Psych')
-		{
-			add(peWatermark);
-			remove(beWatermark);
-			remove(songNameTxt);
-		}
-
-		if (ClientPrefs.watermarkPreferences == 'Only Song')
-		{
-			add(songNameTxt);
-			remove(beWatermark);
-			remove(peWatermark);
-		}
-
-		if (ClientPrefs.watermarkPreferences == 'All')
-		{
-			add(beWatermark);
-			add(peWatermark);
-			add(songNameTxt);
-		}
-
-		if (ClientPrefs.watermarkPreferences == 'Nothing')
-		{
-			remove(beWatermark);
-			remove(peWatermark);
-			remove(songNameTxt);
-		}
 
 		// left and right judgement counters
 		judgementCounter = new FlxText(20, 0, 0, "", 20);
