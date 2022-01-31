@@ -16,6 +16,7 @@ import flixel.math.FlxMath;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import flixel.tweens.FlxTween;
+import flixel.tweens.FlxEase;
 import lime.utils.Assets;
 import flixel.system.FlxSound;
 import openfl.utils.Assets as OpenFlAssets;
@@ -550,20 +551,11 @@ class FreeplayState extends MusicBeatState
 		switch (curDifficulty)
 		{
 			case 0:
-				{
-					// scoreText.color = FlxColor.GREEN;
-					diffText.color = FlxColor.LIME;
-				}
+				FlxTween.color(diffText, 0.3, diffText.color, FlxColor.LIME, {ease: FlxEase.quadInOut});
 			case 1:
-				{
-					// scoreText.color = FlxColor.WHITE;
-					diffText.color = FlxColor.YELLOW;
-				}
+				FlxTween.color(diffText, 0.3, diffText.color, FlxColor.YELLOW, {ease: FlxEase.quadInOut});
 			case 2:
-				{
-					// scoreText.color = FlxColor.RED;
-					diffText.color = FlxColor.RED;
-				}
+				FlxTween.color(diffText, 0.3, diffText.color, FlxColor.RED, {ease: FlxEase.quadInOut});
 		}
 
 		#if !switch
