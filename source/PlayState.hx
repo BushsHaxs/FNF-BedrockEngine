@@ -347,6 +347,8 @@ class PlayState extends MusicBeatState
 		CustomFadeTransition.nextCamera = camOther;
 		// FlxG.cameras.setDefaultDrawTarget(camGame, true);
 
+		camMovement = FlxTween.tween(this, {}, 0);
+
 		persistentUpdate = true;
 		persistentDraw = true;
 
@@ -3713,12 +3715,12 @@ class PlayState extends MusicBeatState
 			return;
 		}
 
-		if (!SONG.notes[id].mustHitSection)
+		if (!SONG.notes[id].mustHitSection && camFocus != 'dad')
 		{
 			moveCamera(true);
 			callOnLuas('onMoveCamera', ['dad']);
 		}
-		else
+		else if (SONG.notes[id].mustHitSection && camFocus != 'bf')
 		{
 			moveCamera(false);
 			callOnLuas('onMoveCamera', ['boyfriend']);
@@ -3729,8 +3731,12 @@ class PlayState extends MusicBeatState
 
 	public function moveCamera(isDad:Bool)
 	{
+		getCamOffsets();
 		if (isDad)
 		{
+			camMovement.cancel();
+			camFocus = 'dad';
+
 			camFollow.set(dad.getMidpoint().x + 150, dad.getMidpoint().y - 100);
 			camFollow.x += dad.cameraPosition[0];
 			camFollow.y += dad.cameraPosition[1];
@@ -3738,26 +3744,17 @@ class PlayState extends MusicBeatState
 		}
 		else
 		{
+			camMovement.cancel();
+			camFocus = 'bf';
+		
 			camFollow.set(boyfriend.getMidpoint().x - 100, boyfriend.getMidpoint().y - 100);
-
-			switch (curStage)
-			{
-				case 'limo':
-					camFollow.x = boyfriend.getMidpoint().x - 300;
-				case 'mall':
-					camFollow.y = boyfriend.getMidpoint().y - 200;
-				case 'school' | 'schoolEvil':
-					camFollow.x = boyfriend.getMidpoint().x - 200;
-					camFollow.y = boyfriend.getMidpoint().y - 200;
-			}
 			camFollow.x -= boyfriend.cameraPosition[0];
 			camFollow.y += boyfriend.cameraPosition[1];
 
 			if (Paths.formatToSongPath(SONG.song) == 'tutorial' && cameraTwn == null && FlxG.camera.zoom != 1)
 			{
-				cameraTwn = FlxTween.tween(FlxG.camera, {zoom: 1}, (Conductor.stepCrochet * 4 / 1000), {
-					ease: FlxEase.elasticInOut,
-					onComplete: function(twn:FlxTween)
+				cameraTwn = FlxTween.tween(FlxG.camera, {zoom: 1}, (Conductor.stepCrochet * 4 / 1000), {ease: FlxEase.elasticInOut, onComplete:
+					function (twn:FlxTween)
 					{
 						cameraTwn = null;
 					}
@@ -4556,7 +4553,8 @@ class PlayState extends MusicBeatState
 			var animToPlay:String = singAnimations[Std.int(Math.abs(daNote.noteData))] + 'miss' + daAlt;
 			char.playAnim(animToPlay, true);
 		}
-
+		if (camFocus == 'bf' && ClientPrefs.dynamicCam)
+			triggerCamMovement(Math.abs(daNote.noteData % 4));
 		callOnLuas('noteMiss', [
 			notes.members.indexOf(daNote),
 			daNote.noteData,
@@ -4669,6 +4667,8 @@ class PlayState extends MusicBeatState
 				char.playAnim(animToPlay, true);
 				char.holdTimer = 0;
 			}
+			if (camFocus == 'dad' && ClientPrefs.dynamicCam)
+				triggerCamMovement(Math.abs(note.noteData % 4));
 		}
 
 		if (SONG.needsVoices)
@@ -4832,6 +4832,8 @@ class PlayState extends MusicBeatState
 			var isSus:Bool = note.isSustainNote; // GET OUT OF MY HEAD, GET OUT OF MY HEAD, GET OUT OF MY HEAD
 			var leData:Int = Math.round(Math.abs(note.noteData));
 			var leType:String = note.noteType;
+			if (camFocus == 'bf' && ClientPrefs.dynamicCam)
+				triggerCamMovement(Math.abs(note.noteData % 4));
 			callOnLuas('goodNoteHit', [notes.members.indexOf(note), leData, leType, isSus]);
 
 			if (!note.isSustainNote)
@@ -5557,4 +5559,68 @@ class PlayState extends MusicBeatState
 
 	var curLight:Int = 0;
 	var curLightEvent:Int = 0;
+
+	// originally made by brightfyre
+
+	var camFocus:String = "";
+	var camMovement:FlxTween;
+	var daFunneOffsetMultiplier:Float = 23;
+	
+	var dadPos:Array<Float> = [0, 0];
+	var bfPos:Array<Float> = [0, 0];
+	
+	function triggerCamMovement(num:Float = 0)
+	{
+		camMovement.cancel();
+	
+		if (camFocus == 'bf')
+		{
+			switch (num)
+			{
+				case 2:
+					camMovement = FlxTween.tween(camFollow, {y: bfPos[1] - daFunneOffsetMultiplier, x: bfPos[0]}, Conductor.crochet / 10000, {ease: FlxEase.circIn});
+				case 3:
+					camMovement = FlxTween.tween(camFollow, {x: bfPos[0] + daFunneOffsetMultiplier, y: bfPos[1]}, Conductor.crochet / 10000, {ease: FlxEase.circIn});
+				case 1:
+					camMovement = FlxTween.tween(camFollow, {y: bfPos[1] + daFunneOffsetMultiplier, x: bfPos[0]}, Conductor.crochet / 10000, {ease: FlxEase.circIn});
+				case 0:
+					camMovement = FlxTween.tween(camFollow, {x: bfPos[0] - daFunneOffsetMultiplier, y: bfPos[1]}, Conductor.crochet / 10000, {ease: FlxEase.circIn});
+			}
+		}
+		else
+		{
+			switch (num)
+			{
+				case 2:
+					camMovement = FlxTween.tween(camFollow, {y: dadPos[1] - daFunneOffsetMultiplier, x: dadPos[0]}, Conductor.crochet / 10000, {ease: FlxEase.circIn});
+				case 3:
+					camMovement = FlxTween.tween(camFollow, {x: dadPos[0] + daFunneOffsetMultiplier, y: dadPos[1]}, Conductor.crochet / 10000, {ease: FlxEase.circIn});
+				case 1:
+					camMovement = FlxTween.tween(camFollow, {y: dadPos[1] + daFunneOffsetMultiplier, x: dadPos[0]}, Conductor.crochet / 10000, {ease: FlxEase.circIn});
+				case 0:
+					camMovement = FlxTween.tween(camFollow, {x: dadPos[0] - daFunneOffsetMultiplier, y: dadPos[1]}, Conductor.crochet / 10000, {ease: FlxEase.circIn});
+			}
+		}
+	}
+	
+	function getCamOffsets()
+	{
+		dadPos[0] = dad.getMidpoint().x + 150 + dad.cameraPosition[0];
+		dadPos[1] = dad.getMidpoint().y - 100 + dad.cameraPosition[1];
+	
+		
+		switch (curStage)
+		{
+			case 'limo':
+				bfPos[0] = boyfriend.getMidpoint().x - 300;
+			case 'mall':
+				bfPos[1] = boyfriend.getMidpoint().y - 200;
+			case 'school' | 'schoolEvil':
+				bfPos[0] = boyfriend.getMidpoint().x - 200;
+				bfPos[1] = boyfriend.getMidpoint().y - 200;
+			default:
+				bfPos[0] = boyfriend.getMidpoint().x - 100 - boyfriend.cameraPosition[0];
+				bfPos[1] = boyfriend.getMidpoint().y - 100 + boyfriend.cameraPosition[1];	
+		}
+	}
 }

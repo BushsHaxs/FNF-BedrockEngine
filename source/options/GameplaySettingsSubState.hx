@@ -46,6 +46,9 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		var option:Option = new Option('Disable Reset Button', "If checked, pressing Reset won't do anything.", 'noReset', 'bool', false);
 	addOption(option);
 
+		var option:Option = new Option('Camera Movements','if unchecked, the camera won\'t follow the pressed notes.', 'dynamicCam', 'bool', true);
+	addOption(option);
+
 		//I'd suggest using "Downscroll" as an example for making your own option since it is the simplest here
 		var option:Option = new Option('Downscroll', //Name
 			'If checked, notes go Down instead of Up, simple enough.', //Description
