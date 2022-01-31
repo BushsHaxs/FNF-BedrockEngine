@@ -258,8 +258,6 @@ class Note extends FlxSprite
 			{
 				switch (ClientPrefs.noteSkin)
 				{
-					case 'Default':
-						skin = 'noteskins/NOTE_assets';
 					case 'Bar':
 						skin = 'noteskins/NOTE_bar';
 					case 'Circle':
@@ -268,6 +266,8 @@ class Note extends FlxSprite
 						skin = 'noteskins/NOTE_diamond';
 					case 'Stepmania':
 						skin = 'noteskins/NOTE_step';
+					default:
+						skin = 'noteskins/NOTE_assets';
 				}
 			}
 		}
