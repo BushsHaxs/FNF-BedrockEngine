@@ -130,7 +130,8 @@ class MainMenuState extends MusicBeatState
 		magenta.visible = false;
 		add(magenta);
 
-		danote('create');
+		if (!ClientPrefs.lowQuality)
+			danote('create');
 
 		downshadow = new FlxSprite(0, 0).loadGraphic(Paths.image('idkhowtonameit'));
 		downshadow.scrollFactor.set();
@@ -362,7 +363,8 @@ class MainMenuState extends MusicBeatState
 			#end
 		}
 
-		danote('update');
+		if (!ClientPrefs.lowQuality)
+			danote('update');
 
 		FlxG.watch.addQuick("note1.y:", note1.y);
 		FlxG.watch.addQuick("note2.y:", note2.y);
