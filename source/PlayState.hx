@@ -727,9 +727,7 @@ class PlayState extends MusicBeatState
 			introSoundsSuffix = '-pixel';
 		}
 
-		if (ClientPrefs.hideGf)
-			remove(gfGroup);
-		else
+		if (!ClientPrefs.hideGf)
 			add(gfGroup);
 
 		// Shitty layering but whatev it works LOL
