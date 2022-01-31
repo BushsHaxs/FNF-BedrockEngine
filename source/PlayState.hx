@@ -1177,6 +1177,7 @@ class PlayState extends MusicBeatState
 		peWatermark = new FlxText(0, FlxG.height - 44, 0, "Psych Engine: v" + MainMenuState.psychEngineVersion, 16);
 		peWatermark.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		peWatermark.scrollFactor.set();
+		peWatermark.visible = false;
 
 		if (ClientPrefs.watermarkPreferences == 'Both'
 			|| ClientPrefs.watermarkPreferences == 'Only Psych'
@@ -2097,8 +2098,7 @@ class PlayState extends MusicBeatState
 
 		#if desktop
 		// Updating Discord Rich Presence (with Time Left)
-			DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")" + opponentdiscordtxt, iconP2.getCharacter(), true,
-				songLength);
+		DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")" + opponentdiscordtxt, iconP2.getCharacter(), true, songLength);
 		#end
 		setOnLuas('songLength', songLength);
 		callOnLuas('onSongStart', []);
@@ -2482,19 +2482,18 @@ class PlayState extends MusicBeatState
 			#if desktop
 			if (startTimer.finished)
 			{
-					DiscordClient.changePresence(detailsText, SONG.song
-						+ " ("
-						+ storyDifficultyText
-						+ ")"
-						+ opponentdiscordtxt, iconP2.getCharacter(),
-						true, songLength
-						- Conductor.songPosition
-						- ClientPrefs.noteOffset);
+				DiscordClient.changePresence(detailsText, SONG.song
+					+ " ("
+					+ storyDifficultyText
+					+ ")"
+					+ opponentdiscordtxt, iconP2.getCharacter(), true,
+					songLength
+					- Conductor.songPosition
+					- ClientPrefs.noteOffset);
 			}
 			else
 			{
-
-					DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")" + opponentdiscordtxt, iconP2.getCharacter());
+				DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")" + opponentdiscordtxt, iconP2.getCharacter());
 			}
 			#end
 		}
@@ -2511,10 +2510,10 @@ class PlayState extends MusicBeatState
 			{
 				DiscordClient.changePresence(detailsText, SONG.song
 					+ " ("
-						+ storyDifficultyText
+					+ storyDifficultyText
 					+ ")"
-					+ opponentdiscordtxt, iconP2.getCharacter(),
-					true, songLength
+					+ opponentdiscordtxt, iconP2.getCharacter(), true,
+					songLength
 					- Conductor.songPosition
 					- ClientPrefs.noteOffset);
 			}
@@ -2814,8 +2813,7 @@ class PlayState extends MusicBeatState
 				// }
 
 				#if desktop
-					DiscordClient.changePresence(detailsPausedText, SONG.song + " (" + storyDifficultyText + ")" + opponentdiscordtxt,
-						iconP2.getCharacter());
+				DiscordClient.changePresence(detailsPausedText, SONG.song + " (" + storyDifficultyText + ")" + opponentdiscordtxt, iconP2.getCharacter());
 				#end
 			}
 		}
