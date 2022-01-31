@@ -197,8 +197,8 @@ If you do not want engine to use letters, toggle them in Visuals and UI menu.
 
 
 Extra Grades
-* PFC - Full Combo with Only Marvelouses (Sicks if Marvelouses are disabled)
-* SFC - Full Combo with at least 1 Sick/Only Sicks (works if Marvelouses are Enabled)
+* MFC - Full Combo with Only Marvelouses
+* SFC - Full Combo with at least 1 Sick/Only Sicks
 * GFC - Full Combo with at least 1 Good/Only Goods
 * FC - Full Combo with at least 1 Bad/Only Bads (only works on Simple Accuracy)
 * SDB - Single Digit Bad (at least 1 Bad/Only Bads, only works on Complex Accuracy)

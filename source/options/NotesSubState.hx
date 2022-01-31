@@ -73,15 +73,15 @@ class NotesSubState extends MusicBeatSubstate
 			switch(ClientPrefs.noteSkin)
 			{
 				case "Default":
-					note.frames = Paths.getSparrowAtlas('NOTE_assets');
+					note.frames = Paths.getSparrowAtlas('noteskins/NOTE_assets');
 				case "Circle":
-					note.frames = Paths.getSparrowAtlas('NOTE_circle');
+					note.frames = Paths.getSparrowAtlas('noteskins/NOTE_circle');
 				case "Bar":
-					note.frames = Paths.getSparrowAtlas('NOTE_bar');
+					note.frames = Paths.getSparrowAtlas('noteskins/NOTE_bar');
 				case "Diamond":
-					note.frames = Paths.getSparrowAtlas('NOTE_diamond');
-				case "Square":
-					note.frames = Paths.getSparrowAtlas('NOTE_square');
+					note.frames = Paths.getSparrowAtlas('noteskins/NOTE_diamond');
+				case "Stepmania":
+					note.frames = Paths.getSparrowAtlas('noteskins/NOTE_step');
 			}
 					
 			var animations:Array<String> = ['purple0', 'blue0', 'green0', 'red0'];

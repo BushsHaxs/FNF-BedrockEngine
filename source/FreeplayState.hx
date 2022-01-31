@@ -171,6 +171,7 @@ class FreeplayState extends MusicBeatState
 		if (curPlaying)
 		{
 			iconArray[instPlaying].canBounce = true;
+			iconArray[instPlaying].animation.curAnim.curFrame = 2;
 		}
 
 		changeSelection();
@@ -414,6 +415,12 @@ class FreeplayState extends MusicBeatState
 			}
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			MusicBeatState.switchState(new MainMenuState());
+			if (ClientPrefs.lowEndMode)
+				persistentUpdate = false;
+				if(colorTween != null) {
+				colorTween.cancel();
+				}
+				MusicBeatState.switchState(new SimpleMenuState());
 		}
 
 		if (ctrl)
@@ -445,8 +452,12 @@ class FreeplayState extends MusicBeatState
 				instPlaying = curSelected;
 				Conductor.changeBPM(PlayState.SONG.bpm);
 				for (i in 0...iconArray.length)
+				{
 					iconArray[i].canBounce = false;
+					iconArray[i].animation.curAnim.curFrame = 0;
+				}
 				iconArray[instPlaying].canBounce = true;
+				iconArray[instPlaying].animation.curAnim.curFrame = 2;
 				curPlaying = true;
 				#end
 			}
@@ -537,12 +548,12 @@ class FreeplayState extends MusicBeatState
 			case 0:
 				{
 					// scoreText.color = FlxColor.GREEN;
-					diffText.color = FlxColor.GREEN;
+					diffText.color = FlxColor.LIME;
 				}
 			case 1:
 				{
 					// scoreText.color = FlxColor.WHITE;
-					diffText.color = FlxColor.WHITE;
+					diffText.color = FlxColor.YELLOW;
 				}
 			case 2:
 				{

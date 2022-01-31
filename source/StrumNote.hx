@@ -38,15 +38,15 @@ class StrumNote extends FlxSprite
 	/*	if(PlayState.SONG.arrowSkin != null && PlayState.SONG.arrowSkin.length > 1) skin = PlayState.SONG.arrowSkin; */
 
 		if (ClientPrefs.noteSkin=='Default')
-			skin = 'NOTE_assets';
+			skin = 'noteskins/NOTE_assets';
 		else if (ClientPrefs.noteSkin=='Bar')
-			skin = 'NOTE_bar';
+			skin = 'noteskins/NOTE_bar';
 		else if (ClientPrefs.noteSkin=='Diamond')
-			skin = 'NOTE_diamond';
-		else if (ClientPrefs.noteSkin=='Square')
-			skin = 'NOTE_square';
+			skin = 'noteskins/NOTE_diamond';
+		else if (ClientPrefs.noteSkin=='Stepmania')
+			skin = 'noteskins/NOTE_step';
 		else
-			skin = 'NOTE_circle';
+			skin = 'noteskins/NOTE_circle';
 
 		texture = skin; //Load texture and anims
 

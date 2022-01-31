@@ -259,15 +259,15 @@ class Note extends FlxSprite
 				switch (ClientPrefs.noteSkin)
 				{
 					case 'Default':
-						skin = 'NOTE_assets';
+						skin = 'noteskins/NOTE_assets';
 					case 'Bar':
-						skin = 'NOTE_bar';
+						skin = 'noteskins/NOTE_bar';
 					case 'Circle':
-						skin = 'NOTE_circle';
+						skin = 'noteskins/NOTE_circle';
 					case 'Diamond':
-						skin = 'NOTE_diamond';
-					case 'Square':
-						skin = 'NOTE_square';
+						skin = 'noteskins/NOTE_diamond';
+					case 'Stepmania':
+						skin = 'noteskins/NOTE_step';
 				}
 			}
 		}
