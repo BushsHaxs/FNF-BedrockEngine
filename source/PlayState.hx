@@ -1272,6 +1272,7 @@ class PlayState extends MusicBeatState
 
 		opponentText = new FlxText(healthBarBG.x + healthBarBG.width / 2 - 90, healthBarBG.y - 100, "Opponent Mode", 32);
 		opponentText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		opponentText.screenCenter(X);
 		opponentText.scrollFactor.set();
 		opponentText.borderSize = 1.25;
 		opponentText.alpha = 0;

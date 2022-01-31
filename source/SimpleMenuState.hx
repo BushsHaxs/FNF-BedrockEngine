@@ -23,7 +23,6 @@ import flixel.util.FlxTimer;
 import haxe.Json;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
-import flixel.util.FlxTimer;
 import lime.app.Application;
 import flixel.input.keyboard.FlxKey;
 import flixel.graphics.FlxGraphic;
