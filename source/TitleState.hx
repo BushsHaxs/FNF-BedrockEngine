@@ -79,6 +79,8 @@ class TitleState extends MusicBeatState
 	public static var updateVersion:String = '';
 
 	var candance:Bool = true;
+	var bgGrad:FlxSprite;
+	var fgGrad:FlxSprite;
 
 	override public function create():Void
 	{
@@ -248,9 +250,13 @@ class TitleState extends MusicBeatState
 		Conductor.changeBPM(titleJSON.bpm);
 		persistentUpdate = true;
 
-		var bgGrad:FlxSprite = new FlxSprite().loadGraphic(Paths.image('titleGradient'));
-		bgGrad.antialiasing = true;
+		bgGrad = new FlxSprite().loadGraphic(Paths.image('titleGradient'));
+		bgGrad.antialiasing = ClientPrefs.globalAntialiasing;
 		bgGrad.updateHitbox();
+		bgGrad.y = 300;
+		bgGrad.alpha = 0;
+		FlxTween.tween(bgGrad, {y: bgGrad.y - 300, alpha: 1}, 0.6);
+		add(bgGrad);
 
 		logoBl = new FlxSprite(titleJSON.titlex, titleJSON.titley);
 
@@ -310,7 +316,6 @@ class TitleState extends MusicBeatState
 		gfDance.animation.addByIndices('danceRight', 'GF Dancing Beat', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
 		gfDance.animation.addByPrefix('Hey', 'GF Cheer', 24, false);
 		gfDance.antialiasing = ClientPrefs.globalAntialiasing;
-		add(bgGrad);
 		add(gfDance);
 		add(logoBl);
 		gfDance.shader = swagShader.shader;
@@ -348,6 +353,7 @@ class TitleState extends MusicBeatState
 		// add(logo);
 
 		// FlxTween.tween(logoBl, {y: logoBl.y + 50}, 0.6, {ease: FlxEase.quadInOut, type: PINGPONG});
+
 		// FlxTween.tween(logo, {y: logoBl.y + 50}, 0.6, {ease: FlxEase.quadInOut, type: PINGPONG, startDelay: 0.1});
 
 		credGroup = new FlxGroup();
@@ -373,6 +379,14 @@ class TitleState extends MusicBeatState
 		ngSpr.antialiasing = ClientPrefs.globalAntialiasing;
 
 		FlxTween.tween(credTextShit, {y: credTextShit.y + 20}, 2.9, {ease: FlxEase.quadInOut, type: PINGPONG});
+
+		fgGrad = new FlxSprite().loadGraphic(Paths.image('titleGradient'));
+		fgGrad.antialiasing = ClientPrefs.globalAntialiasing;
+		fgGrad.updateHitbox();
+		fgGrad.alpha = 0.4;
+		fgGrad.y += 300;
+		FlxTween.tween(fgGrad, {y: fgGrad.y - 300, alpha: 0.4}, 0.6);
+		add(fgGrad);
 
 		if (initialized)
 			skipIntro();
@@ -439,11 +453,15 @@ class TitleState extends MusicBeatState
 				if (titleText != null)
 					titleText.animation.play('press');
 
-				FlxG.camera.flash(FlxColor.WHITE, 1);
+				FlxG.camera.flash(FlxColor.GRAY, 1); // my eyes
 				FlxG.sound.play(Paths.sound('confirmMenu'), 0.7);
 				FlxTween.tween(logoBl, {x: -1500, angle: 10, alpha: 0}, 2, {ease: FlxEase.expoInOut});
 				// FlxTween.tween(gfDance, {x: -1500}, 3.7, {ease: FlxEase.expoInOut});
 				FlxTween.tween(titleText, {y: 1500}, 3.7, {ease: FlxEase.expoInOut});
+				FlxTween.tween(bgGrad, {alpha: 0.4}, 1, {ease: FlxEase.expoInOut});
+				FlxTween.tween(fgGrad, {alpha: 0.2}, 1, {ease: FlxEase.expoInOut});
+
+				// remove if you dont like it
 
 				transitioning = true;
 				// FlxG.sound.music.stop();
