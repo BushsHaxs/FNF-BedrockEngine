@@ -52,5 +52,7 @@ class Ratings
 	];
 
         public static var errorRating:Array<Dynamic> = 
-                [["NaN"], 1]];
+                [
+					["NaN", 1]
+				];
 }

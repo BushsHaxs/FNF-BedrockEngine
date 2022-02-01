@@ -16,15 +16,13 @@ class HealthIcon extends FlxSprite
 {
 	public var sprTracker:FlxSprite;
 	public var canBounce:Bool = false;
-	public var DeviconSupport:Bool;
-	public var dir:String = "custom.json";
 
 	private var isOldIcon:Bool = false;
 	private var isPlayer:Bool = false;
 	private var char:String = '';
 
 
-	public static var iconSupport:Bool = false;
+
 
 	public function new(char:String = 'bf', isPlayer:Bool = false)
 	{
@@ -59,39 +57,34 @@ class HealthIcon extends FlxSprite
 	}
 
 	private var iconOffsets:Array<Float> = [0, 0, 0];
+	public var iconSupport:Bool;
+	public var dir:String = "custom.json";
+
+	public function dev(dir:String)
+		{
+			
+			if(FileSystem.exists(dir))
+			{
+				var customJson:String = File.getContent(dir);
+				if (customJson != null && customJson.length > 0)
+				{
+					var shit:Dynamic = Json.parse(customJson);
+					var iconSupport:Bool = Reflect.getProperty(shit, "iconSupport");
+					
+					this.iconSupport = iconSupport;
+
+				}
+			}
+		}
+	
 
 	public function changeIcon(char:String) // this should stay like this until i find a way to softcode
 	{
 		if (this.char != char)
 		{
-			if (!FileSystem.exists('mods/images/iconSupport.txt'))
-			{
-				// trace(iconSupport);
-			}
-			else
-			{
-				iconSupport = true;
-				// trace(iconSupport);
-			}
-			/* 
-			public function dev(dir:String)
-			{
-				this.DeviconSupport = false;
-				
-				if(FileSystem.exists(dir))
-				{
-					var customJson:String = File.getContent(dir);
-					if (customJson != null && customJson.length > 0)
-					{
-						var shit:Dynamic = Json.parse(customJson);
-						var DeviconSupport:Bool = Reflect.getProperty(stuff, "oldIconSupport");
-						
-						this.DeviconSupport = DeviconSupport;
-					}
-				}
-
-			*/
-			if (iconSupport)
+			dev(dir);
+			
+			if (!iconSupport)
 			{
 				var name:String = 'icons/' + char;
 				if (!Paths.fileExists('images/' + name + '.png', IMAGE))
@@ -116,6 +109,7 @@ class HealthIcon extends FlxSprite
 				{
 					antialiasing = false;
 				}
+				//trace("c");
 			}
 			else
 			{
@@ -142,6 +136,7 @@ class HealthIcon extends FlxSprite
 				{
 					antialiasing = false;
 				}
+				//trace("cs");
 			}
 		}
 	}

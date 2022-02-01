@@ -53,6 +53,10 @@ import flixel.group.FlxSpriteGroup;
 import flixel.input.keyboard.FlxKey;
 import openfl.events.KeyboardEvent;
 import flixel.input.gamepad.FlxGamepad;
+import sys.io.File;
+#if sys
+import sys.FileSystem;
+#end
 import Achievements;
 import StageData;
 import FunkinLua;
@@ -2463,10 +2467,37 @@ class PlayState extends MusicBeatState
 	}
 
 	public var paused:Bool = false;
+	public var iconSupport:Bool;
+	public var dir:String = "custom.json";
+	public var judgementSkin:String;
 	var startedCountdown:Bool = false;
 	var canPause:Bool = true;
 	var limoSpeed:Float = 0;
 	var alreadyChanged:Bool = false; // lag no more
+	
+
+		public function dev(dir:String)
+		{
+			this.iconSupport = false;
+			
+			if(FileSystem.exists(dir))
+			{
+				var customJson:String = File.getContent(dir);
+				if (customJson != null && customJson.length > 0)
+				{
+					var shit:Dynamic = Json.parse(customJson);
+					var iconSupport:Bool = Reflect.getProperty(shit, "iconSupport");
+					var judgementSkin:String = Reflect.getProperty(shit, "judgementSkin");
+						
+					this.iconSupport = iconSupport;
+
+					if (judgementSkin != null && judgementSkin.length > 0)
+						this.judgementSkin = judgementSkin;
+					// trace(iconSupport);
+				}
+			}
+		}
+
 
 	override public function update(elapsed:Float)
 	{
@@ -2720,6 +2751,8 @@ class PlayState extends MusicBeatState
 			- (150 * iconP2.scale.x) / 2
 			- iconOffset * 2;
 
+		dev(dir);
+
 		if (health > 2)
 			health = 2;
 
@@ -2727,24 +2760,25 @@ class PlayState extends MusicBeatState
 		{
 			(opponentChart ? iconP2 : iconP1).animation.curAnim.curFrame = 1;
 			(opponentChart ? iconP1 : iconP2).animation.curAnim.curFrame = 2;
-			if (!HealthIcon.iconSupport)
+			if (iconSupport)
 			{
-				(opponentChart ? iconP2 : iconP1).animation.curAnim.curFrame = 1;
-				(opponentChart ? iconP1 : iconP2).animation.curAnim.curFrame = 0;
+			(opponentChart ? iconP2 : iconP1).animation.curAnim.curFrame = 1;
+			(opponentChart ? iconP1 : iconP2).animation.curAnim.curFrame = 0;
 			}
 		}
 		else if (healthBar.percent > 85)
 		{
-			if (HealthIcon.iconSupport)
+			if (!iconSupport)
 			{
-				(opponentChart ? iconP2 : iconP1).animation.curAnim.curFrame = 2;
-				(opponentChart ? iconP1 : iconP2).animation.curAnim.curFrame = 1;
+			(opponentChart ? iconP2 : iconP1).animation.curAnim.curFrame = 2;
+			(opponentChart ? iconP1 : iconP2).animation.curAnim.curFrame = 1;
 			}
 			else
 			{
-				(opponentChart ? iconP2 : iconP1).animation.curAnim.curFrame = 0;
-				(opponentChart ? iconP1 : iconP2).animation.curAnim.curFrame = 1;
+			(opponentChart ? iconP2 : iconP1).animation.curAnim.curFrame = 0;
+			(opponentChart ? iconP1 : iconP2).animation.curAnim.curFrame = 1;
 			}
+			
 		}
 		else
 		{
@@ -3893,6 +3927,7 @@ class PlayState extends MusicBeatState
 
 	public static function getUiSkin(?uiSkin:String = 'classic', ?file:String = '', ?alt:String = '', ?numSkin:Bool = false, ?num:Int = 0)
 	{
+
 		var path:String = 'judgements/'
 			+ (numSkin ? 'numbers/' : '')
 			+ uiSkin
@@ -4003,18 +4038,13 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		var uiSkin:String = '';
+		var uiSkin:String;
 		var altPart:String = isPixelStage ? '-pixel' : '';
 
-		switch (ClientPrefs.uiSkin)
-		{
-			case 'Classic':
-				uiSkin = 'classic';
-			case 'Bedrock':
-				uiSkin = 'bedrock';
-			case 'Score':
-				uiSkin = 'score';
-		}
+		dev(dir);
+
+		uiSkin = judgementSkin;
+
 
 		rating.loadGraphic(Paths.image(getUiSkin(uiSkin, daRating, altPart)));
 		rating.cameras = [camHUD];
@@ -4352,7 +4382,6 @@ class PlayState extends MusicBeatState
 				note.destroy();
 			}
 		});
-		combo = 0;
 
 		health -= daNote.missHealth * healthLoss;
 		if (instakillOnMiss)
@@ -5201,14 +5230,16 @@ class PlayState extends MusicBeatState
 
 			// Rating Name
 			if (ratingPercent >= 1)
+			{
 				if (ClientPrefs.letterGrades)
 					ratingName = Ratings.ratingStuff[Ratings.ratingStuff.length - 1][0]; // Uses last string
 				if (!ClientPrefs.letterGrades)
-					ratingName = Ratings.ratingSimple[Ratings.ratingSimple.length - 1][
-                                if (ClientPrefs.letterGrades && ClientPrefs.keAccuracy)
-                                        ratingName = Ratings.ratingComplex[Ratings.ratingComplex.length - 1][0];
-                                else if (!ClientPrefs.letterGrades && ClientPrefs.keAccuracy)
-                                        ratingName = Ratings.errorRating[Ratings.errorRating.length - 1][0];
+					ratingName = Ratings.ratingSimple[Ratings.ratingSimple.length - 1][0];
+                if (ClientPrefs.letterGrades && ClientPrefs.keAccuracy)
+                    ratingName = Ratings.ratingComplex[Ratings.ratingComplex.length - 1][0];
+                else if (!ClientPrefs.letterGrades && ClientPrefs.keAccuracy)
+                    ratingName = Ratings.errorRating[Ratings.errorRating.length - 1][0];
+			}
 			else
 			{
 				if (ClientPrefs.letterGrades && !ClientPrefs.keAccuracy)
@@ -5222,7 +5253,7 @@ class PlayState extends MusicBeatState
 						}
 					}
 				}
-		              else if (!ClientPrefs.letterGrades && !ClientPrefs.keAccuracy)
+		        else if (!ClientPrefs.letterGrades && !ClientPrefs.keAccuracy)
 				{
 					for (i in 0...Ratings.ratingSimple.length - 1)
 					{
@@ -5244,7 +5275,7 @@ class PlayState extends MusicBeatState
 						}
 					}
 				}
-                                else if (!ClientPrefs.letterGrades && ClientPrefs.keAccuracy)
+                else if (!ClientPrefs.letterGrades && ClientPrefs.keAccuracy)
 				{
 					for (i in 0...Ratings.errorRating.length - 1)
 					{
@@ -5255,8 +5286,8 @@ class PlayState extends MusicBeatState
 						}
 					}
 				}
-
 			}
+		
 
 			// Rating FC
 			ratingFC = "";
