@@ -235,13 +235,10 @@ class PlayState extends MusicBeatState
 	public var totalMisses:Int = 0;
 	public var scoreTxt:FlxText;
 	public var scoreTxtaboveicons:FlxText;
-	public var judgCountTxt:FlxText;
-	public var judgCountTxtaboveicons:FlxText;
 
 	var judgementCounter:FlxText;
 	var timeTxt:FlxText;
 	var scoreTxtTween:FlxTween;
-	var judgCountTxtTween:FlxTween;
 	var beWatermark:FlxText;
 	var peWatermark:FlxText;
 	var songNameTxt:FlxText;
@@ -1122,14 +1119,6 @@ class PlayState extends MusicBeatState
 		scoreTxt.borderSize = 1.25;
 		scoreTxt.visible = !ClientPrefs.hideHud;
 		add(scoreTxt);
-
-		judgCountTxt = new FlxText(0, healthBarBG.y + 56, FlxG.width, "", 20);
-		judgCountTxt.setFormat(Paths.font("vcr.ttf"), 17, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		judgCountTxt.scrollFactor.set();
-		judgCountTxt.borderSize = 1.25;
-		judgCountTxt.visible = !ClientPrefs.hideHud;
-
-		add(judgCountTxt);
 
 		iconP1 = new HealthIcon(boyfriend.healthIcon, true);
 		iconP1.y = healthBar.y - 75;
@@ -2489,16 +2478,12 @@ class PlayState extends MusicBeatState
 		{
 			scoreTxt.visible = false;
 			scoreTxtaboveicons.visible = false;
-			judgCountTxt.visible = false;
-			judgCountTxtaboveicons.visible = false;
 			alreadyChanged = true;
 		}
 		else if (!cpuControlled && alreadyChanged)
 		{
 			scoreTxt.visible = true;
 			scoreTxtaboveicons.visible = true;
-			judgCountTxt.visible = true;
-			judgCountTxtaboveicons.visible = true;
 			alreadyChanged = false;
 		}
 
