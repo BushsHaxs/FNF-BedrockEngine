@@ -3,6 +3,9 @@ package;
 import flixel.math.FlxMath;
 import flixel.FlxSprite;
 import openfl.utils.Assets as OpenFlAssets;
+import haxe.Json;
+import haxe.format.JsonParser;
+import sys.io.File;
 #if sys
 import sys.FileSystem;
 #end
@@ -13,10 +16,13 @@ class HealthIcon extends FlxSprite
 {
 	public var sprTracker:FlxSprite;
 	public var canBounce:Bool = false;
+	public var DeviconSupport:Bool;
+	public var dir:String = "custom.json";
 
 	private var isOldIcon:Bool = false;
 	private var isPlayer:Bool = false;
 	private var char:String = '';
+
 
 	public static var iconSupport:Bool = false;
 
@@ -67,6 +73,24 @@ class HealthIcon extends FlxSprite
 				iconSupport = true;
 				// trace(iconSupport);
 			}
+			/* 
+			public function dev(dir:String)
+			{
+				this.DeviconSupport = false;
+				
+				if(FileSystem.exists(dir))
+				{
+					var customJson:String = File.getContent(dir);
+					if (customJson != null && customJson.length > 0)
+					{
+						var shit:Dynamic = Json.parse(customJson);
+						var DeviconSupport:Bool = Reflect.getProperty(stuff, "oldIconSupport");
+						
+						this.DeviconSupport = DeviconSupport;
+					}
+				}
+
+			*/
 			if (iconSupport)
 			{
 				var name:String = 'icons/' + char;
