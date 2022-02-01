@@ -52,6 +52,7 @@ import editors.CharacterEditorState;
 import flixel.group.FlxSpriteGroup;
 import flixel.input.keyboard.FlxKey;
 import openfl.events.KeyboardEvent;
+import flixel.input.gamepad.FlxGamepad;
 import Achievements;
 import StageData;
 import FunkinLua;
