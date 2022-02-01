@@ -4373,13 +4373,13 @@ class PlayState extends MusicBeatState
 
 		// For testing purposes
 		// trace(daNote.missHealth);
-		
+
 		/*misses and combo breaks are different things, for example you have 0 combo and you miss a note, technically you do not break your combo because you dont have one.*/
 		if (combo > 0) 
 			songMisses++;
-			
+
 		totalMisses++;
-		
+
 		vocals.volume = 0;
 		if (!practiceMode)
 			songScore -= 10;
@@ -5261,9 +5261,9 @@ class PlayState extends MusicBeatState
 		setOnLuas('ratingName', ratingName);
 		setOnLuas('ratingFC', ratingFC);
 		if (ClientPrefs.marvelouses)
-			judgementCounter.text = 'Marvs: ${marvelouses}\nSicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${songMisses}';
+			judgementCounter.text = 'Marvs: ${marvelouses}\nSicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${totalMisses}';
 		else
-			judgementCounter.text = 'Sicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${songMisses}';
+			judgementCounter.text = 'Sicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${totalMisses}';
 	}
 
 	public static var othersCodeName:String = 'otherAchievements';
