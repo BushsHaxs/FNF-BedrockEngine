@@ -232,6 +232,7 @@ class PlayState extends MusicBeatState
 	public var songScore:Int = 0;
 	public var songHits:Int = 0;
 	public var songMisses:Int = 0;
+	public var totalMisses:Int = 0;
 	public var scoreTxt:FlxText;
 	public var scoreTxtaboveicons:FlxText;
 	public var judgCountTxt:FlxText;
@@ -1174,9 +1175,9 @@ class PlayState extends MusicBeatState
 
 		// Just in case.
 		if (ClientPrefs.marvelouses)
-			judgementCounter.text = 'Marvs: ${marvelouses}\nSicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${songMisses}';
+			judgementCounter.text = 'Marvs: ${marvelouses}\nSicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${totalMisses}';
 		else
-			judgementCounter.text = 'Sicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${songMisses}';
+			judgementCounter.text = 'Sicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${totalMisses}';
 
 		// then we add them
 		add(judgementCounter);
@@ -4372,7 +4373,13 @@ class PlayState extends MusicBeatState
 
 		// For testing purposes
 		// trace(daNote.missHealth);
-		songMisses++;
+		
+		/*misses and combo breaks are different things, for example you have 0 combo and you miss a note, technically you do not break your combo because you dont have one.*/
+		if (combo > 0) 
+			songMisses++;
+			
+		totalMisses++;
+		
 		vocals.volume = 0;
 		if (!practiceMode)
 			songScore -= 10;
