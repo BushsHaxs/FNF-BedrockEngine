@@ -33,6 +33,7 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
+import flixel.util.FlxGradient;
 import lime.app.Application;
 import openfl.Assets;
 
@@ -250,7 +251,7 @@ class TitleState extends MusicBeatState
 		Conductor.changeBPM(titleJSON.bpm);
 		persistentUpdate = true;
 
-		bgGrad = new FlxSprite().loadGraphic(Paths.image('titleGradient'));
+		bgGrad = FlxGradient.createGradientFlxSprite(1460, 821, [FlxColor.TRANSPARENT, FlxColor.fromInt(0xFFDF52A7)]);
 		bgGrad.antialiasing = ClientPrefs.globalAntialiasing;
 		bgGrad.updateHitbox();
 		bgGrad.y = 300;
@@ -380,7 +381,7 @@ class TitleState extends MusicBeatState
 
 		FlxTween.tween(credTextShit, {y: credTextShit.y + 20}, 2.9, {ease: FlxEase.quadInOut, type: PINGPONG});
 
-		fgGrad = new FlxSprite().loadGraphic(Paths.image('titleGradient'));
+		fgGrad = FlxGradient.createGradientFlxSprite(1460, 821, [FlxColor.TRANSPARENT, FlxColor.fromInt(0xFFDF52A7)]);
 		fgGrad.antialiasing = ClientPrefs.globalAntialiasing;
 		fgGrad.updateHitbox();
 		fgGrad.alpha = 0.4;
