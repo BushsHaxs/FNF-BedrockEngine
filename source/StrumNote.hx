@@ -48,7 +48,7 @@ class StrumNote extends FlxSprite
 			case 'Stepmania':
 				skin = 'noteskins/NOTE_step';
 			default:
-				skin = 'noteskins/NOTE_assets';
+				skin = 'noteskins/NOTE_assets'; // pixel stages are broken because of this, need to find a way to fix them (or just remove Week 6 lol) - Gui iago
 		}
 
 		texture = skin; //Load texture and anims
