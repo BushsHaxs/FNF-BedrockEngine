@@ -62,28 +62,25 @@ class ClientPrefs {
 	public static var maxOptimization:Bool = false;
 	public static var playMissSounds:Bool = true;
 	public static var playHitSounds:Bool = false;
-	public static var lightcpustrums:Bool = true;
 	public static var hideGf:Bool = false;
 	#if PSYCH_WATERMARKS
 	public static var uiSkin:String = 'Bedrock';
 	#else
 	public static var uiSkin:String = 'Classic';
 	#end
-	public static var judgCounters:String = 'Left';
+	public static var judgCounter:Bool = true;
 	public static var timeBarUi:String = 'Psych Engine';
 	public static var noteSkin:String = 'Default';
-	public static var lowEndMode:Bool = false;
 	public static var strumLineAlpha:Float = 1;
 	public static var underlay:Float = 0;
 	public static var keAccuracy:Bool = false;
-	public static var noteGlow:Bool = false;
 	public static var instantRespawn:Bool = false;
 	public static var letterGrades:Bool = true;
 	public static var disableChars:Bool = false;
 
 	// Added by Bedrock Engine (via Pull Requests)
 	public static var marvelouses:Bool = true;
-	public static var watermarkPreferences:String = 'Both';
+	public static var showWatermarks:Bool = true;
 
 	//Every key has two binds, add your key bind down here and then add your control on options/ControlsSubState.hx and Controls.hx
 	public static var keyBinds:Map<String, Array<FlxKey>> = [
@@ -155,18 +152,14 @@ class ClientPrefs {
 		FlxG.save.data.maxOptimization = maxOptimization;
 		FlxG.save.data.playMissSounds = playMissSounds;
 		FlxG.save.data.playHitSounds = playHitSounds;
-		FlxG.save.data.lightcpustrums = lightcpustrums;
-		//FlxG.save.data.infoSize = infoSize;
 		FlxG.save.data.hideGf = hideGf;
-		FlxG.save.data.lowEndMode = lowEndMode;
 		FlxG.save.data.strumLineAlpha = strumLineAlpha;
 		FlxG.save.data.uiSkin = uiSkin;
-		FlxG.save.data.judgCounters = judgCounters;
+		FlxG.save.data.judgCounter = judgCounter;
 		FlxG.save.data.timeBarUi = timeBarUi;
 		FlxG.save.data.noteSkin = noteSkin;
 		FlxG.save.data.underlay = underlay;
 		FlxG.save.data.keAccuracy = keAccuracy;
-		FlxG.save.data.noteGlow = noteGlow;
 		FlxG.save.data.instantRespawn = instantRespawn;
 		FlxG.save.data.letterGrades = letterGrades;
 		FlxG.save.data.disableChars = disableChars;
@@ -174,7 +167,7 @@ class ClientPrefs {
 		// Added by Bedrock Engine (via Pull Requests)
 		FlxG.save.data.marvelousWindow = marvelousWindow;
 		FlxG.save.data.marvelouses = marvelouses;
-		FlxG.save.data.watermarkPreferences = watermarkPreferences;
+		FlxG.save.data.showWatermarks = showWatermarks;
 
 		FlxG.save.flush();
 
@@ -296,14 +289,8 @@ class ClientPrefs {
 		if (FlxG.save.data.playMissSounds != null) {
 			playMissSounds = FlxG.save.data.playMissSounds;
 		}
-		if (FlxG.save.data.lightcpustrums != null) {
-			lightcpustrums = FlxG.save.data.lightcpustrums;
-		}
 		if (FlxG.save.data.hideGf != null) {
 			hideGf = FlxG.save.data.hideGf;
-		}
-		if (FlxG.save.data.lowEndMode != null) {
-			lowEndMode = FlxG.save.data.lowEndMode;
 		}
 		if (FlxG.save.data.strumLineAlpha != null) {
 			strumLineAlpha = FlxG.save.data.strumLineAlpha;
@@ -317,11 +304,8 @@ class ClientPrefs {
 		if (FlxG.save.data.noteSkin != null) {
 			noteSkin = FlxG.save.data.noteSkin;
 		}
-		if (FlxG.save.data.judgCounters != null) {
-			judgCounters = FlxG.save.data.judgCounters;
-		}
-		if (FlxG.save.data.noteGlow != null) {
-			noteGlow = FlxG.save.data.noteGlow;
+		if (FlxG.save.data.judgCounter != null) {
+			judgCounter = FlxG.save.data.judgCounter;
 		}
 		if (FlxG.save.data.underlay != null) {
 			underlay = FlxG.save.data.underlay;
@@ -346,8 +330,8 @@ class ClientPrefs {
 		if(FlxG.save.data.marvelouses != null) {
 			marvelouses = FlxG.save.data.marvelouses;
 		}
-		if (FlxG.save.data.watermarkPreferences != null) {
-			watermarkPreferences = FlxG.save.data.watermarkPreferences;
+		if (FlxG.save.data.showWatermarks != null) {
+			showWatermarks = FlxG.save.data.showWatermarks;
 		}
 		
 		// flixel automatically saves your volume!

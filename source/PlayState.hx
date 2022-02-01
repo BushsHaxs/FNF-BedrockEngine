@@ -240,13 +240,10 @@ class PlayState extends MusicBeatState
 	var judgementCounter:FlxText;
 	var timeTxt:FlxText;
 	var scoreTxtTween:FlxTween;
-	var scoreTxtaboveiconsTween:FlxTween;
 	var judgCountTxtTween:FlxTween;
-	var judgCountTxtaboveiconsTween:FlxTween;
 	var beWatermark:FlxText;
 	var peWatermark:FlxText;
 	var songNameTxt:FlxText;
-	var opponentText:FlxText;
 
 	public static var campaignScore:Int = 0;
 	public static var campaignMisses:Int = 0;
@@ -1145,58 +1142,24 @@ class PlayState extends MusicBeatState
 		add(iconP2);
 		reloadHealthBarColors();
 
-		scoreTxtaboveicons = new FlxText(0, healthBarBG.y + 36, FlxG.width, "", 20);
-		scoreTxtaboveicons.setFormat(Paths.font("vcr.ttf"), 17, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		scoreTxtaboveicons.scrollFactor.set();
-		scoreTxtaboveicons.borderSize = 1.25;
-		scoreTxtaboveicons.alpha = 0.5;
-		scoreTxtaboveicons.visible = !ClientPrefs.hideHud;
-		add(scoreTxtaboveicons);
-
-		judgCountTxtaboveicons = new FlxText(0, healthBarBG.y + 56, FlxG.width, "", 20);
-		judgCountTxtaboveicons.setFormat(Paths.font("vcr.ttf"), 17, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		judgCountTxtaboveicons.scrollFactor.set();
-		judgCountTxtaboveicons.borderSize = 1.25;
-		judgCountTxtaboveicons.alpha = 0.5;
-		judgCountTxtaboveicons.visible = !ClientPrefs.hideHud;
-
-		add(judgCountTxtaboveicons);
-
 		// Watermarks, this is for Bedrock Engine
-		beWatermark = new FlxText(0, FlxG.height - 64, 0, "Bedrock Engine: v" + MainMenuState.bedrockEngineVersion, 16);
+		beWatermark = new FlxText(0, FlxG.height - 44, 0, "Bedrock Engine: v" + MainMenuState.bedrockEngineVersion, 16);
 		beWatermark.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		beWatermark.scrollFactor.set();
 		beWatermark.visible = false;
 
-		if (ClientPrefs.watermarkPreferences == 'Both'
-			|| ClientPrefs.watermarkPreferences == 'Only Bedrock'
-			|| ClientPrefs.watermarkPreferences == 'All')
-			beWatermark.visible = true;
-
 		// And this is for Psych Engine
-		peWatermark = new FlxText(0, FlxG.height - 44, 0, "Psych Engine: v" + MainMenuState.psychEngineVersion, 16);
+		peWatermark = new FlxText(0, FlxG.height - 24, 0, "Psych Engine: v" + MainMenuState.psychEngineVersion, 16);
 		peWatermark.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		peWatermark.scrollFactor.set();
 		peWatermark.visible = false;
 
-		if (ClientPrefs.watermarkPreferences == 'Both'
-			|| ClientPrefs.watermarkPreferences == 'Only Psych'
-			|| ClientPrefs.watermarkPreferences == 'All')
+		if (ClientPrefs.showWatermarks)
 			peWatermark.visible = true;
 
-		// This is for the Song
-		songNameTxt = new FlxText(0, FlxG.height - 24, 0, SONG.song + " - " + CoolUtil.difficultyString(), 16);
-		songNameTxt.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		songNameTxt.scrollFactor.set();
-		songNameTxt.visible = false;
-
-		if (ClientPrefs.watermarkPreferences == 'Only Song' || ClientPrefs.watermarkPreferences == 'All')
-			songNameTxt.visible = true;
-
-		// we add them first, so the options can work
+		// add them
 		add(beWatermark);
 		add(peWatermark);
-		add(songNameTxt);
 
 		// left and right judgement counters
 		judgementCounter = new FlxText(20, 0, 0, "", 20);
@@ -1217,22 +1180,8 @@ class PlayState extends MusicBeatState
 		// then we add them
 		add(judgementCounter);
 
-		// for Info
-		/*judgCountTxt = new FlxText(0, healthBarBG.y + 56, FlxG.width, "", 20);
-			judgCountTxt.setFormat(Paths.font("vcr.ttf"), 17, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-			judgCountTxt.scrollFactor.set();
-			judgCountTxt.borderSize = 1.25;
-			judgCountTxt.visible = !ClientPrefs.hideHud; */
-
-		// then add it
-		// add(judgCountTxt);
-
-		// unless it's on Info
-		if (ClientPrefs.judgCounters == 'Info')
-			remove(judgementCounter);
-
 		// or Completely Disabled
-		if (ClientPrefs.judgCounters == "Disabled")
+		if (!ClientPrefs.judgCounter)
 			remove(judgementCounter);
 
 		// Botplay Text Stuff V
@@ -1247,21 +1196,6 @@ class PlayState extends MusicBeatState
 			botplayTxt.y = timeBarBG.y - 78;
 		}
 
-		opponentText = new FlxText(healthBarBG.x + healthBarBG.width / 2 - 90, healthBarBG.y - 100, "Opponent Mode", 32);
-		opponentText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		opponentText.screenCenter(X);
-		opponentText.scrollFactor.set();
-		opponentText.borderSize = 1.25;
-		opponentText.alpha = 0;
-		if (ClientPrefs.downScroll)
-			opponentText.y = timeBarBG.y - 100;
-		add(opponentText);
-
-		if (opponentChart)
-			FlxTween.tween(opponentText, {alpha: 1}, 2, {ease: FlxEase.expoInOut});
-		else
-			opponentText.kill();
-
 		// now we set da cameras stuff
 		strumLineNotes.cameras = [camHUD];
 		grpNoteSplashes.cameras = [camHUD];
@@ -1271,17 +1205,12 @@ class PlayState extends MusicBeatState
 		iconP1.cameras = [camHUD];
 		iconP2.cameras = [camHUD];
 		scoreTxt.cameras = [camHUD];
-		scoreTxtaboveicons.cameras = [camHUD];
 		judgementCounter.cameras = [camHUD];
-		judgCountTxt.cameras = [camHUD];
-		judgCountTxtaboveicons.cameras = [camHUD];
 		beWatermark.cameras = [camHUD];
 		peWatermark.cameras = [camHUD];
-		songNameTxt.cameras = [camHUD];
 		laneunderlay.cameras = [camHUD];
 		laneunderlayOpponent.cameras = [camHUD];
 		botplayTxt.cameras = [camHUD];
-		opponentText.cameras = [camHUD];
 		timeBar.cameras = [camHUD];
 		timeBarBG.cameras = [camHUD];
 		timeTxt.cameras = [camHUD];
@@ -2084,17 +2013,6 @@ class PlayState extends MusicBeatState
 		songLength = FlxG.sound.music.length;
 		FlxTween.tween(timeBar, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
 		FlxTween.tween(timeTxt, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
-		// Ctrl C, Ctrl V From beat xd --Luis
-		if (opponentChart)
-		{
-			FlxTween.tween(opponentText, {alpha: 0}, 1.5, {
-				ease: FlxEase.quadOut,
-				onComplete: function(twn:FlxTween)
-				{
-					opponentText.kill();
-				}
-			});
-		}
 
 		#if desktop
 		// Updating Discord Rich Presence (with Time Left)
@@ -2742,44 +2660,9 @@ class PlayState extends MusicBeatState
 		var ratingNameTwo:String = ratingName;
 
 		if (ratingFC == "")
-			scoreTxt.text = 'Score: ' + songScore + ' // Accuracy: ' + Highscore.floorDecimal(ratingPercent * 100, 2) + '% ' + ' // Combo Breaks: ' + songMisses
-				+ ' // Rank: ?';
+			scoreTxt.text = 'Score: ' + songScore + ' // Accuracy: ' + Highscore.floorDecimal(ratingPercent * 100, 2) + '% ' + ' // Combo Breaks: ' + songMisses + ' // Rank: ?';
 		else
-			scoreTxt.text = 'Score: ' + songScore + ' // Accuracy: ' + Highscore.floorDecimal(ratingPercent * 100, 2) + '% ' + '[' + ratingFC + '] '
-				+ ' // Combo Breaks: ' + songMisses + ' // Rank: ' + ratingName;
-
-		if (ratingFC == "")
-			scoreTxtaboveicons.text = 'Score: ' + songScore + ' // Accuracy: ' + Highscore.floorDecimal(ratingPercent * 100, 2) + '% ' + ' // Combo Breaks: '
-				+ songMisses + ' // Rank: ?';
-		else
-			scoreTxtaboveicons.text = 'Score: ' + songScore + ' // Accuracy: ' + Highscore.floorDecimal(ratingPercent * 100, 2) + '% ' + '[' + ratingFC + '] '
-				+ ' // Combo Breaks: ' + songMisses + ' // Rank: ' + ratingName;
-
-		// Judgement Counters (on Info)
-		if (ClientPrefs.judgCounters == 'Info')
-			judgCountTxt.text = 'Sicks: ' + sicks + ' // Goods: ' + goods + ' // Bads: ' + bads + ' // Shits: ' + shits; /*+ ' // Misses: ' + songMisses;*/
-		if (ClientPrefs.judgCounters == 'Info' && ClientPrefs.marvelouses)
-			judgCountTxt.text = 'Marvs: ' + marvelouses + ' // Sicks: ' + sicks + ' // Goods: ' + goods + ' // Bads: ' + bads + ' // Shits: ' +
-				shits; /*+ ' // Misses: ' + songMisses;*/
-
-		if (ClientPrefs.judgCounters == 'Info')
-			judgCountTxtaboveicons.text = 'Sicks: ' + sicks + ' // Goods: ' + goods + ' // Bads: ' + bads + ' // Shits: ' +
-				shits; /*+ ' // Misses: ' + songMisses;*/
-		if (ClientPrefs.judgCounters == 'Info' && ClientPrefs.marvelouses)
-			judgCountTxtaboveicons.text = 'Marvs: ' + marvelouses + ' // Sicks: ' + sicks + ' // Goods: ' + goods + ' // Bads: ' + bads + ' // Shits: ' +
-				shits; /*+ ' // Misses: ' + songMisses;*/
-
-		if (ClientPrefs.judgCounters == 'Disabled' && ClientPrefs.marvelouses)
-			judgCountTxt.text = '';
-
-		if (ClientPrefs.judgCounters == 'Disabled')
-			judgCountTxt.text = '';
-
-		if (ClientPrefs.judgCounters == 'Disabled' && ClientPrefs.marvelouses)
-			judgCountTxtaboveicons.text = '';
-
-		if (ClientPrefs.judgCounters == 'Disabled')
-			judgCountTxtaboveicons.text = '';
+			scoreTxt.text = 'Score: ' + songScore + ' // Accuracy: ' + Highscore.floorDecimal(ratingPercent * 100, 2) + '% ' + '[' + ratingFC + '] ' + ' // Combo Breaks: ' + songMisses + ' // Rank: ' + ratingName;
 
 		if (botplayTxt.visible)
 		{
@@ -4128,46 +4011,6 @@ class PlayState extends MusicBeatState
 						scoreTxtTween = null;
 					}
 				});
-				if (scoreTxtaboveiconsTween != null)
-				{
-					scoreTxtaboveiconsTween.cancel();
-				}
-				scoreTxtaboveicons.scale.x = 1.075;
-				scoreTxtaboveicons.scale.y = 1.075;
-				scoreTxtaboveiconsTween = FlxTween.tween(scoreTxtaboveicons.scale, {x: 1, y: 1}, 0.2, {
-					onComplete: function(twn:FlxTween)
-					{
-						scoreTxtaboveiconsTween = null;
-					}
-				});
-
-				if (ClientPrefs.judgCounters == 'Info')
-				{
-					if (judgCountTxtTween != null)
-					{
-						judgCountTxtTween.cancel();
-					}
-					judgCountTxt.scale.x = 1.075;
-					judgCountTxt.scale.y = 1.075;
-					judgCountTxtTween = FlxTween.tween(judgCountTxt.scale, {x: 1, y: 1}, 0.2, {
-						onComplete: function(twn:FlxTween)
-						{
-							judgCountTxtTween = null;
-						}
-					});
-					if (judgCountTxtaboveiconsTween != null)
-					{
-						judgCountTxtaboveiconsTween.cancel();
-					}
-					judgCountTxtaboveicons.scale.x = 1.075;
-					judgCountTxtaboveicons.scale.y = 1.075;
-					judgCountTxtaboveiconsTween = FlxTween.tween(judgCountTxtaboveicons.scale, {x: 1, y: 1}, 0.2, {
-						onComplete: function(twn:FlxTween)
-						{
-							judgCountTxtaboveiconsTween = null;
-						}
-					});
-				}
 			}
 		}
 
