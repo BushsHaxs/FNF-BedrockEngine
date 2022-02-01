@@ -112,10 +112,6 @@ class OptionsState extends MusicBeatState
 		if (controls.ACCEPT) {
 			openSelectedSubstate(options[curSelected]);
 		}
-
-		/*if (FlxG.keys.justPressed.RIGHT) {
-			LoadingState.loadAndSwitchState(new OptionsStatePageTwo());
-		}*/
 	}
 	
 	function changeSelection(change:Int = 0) {

@@ -27,17 +27,27 @@ import Controls;
 
 using StringTools;
 
-class OptionsStatePageTwo extends MusicBeatState
+class OptionsState extends MusicBeatState
 {
-	var options:Array<String> = ['Nothing Lol'];
+	var options:Array<String> = ['Note Colors', 'Controls', 'Adjust Delay and Combo', 'Graphics', 'Visuals and UI', 'Gameplay'];
 	private var grpOptions:FlxTypedGroup<Alphabet>;
 	private static var curSelected:Int = 0;
 	public static var menuBG:FlxSprite;
 
 	function openSelectedSubstate(label:String) {
 		switch(label) {
-			case 'Nothing Lol':
+			case 'Note Colors':
 				openSubState(new options.NotesSubState());
+			case 'Controls':
+				openSubState(new options.ControlsSubState());
+			case 'Graphics':
+				openSubState(new options.GraphicsSettingsSubState());
+			case 'Visuals and UI':
+				openSubState(new options.VisualsUISubState());
+			case 'Gameplay':
+				openSubState(new options.GameplaySettingsSubState());
+			case 'Adjust Delay and Combo':
+				LoadingState.loadAndSwitchState(new options.NoteOffsetState());
 		}
 	}
 
@@ -46,13 +56,13 @@ class OptionsStatePageTwo extends MusicBeatState
 
 	override function create() {
 		#if desktop
-		DiscordClient.changePresence("in the Second Page of Options Menu", null);
+		DiscordClient.changePresence("Options Menu", null);
 		#end
 
 		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		bg.color = 0xFFea71fd;
-		bg.setGraphicSize(Std.int(bg.width * 1.1*scaleRatio));
 		bg.updateHitbox();
+
 		bg.screenCenter();
 		bg.antialiasing = ClientPrefs.globalAntialiasing;
 		add(bg);
@@ -97,18 +107,10 @@ class OptionsStatePageTwo extends MusicBeatState
 		if (controls.BACK) {
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			MusicBeatState.switchState(new MainMenuState());
-			if (ClientPrefs.lowEndMode) {
-				MusicBeatState.switchState(new SimpleMenuState());
-			}
 		}
 
 		if (controls.ACCEPT) {
 			openSelectedSubstate(options[curSelected]);
-		}
-
-		if (controls.UI_LEFT_P) {
-			LoadingState.loadAndSwitchState(new options.OptionsState());
-			FlxG.sound.play(Paths.sound('scrollMenu'));
 		}
 	}
 	

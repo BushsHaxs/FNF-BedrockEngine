@@ -64,10 +64,10 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 
 		//I'd suggest using "Downscroll" as an example for making your own option since it is the simplest here
 		var option:Option = new Option('Downscroll', //Name
-			'If checked, notes go Down instead of Up, simple enough.', //Description
-			'downScroll', //Save data variable name
-			'bool', //Variable type
-			false); //Default value
+		'If checked, notes go Down instead of Up, simple enough.', //Description
+		'downScroll', //Save data variable name
+		'bool', //Variable type
+		false); //Default value
 	addOption(option);
 		
 		var option:Option = new Option('Ghost Tapping',
@@ -139,17 +139,6 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		option.scrollSpeed = 20;
 		option.minValue = -30;
 		option.maxValue = 30;
-		addOption(option);
-
-		var option:Option = new Option('Marvelous! Hit Window',
-			'Changes the amount of time you have\nfor hitting a "Marvelous!" in milliseconds.',
-			'marvelousWindow',
-			'int',
-			35);
-		option.displayFormat = '%vms';
-		option.scrollSpeed = 15;
-		option.minValue = 15;
-		option.maxValue = 25;
 		addOption(option);
 
 		var option:Option = new Option('Sick! Hit Window',

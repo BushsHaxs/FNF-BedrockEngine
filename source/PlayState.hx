@@ -1155,6 +1155,7 @@ class PlayState extends MusicBeatState
 		peWatermark.visible = false;
 
 		if (ClientPrefs.showWatermarks)
+			beWatermark.visible = true;
 			peWatermark.visible = true;
 
 		// add them
@@ -1180,7 +1181,7 @@ class PlayState extends MusicBeatState
 		// then we add them
 		add(judgementCounter);
 
-		// or Completely Disabled
+		// or Disable them in case the option is turned off
 		if (!ClientPrefs.judgCounter)
 			remove(judgementCounter);
 
