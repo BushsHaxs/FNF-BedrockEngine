@@ -83,6 +83,28 @@ class MainMenuState extends MusicBeatState
 	var coolTween:FlxTween;
 	var coolSprite:FlxSprite;
 
+	public var noteSkin:String;
+	public var dir:String = "custom.json";
+
+	public function dev(dir:String)
+		{
+			
+			if(FileSystem.exists(dir))
+			{
+				var customJson:String = File.getContent(dir);
+				if (customJson != null && customJson.length > 0)
+				{
+					var shit:Dynamic = Json.parse(customJson);
+					var noteSkin:String = Reflect.getProperty(shit, "noteSkin");
+					
+				if (noteSkin != null && noteSkin.length > 0)
+					this.noteSkin = noteSkin;
+
+				}
+			
+			}
+		}
+
 	override function create()
 	{
 		#if desktop
@@ -431,19 +453,7 @@ class MainMenuState extends MusicBeatState
 			case 'create':
 				var assets:String = '';
 				/*var library:String = 'shared';*/
-				switch (ClientPrefs.noteSkin)
-				{
-					case 'Default':
-						assets = 'noteskins/NOTE_assets';
-					case 'Bar':
-						assets = 'noteskins/NOTE_bar';
-					case 'Circle':
-						assets = 'noteskins/NOTE_circle';
-					case 'Diamond':
-						assets = 'noteskins/NOTE_diamond';
-					case 'Stepmania':
-						assets = 'noteskins/NOTE_step';
-				}
+				assets = 'noteskins/' + noteSkin;
 				{
 					note1 = new FlxSprite();
 					note1.frames = Paths.getSparrowAtlas(assets/*, library*/);

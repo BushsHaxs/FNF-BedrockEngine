@@ -146,10 +146,8 @@ class ClientPrefs {
 		FlxG.save.data.playHitSounds = playHitSounds;
 		FlxG.save.data.hideGf = hideGf;
 		FlxG.save.data.strumLineAlpha = strumLineAlpha;
-		FlxG.save.data.uiSkin = uiSkin;
 		FlxG.save.data.judgCounter = judgCounter;
 		FlxG.save.data.timeBarUi = timeBarUi;
-		FlxG.save.data.noteSkin = noteSkin;
 		FlxG.save.data.underlay = underlay;
 		FlxG.save.data.keAccuracy = keAccuracy;
 		FlxG.save.data.instantRespawn = instantRespawn;
