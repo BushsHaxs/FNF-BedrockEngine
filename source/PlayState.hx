@@ -4522,11 +4522,8 @@ class PlayState extends MusicBeatState
 		{
 			time += 0.15;
 		}
-		if (ClientPrefs.lightcpustrums == true)
-		{
-			StrumPlayAnim(true, Std.int(Math.abs(note.noteData)) % 4, time);
-			note.hitByOpponent = true;
-		}
+		StrumPlayAnim(true, Std.int(Math.abs(note.noteData)) % 4, time);
+		note.hitByOpponent = true;
 
 		if (!note.isSustainNote && !note.noteSplashDisabled)
 		{
