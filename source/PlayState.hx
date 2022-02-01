@@ -3957,6 +3957,7 @@ class PlayState extends MusicBeatState
 			case "shit": // shit
 				if (ClientPrefs.keAccuracy)
 				{
+					totalMisses++;
 					songMisses++;
 					combo = 0;
 				}
@@ -4439,6 +4440,7 @@ class PlayState extends MusicBeatState
 			if (!endingSong)
 			{
 				songMisses++;
+				totalMisses++;
 			}
 			totalPlayed++;
 			RecalculateRating();
@@ -5252,18 +5254,18 @@ class PlayState extends MusicBeatState
 				ratingFC = "SDB"; // Single Digit Bad - this should count as losing FC despite not giving you misses, needs Complex Accuracy on
 			if (shits > 0)
 				ratingFC = "SDS"; // Single Digit Shit - same as SDB, for when Complex Accuracy is off
-			if (songMisses > 0 && songMisses < 10)
+			if (totalMisses > 0 && totalMisses < 10) // gonna leave it as totalMisses for now until CBs are completely done
 				ratingFC = "SDCB"; // Single Digit Combo Break
-			else if (songMisses >= 10)
+			else if (totalMisses >= 10)
 				ratingFC = "Clear";
 		}
 		setOnLuas('rating', ratingPercent);
 		setOnLuas('ratingName', ratingName);
 		setOnLuas('ratingFC', ratingFC);
 		if (ClientPrefs.marvelouses)
-			judgementCounter.text = 'Marvs: ${marvelouses}\nSicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${totalMisses}';
+			judgementCounter.text = 'Marvs: ${marvelouses}\nSicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${totalMisses}\n';
 		else
-			judgementCounter.text = 'Sicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${totalMisses}';
+			judgementCounter.text = 'Sicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${totalMisses}\n';
 	}
 
 	public static var othersCodeName:String = 'otherAchievements';
@@ -5294,7 +5296,7 @@ class PlayState extends MusicBeatState
 			if (achievementName == othersCodeName)
 			{
 				if (isStoryMode
-					&& campaignMisses + songMisses < 1
+					&& campaignMisses + totalMisses < 1
 					&& CoolUtil.difficultyString() == 'HARD'
 					&& storyPlaylist.length <= 1
 					&& !changedDifficulty
