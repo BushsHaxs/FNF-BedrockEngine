@@ -5203,11 +5203,15 @@ class PlayState extends MusicBeatState
 			if (ratingPercent >= 1)
 				if (ClientPrefs.letterGrades)
 					ratingName = Ratings.ratingStuff[Ratings.ratingStuff.length - 1][0]; // Uses last string
-				else
-					ratingName = Ratings.ratingSimple[Ratings.ratingSimple.length - 1][0]; // Uses last string
+				if (!ClientPrefs.letterGrades)
+					ratingName = Ratings.ratingSimple[Ratings.ratingSimple.length - 1][
+                                if (ClientPrefs.letterGrades && ClientPrefs.keAccuracy)
+                                        ratingName = Ratings.ratingComplex[Ratings.ratingComplex.length - 1][0];
+                                else if (!ClientPrefs.letterGrades && ClientPrefs.keAccuracy)
+                                        ratingName = Ratings.errorRating[Ratings.errorRating.length - 1][0];
 			else
 			{
-				if (ClientPrefs.letterGrades)
+				if (ClientPrefs.letterGrades && !ClientPrefs.keAccuracy)
 				{
 					for (i in 0...Ratings.ratingStuff.length - 1)
 					{
@@ -5218,7 +5222,7 @@ class PlayState extends MusicBeatState
 						}
 					}
 				}
-				else
+		              else if (!ClientPrefs.letterGrades && !ClientPrefs.keAccuracy)
 				{
 					for (i in 0...Ratings.ratingSimple.length - 1)
 					{
@@ -5229,6 +5233,29 @@ class PlayState extends MusicBeatState
 						}
 					}
 				}
+                                else if (ClientPrefs.letterGrades && ClientPrefs.keAccuracy)
+				{
+					for (i in 0...Ratings.ratingComplex.length - 1)
+					{
+						if (ratingPercent < Ratings.ratingComplex[i][1])
+						{
+							ratingName = Ratings.ratingComplex[i][0];
+							break;
+						}
+					}
+				}
+                                else if (!ClientPrefs.letterGrades && ClientPrefs.keAccuracy)
+				{
+					for (i in 0...Ratings.errorRating.length - 1)
+					{
+						if (ratingPercent < Ratings.errorRating[i][1])
+						{
+							ratingName = Ratings.errorRating[i][0];
+							break;
+						}
+					}
+				}
+
 			}
 
 			// Rating FC
@@ -5453,11 +5480,9 @@ class PlayState extends MusicBeatState
 		switch (curStage)
 		{
 			case 'limo':
-				bfPos[0] = boyfriend.getMidpoint().x - 100;
-				bfPos[1] = boyfriend.getMidpoint().y - 70;
+				bfPos[0] = boyfriend.getMidpoint().x - 300;
 			case 'mall':
-				bfPos[0] = boyfriend.getMidpoint().x - 100;
-				bfPos[1] = boyfriend.getMidpoint().y - 70;
+				bfPos[1] = boyfriend.getMidpoint().y - 200;
 			case 'school' | 'schoolEvil':
 				bfPos[0] = boyfriend.getMidpoint().x - 200;
 				bfPos[1] = boyfriend.getMidpoint().y - 200;
