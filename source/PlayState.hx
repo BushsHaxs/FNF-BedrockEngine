@@ -4365,8 +4365,12 @@ class PlayState extends MusicBeatState
 		// trace(daNote.missHealth);
 
 		/*misses and combo breaks are different things, for example you have 0 combo and you miss a note, technically you do not break your combo because you dont have one.*/
-		if (combo > 0) 
+		
+		if (combo > 0)
+		{
 			songMisses++;
+			combo = 0;
+		}
 
 		totalMisses++;
 
