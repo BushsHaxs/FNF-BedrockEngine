@@ -164,14 +164,6 @@ this also comes with special dialogue for Week 6!
 
 ![image](https://user-images.githubusercontent.com/45212377/150618678-b245789d-3700-41ec-a258-3d6e63965953.png)
 
-* Simple Main Menu
-
-![image](https://user-images.githubusercontent.com/45212377/150618723-5585b1d0-43e5-4a2d-817f-537f0cc839e1.png)
-
-this option makes it so the menu doesn't use Image Assets, but rather, make it use only text entries, decreasing loading times
-
-![image](https://user-images.githubusercontent.com/45212377/150618902-cf012187-63a4-489b-82aa-9fb7e459c6d9.png)
-
 * Max Optimization
 
 ![image](https://user-images.githubusercontent.com/45212377/150618767-e2e4524c-669b-480c-85ff-b095ef106623.png)
