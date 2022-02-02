@@ -1,2 +1,6 @@
-If you want to enable 300x150 icon support, change note skins or judgement skins;
-edit custom.json, not the source!!!
+WINNING ICONS COME SUPPORTED BY DEFAULT.
+IF YOU DO NOT WANT TO USE 450x150 ICONS, 
+DELETE 'iconSupport.txt' IN 'mods/images'. 
+THEN PUT YOUR 300x150 ICONS TO 'mods/images/icons-old'.
+YOU DO NOT HAVE YO PUT '-old' or SOMETHING LIKE THAT TO YOUR ICON.
+JUST MAKE SURE IT HAS 'icon-' ON ITS NAME.

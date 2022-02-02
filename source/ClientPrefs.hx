@@ -62,8 +62,14 @@ class ClientPrefs {
 	public static var playMissSounds:Bool = true;
 	public static var playHitSounds:Bool = false;
 	public static var hideGf:Bool = false;
+	#if PSYCH_WATERMARKS
+	public static var uiSkin:String = 'Bedrock';
+	#else
+	public static var uiSkin:String = 'Classic';
+	#end
 	public static var judgCounter:Bool = true;
 	public static var timeBarUi:String = 'Psych Engine';
+	public static var noteSkin:String = 'Default';
 	public static var strumLineAlpha:Float = 1;
 	public static var underlay:Float = 0;
 	public static var keAccuracy:Bool = false;
@@ -286,8 +292,14 @@ class ClientPrefs {
 		if (FlxG.save.data.strumLineAlpha != null) {
 			strumLineAlpha = FlxG.save.data.strumLineAlpha;
 		}
+		if (FlxG.save.data.uiSkin != null) {
+			uiSkin = FlxG.save.data.uiSkin;
+		}
 		if (FlxG.save.data.timeBarUi != null) {
 			timeBarUi = FlxG.save.data.timeBarUi;
+		}
+		if (FlxG.save.data.noteSkin != null) {
+			noteSkin = FlxG.save.data.noteSkin;
 		}
 		if (FlxG.save.data.judgCounter != null) {
 			judgCounter = FlxG.save.data.judgCounter;

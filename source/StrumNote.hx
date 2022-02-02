@@ -3,12 +3,6 @@ package;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.graphics.frames.FlxAtlasFrames;
-#if sys
-import sys.FileSystem;
-#end
-import sys.io.File;
-import haxe.Json;
-import haxe.format.JsonParser;
 
 using StringTools;
 
@@ -22,28 +16,6 @@ class StrumNote extends FlxSprite
 	public var sustainReduce:Bool = true;
 	
 	private var player:Int;
-
-	public var noteSkin:String;
-	public var dir:String = "custom.json";
-
-	public function dev(dir:String)
-		{
-			
-			if(FileSystem.exists(dir))
-			{
-				var customJson:String = File.getContent(dir);
-				if (customJson != null && customJson.length > 0)
-				{
-					var shit:Dynamic = Json.parse(customJson);
-					var noteSkin:String = Reflect.getProperty(shit, "noteSkin");
-					
-				if (noteSkin != null && noteSkin.length > 0)
-					this.noteSkin = noteSkin;
-
-				}
-			
-			}
-		}
 	
 	public var texture(default, set):String = null;
 	private function set_texture(value:String):String {
@@ -65,15 +37,19 @@ class StrumNote extends FlxSprite
 		var skin:String = '';
 	/*	if(PlayState.SONG.arrowSkin != null && PlayState.SONG.arrowSkin.length > 1) skin = PlayState.SONG.arrowSkin; */
 
-		dev(dir);
-
-		skin = 'noteskins/' + noteSkin;
-
-		/*
-		#if PSYCH_WATERMARKS
-		noteSkin = 'classic';
-		#end
-		*/
+		switch (ClientPrefs.noteSkin)
+		{
+			case 'Bar':
+				skin = 'noteskins/NOTE_bar';
+			case 'Circle':
+				skin = 'noteskins/NOTE_circle';
+			case 'Diamond':
+				skin = 'noteskins/NOTE_diamond';
+			case 'Stepmania':
+				skin = 'noteskins/NOTE_step';
+			default:
+				skin = 'noteskins/NOTE_assets';
+		}
 
 		texture = skin; //Load texture and anims
 

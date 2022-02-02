@@ -51,7 +51,12 @@ class Ratings
 		["Marvelous!!", 1] // %100
 	];
 
+<<<<<<< HEAD
         public static var errorRating:Array<Dynamic> = [
 			["NaN", 1]
 		];
+=======
+        public static var errorRating:Array<Dynamic> = 
+                [["NaN"], 1]];
+>>>>>>> parent of 16d3533 (Customizing engine with json, more features will be added)
 }
