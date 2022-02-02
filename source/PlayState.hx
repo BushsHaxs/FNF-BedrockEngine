@@ -4432,7 +4432,7 @@ class PlayState extends MusicBeatState
 		}
 
 		// TO DO: Find a better way to handle controller inputs, this should work for now
-		if (keyPressByController)
+		if (ClientPrefs.controllerMode)
 		{
 			var controlArray:Array<Bool> = [
 				controls.NOTE_LEFT_R,
