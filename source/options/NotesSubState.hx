@@ -124,6 +124,10 @@ class NotesSubState extends MusicBeatSubstate
 
 	var changingNote:Bool = false;
 	override function update(elapsed:Float) {
+		var shiftMult:Int = 1;
+		if (FlxG.keys.pressed.SHIFT)
+			shiftMult = 3;
+
 		if(changingNote) {
 			if(holdTime < 0.5) {
 				if(controls.UI_LEFT_P) {
@@ -158,12 +162,22 @@ class NotesSubState extends MusicBeatSubstate
 			}
 		} else {
 			if (controls.UI_UP_P) {
-				changeSelection(-1);
-				FlxG.sound.play(Paths.sound('scrollMenu'));
+				changeSelection(-shiftMult);
+				holdTime = 0;
 			}
 			if (controls.UI_DOWN_P) {
-				changeSelection(1);
-				FlxG.sound.play(Paths.sound('scrollMenu'));
+				changeSelection(shiftMult);
+				holdTime = 0;
+			}
+			if (controls.UI_DOWN || controls.UI_UP) {
+				var checkLastHold:Int = Math.floor((holdTime - 0.5) * 10);
+				holdTime += elapsed;
+				var checkNewHold:Int = Math.floor((holdTime - 0.5) * 10);
+
+				if (holdTime > 0.5 && checkNewHold - checkLastHold > 0)
+				{
+					changeSelection((checkNewHold - checkLastHold) * (controls.UI_UP ? -shiftMult : shiftMult));
+				}
 			}
 			if (controls.UI_LEFT_P) {
 				changeType(-1);
@@ -218,7 +232,9 @@ class NotesSubState extends MusicBeatSubstate
 		super.update(elapsed);
 	}
 
-	function changeSelection(change:Int = 0) {
+	function changeSelection(change:Int = 0, playSound:Bool = true) {
+		if (playSound)
+			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 		curSelected += change;
 		if (curSelected < 0)
 			curSelected = ClientPrefs.arrowHSV.length-1;
@@ -246,7 +262,6 @@ class NotesSubState extends MusicBeatSubstate
 				blackBG.y = item.y - 20;
 			}
 		}
-		FlxG.sound.play(Paths.sound('scrollMenu'));
 	}
 
 	function changeType(change:Int = 0) {
