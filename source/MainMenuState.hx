@@ -24,6 +24,7 @@ import sys.FileSystem;
 import sys.io.File;
 #end
 import haxe.Json;
+import haxe.format.JsonParser;
 import flixel.input.keyboard.FlxKey;
 
 using StringTools;
@@ -473,6 +474,7 @@ class MainMenuState extends MusicBeatState
 
 	function danote(whatvar:String)
 	{
+		dev(dir);
 		switch (whatvar)
 		{
 			case 'create':
