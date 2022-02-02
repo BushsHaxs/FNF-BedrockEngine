@@ -77,7 +77,11 @@ class NotesSubState extends MusicBeatSubstate
 <<<<<<< HEAD
 			dev(dir);
 			
+<<<<<<< HEAD
 			note.frames = Paths.getSparrowAtlas('noteskins/'+noteSkin);
+=======
+			note.frames = Paths.getSparrowAtlas(noteSkin);
+>>>>>>> parent of db853f1 (Customizing engine with json, more features will be added)
 			
 =======
 			switch(ClientPrefs.noteSkin)
