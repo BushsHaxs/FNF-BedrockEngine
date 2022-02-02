@@ -293,7 +293,8 @@ class PlayState extends MusicBeatState
 	private var keysArray:Array<Dynamic>;
 	
 	// Shit used for controller
-	private var keyPressByController:Bool = false;
+	// breaks inputs, I need to find a way to fix them - Gui iago
+	/*private var keyPressByController:Bool = false;*/
 
 	override public function create()
 	{
@@ -1370,8 +1371,21 @@ class PlayState extends MusicBeatState
 		DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconP2.getCharacter());
 		#end
 
-		FlxG.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
-		FlxG.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyRelease);
+		if (!ClientPrefs.controllerMode)
+		{
+			FlxG.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
+			FlxG.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyRelease);
+		}
+
+		/*FlxG.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
+		FlxG.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyRelease);*/
+
+		/* ^ these may be the reason why automatic controller detection 
+		just fucks up the inputs, both here and on EditorPlayState
+		but I'm not really sure since my knowledge on haxe doesn't go that far,
+		it might even just be something with controlArray,
+		I will just leave them as they were on Psych until I find
+		a way to fix the inputs while also making the input system work - Gui iago*/
 
 		Conductor.safeZoneOffset = (ClientPrefs.safeFrames / 60) * 1000;
 		callOnLuas('onCreatePost', []);
@@ -4192,7 +4206,7 @@ class PlayState extends MusicBeatState
 		var key:Int = getKeyFromEvent(eventKey);
 		// trace('Pressed: ' + eventKey);
 
-		if (!cpuControlled && !paused && key > -1 && (FlxG.keys.checkStatus(eventKey, JUST_PRESSED) || keyPressByController))
+		if (!cpuControlled && !paused && key > -1 && (FlxG.keys.checkStatus(eventKey, JUST_PRESSED) || ClientPrefs.controllerMode /*keyPressByController*/))
 		{
 			if (!boyfriend.stunned && generatedMusic && !endingSong)
 			{
@@ -4319,11 +4333,12 @@ class PlayState extends MusicBeatState
 		var left = controls.NOTE_LEFT;
 		var controlHoldArray:Array<Bool> = [left, down, up, right];
 		
-		var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
-		keyPressByController = (gamepad != null && (!gamepad.justReleased.ANY || gamepad.pressed.ANY));
+		/*var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
+		keyPressByController = (gamepad != null && (!gamepad.justReleased.ANY || gamepad.pressed.ANY));*/
 
 		// TO DO: Find a better way to handle controller inputs, this should work for now
-		if (keyPressByController)
+		//if (keyPressByController)
+		if (ClientPrefs.controllerMode)
 		{
 			var controlArray:Array<Bool> = [
 				controls.NOTE_LEFT_P,
@@ -4371,7 +4386,8 @@ class PlayState extends MusicBeatState
 		}
 
 		// TO DO: Find a better way to handle controller inputs, this should work for now
-		if (keyPressByController)
+		//if (keyPressByController)
+		if (ClientPrefs.controllerMode)
 		{
 			var controlArray:Array<Bool> = [
 				controls.NOTE_LEFT_R,
@@ -4965,8 +4981,13 @@ class PlayState extends MusicBeatState
 		}
 		luaArray = [];
 
-		FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
-		FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyRelease);
+		if (!ClientPrefs.controllerMode)
+		{
+			FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
+			FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyRelease);
+		}
+		/*FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
+		FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyRelease);*/
 
 		super.destroy();
 	}
