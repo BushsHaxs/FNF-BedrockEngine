@@ -70,6 +70,8 @@ class ClientPrefs {
 	public static var instantRespawn:Bool = false;
 	public static var letterGrades:Bool = true;
 	public static var disableChars:Bool = false;
+	public static var maniaMode:Bool = false;
+	public static var bgAlpha:Float = 0;
 
 	// Added by Bedrock Engine (via Pull Requests)
 	public static var marvelouses:Bool = true;
@@ -153,6 +155,8 @@ class ClientPrefs {
 		FlxG.save.data.instantRespawn = instantRespawn;
 		FlxG.save.data.letterGrades = letterGrades;
 		FlxG.save.data.disableChars = disableChars;
+		FlxG.save.data.maniaMode = maniaMode;
+		FlxG.save.data.bgAlpha = bgAlpha;
 
 		// Added by Bedrock Engine (via Pull Requests)
 		FlxG.save.data.marvelousWindow = marvelousWindow;
@@ -302,6 +306,12 @@ class ClientPrefs {
 		}
 		if(FlxG.save.data.disableChars != null) {
 			disableChars = FlxG.save.data.disableChars;
+		}
+		if(FlxG.save.data.maniaMode != null) {
+			maniaMode = FlxG.save.data.maniaMode;
+		}
+		if(FlxG.save.data.bgAlpha != null) {
+			bgAlpha = FlxG.save.data.bgAlpha;
 		}
 		
 		// Added by Bedrock Engine (via Pull Requests)

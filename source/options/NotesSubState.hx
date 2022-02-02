@@ -23,6 +23,10 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxTimer;
 import flixel.input.keyboard.FlxKey;
 import flixel.graphics.FlxGraphic;
+#if sys
+import sys.FileSystem;
+import sys.io.File;
+#end
 import Controls;
 
 using StringTools;

@@ -72,6 +72,13 @@ class VisualsUISubState extends BaseOptionsMenu
 		true);
 	addOption(option);
 
+		var option:Option = new Option ('Mania Mode', 
+			'If checked, it will turn FNF visual into osu!mania (or StepMania) visual.', 
+			'maniaMode', 
+			'bool', 
+			false);
+		addOption(option);
+
 		var option:Option = new Option('Note Splashes',
 		"If unchecked, hitting \"Marvelous!\" or \"Sick!\" notes won't show particles.",
 		'noteSplashes',
@@ -92,6 +99,20 @@ class VisualsUISubState extends BaseOptionsMenu
 		'bool',
 		true);
 	addOption(option);
+
+		var option:Option = new Option (
+			'Background Opacity:',
+			'How much opaque the background should be?',
+			'bgAlpha',
+			'float',
+			true);
+		option.displayFormat = '%v';
+		option.scrollSpeed = 100;
+		option.changeValue = 0.1;
+		option.decimals = 1;
+		option.minValue = 0;
+		option.maxValue = 1;
+		addOption(option);
 
 		var option:Option = new Option('Health Bar Opacity',
 			'How much opaque should the health bar and icons be.',
