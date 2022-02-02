@@ -741,10 +741,7 @@ class PlayState extends MusicBeatState
 		if (curStage == 'limo')
 			add(limo);
 
-		if(ClientPrefs.maniaMode) {
-			remove(dadGroup);
-			remove(boyfriendGroup);
-		} else {
+		if(!ClientPrefs.maniaMode) {
 			add(dadGroup);
 			add(boyfriendGroup);
 		}
