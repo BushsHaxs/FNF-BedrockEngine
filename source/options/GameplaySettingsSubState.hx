@@ -35,7 +35,7 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		rpcTitle = 'Adjusting the Gameplay Settings'; //for Discord Rich Presence
 
 		var Option = new Option('Complex Accuracy',
-		"If checked, the accuracy will follow a harsher system, Based on Etterna.",
+		"If checked, the accuracy will follow a harsher system, Based on Etterna and Kade Engine.",
 		'keAccuracy',
 		'bool',
 		false);
@@ -77,12 +77,6 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		false);
 	addOption(option);
 
-		var option:Option = new Option('Letter Grades',
-		"If unchecked, engine won't use letter ratings, letters are based on Yoshubs' Forever Engine.",
-		'letterGrades',
-		'bool',
-		true);
-	addOption(option);
 
 		var option:Option = new Option('Marvelous Ratings',
 		'If unchecked, marvelous ratings will disappear.',

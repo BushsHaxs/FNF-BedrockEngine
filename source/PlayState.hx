@@ -60,6 +60,7 @@ import DialogueBoxPsych;
 import Shaders;
 #if sys
 import sys.FileSystem;
+import sys.io.File;
 #end
 
 using StringTools;
@@ -293,8 +294,7 @@ class PlayState extends MusicBeatState
 	private var keysArray:Array<Dynamic>;
 	
 	// Shit used for controller
-	// breaks inputs, I need to find a way to fix them - Gui iago
-	/*private var keyPressByController:Bool = false;*/
+	//private var keyPressByController:Bool = false;
 
 	override public function create()
 	{
@@ -1200,6 +1200,8 @@ class PlayState extends MusicBeatState
 		judgementCounter.borderQuality = 2;
 		judgementCounter.scrollFactor.set();
 		judgementCounter.screenCenter(Y);
+
+		devtwo(dirtwo);
 
 		// Just in case.
 		if (ClientPrefs.marvelouses)
@@ -2536,6 +2538,53 @@ class PlayState extends MusicBeatState
 	var limoSpeed:Float = 0;
 	var alreadyChanged:Bool = false; // lag no more
 
+	public var iconSupport:Bool;
+	public var dir:String = "settings/uiSettings.json";
+	public var judgementSkin:String;
+
+	public var letterGrader:Bool;
+	public var dirtwo:String = "settings/gameplaySettings.json";
+
+	public function devtwo(dirtwo:String)
+	{
+		this.letterGrader = false;
+
+		if (FileSystem.exists(dirtwo))
+		{
+			var customGame:String = File.getContent(dirtwo);
+			if (customGame != null && customGame.length > 0)
+			{
+				var poop:Dynamic = Json.parse(customGame);
+				var letterGrader:Bool = Reflect.getProperty(poop, "letterGrader");
+
+				this.letterGrader = letterGrader;
+			}
+		}
+	}
+
+
+
+	public function dev(dir:String)
+		{
+			this.iconSupport = false;
+
+			if(FileSystem.exists(dir))
+			{
+				var customJson:String = File.getContent(dir);
+				if (customJson != null && customJson.length > 0)
+				{
+					var shit:Dynamic = Json.parse(customJson);
+					var iconSupport:Bool = Reflect.getProperty(shit, "iconSupport");
+					var judgementSkin:String = Reflect.getProperty(shit, "judgementSkin");
+
+					this.iconSupport = iconSupport;
+
+					if (judgementSkin != null && judgementSkin.length > 0)
+					this.judgementSkin = judgementSkin;
+				}
+			}
+		}
+
 	override public function update(elapsed:Float)
 	{
 		/*if (FlxG.keys.justPressed.NINE)
@@ -2791,11 +2840,13 @@ class PlayState extends MusicBeatState
 		if (health > 2)
 			health = 2;
 
+		dev(dir);
+
 		if (healthBar.percent < 20)
 		{
 			(opponentChart ? iconP2 : iconP1).animation.curAnim.curFrame = 1;
 			(opponentChart ? iconP1 : iconP2).animation.curAnim.curFrame = 2;
-			if (!HealthIcon.iconSupport)
+			if (iconSupport)
 			{
 				(opponentChart ? iconP2 : iconP1).animation.curAnim.curFrame = 1;
 				(opponentChart ? iconP1 : iconP2).animation.curAnim.curFrame = 0;
@@ -2803,7 +2854,7 @@ class PlayState extends MusicBeatState
 		}
 		else if (healthBar.percent > 85)
 		{
-			if (HealthIcon.iconSupport)
+			if (!iconSupport)
 			{
 				(opponentChart ? iconP2 : iconP1).animation.curAnim.curFrame = 2;
 				(opponentChart ? iconP1 : iconP2).animation.curAnim.curFrame = 1;
@@ -4006,6 +4057,8 @@ class PlayState extends MusicBeatState
 		// tryna do MS based judgment due to popular demand
 		var daRating:String = Conductor.judgeNote(note, noteDiff);
 
+		devtwo(dirtwo);
+
 		switch (daRating)
 		{
 			case "shit": // shit
@@ -4029,7 +4082,7 @@ class PlayState extends MusicBeatState
 			case "sick": // sick
 				/*Quick talk, if marvelouses are not disabled sicks should not give %100 rating
 				so instead, it will give you %87.5 */
-				if (!ClientPrefs.marvelouses)
+				if (ClientPrefs.marvelouses)
 					totalNotesHit += 1;
 				else
 					totalNotesHit += 0.875;
@@ -4040,9 +4093,9 @@ class PlayState extends MusicBeatState
 		}
 
 		if (daRating == (ClientPrefs.marvelouses ? 'marvelous' : 'sick') && !note.noteSplashDisabled)
-		{
 			spawnNoteSplashOnNote(note, false);
-		}
+	
+
 
 		if (!practiceMode && !cpuControlled)
 		{
@@ -4074,15 +4127,9 @@ class PlayState extends MusicBeatState
 		var uiSkin:String = '';
 		var altPart:String = isPixelStage ? '-pixel' : '';
 
-		switch (ClientPrefs.uiSkin)
-		{
-			case 'Classic':
-				uiSkin = 'classic';
-			case 'Bedrock':
-				uiSkin = 'bedrock';
-			case 'Score':
-				uiSkin = 'score';
-		}
+		dev(dir);
+
+		uiSkin = judgementSkin;
 
 		rating.loadGraphic(Paths.image(getUiSkin(uiSkin, daRating, altPart)));
 		rating.cameras = [camHUD];
@@ -4337,7 +4384,6 @@ class PlayState extends MusicBeatState
 		keyPressByController = (gamepad != null && (!gamepad.justReleased.ANY || gamepad.pressed.ANY));*/
 
 		// TO DO: Find a better way to handle controller inputs, this should work for now
-		//if (keyPressByController)
 		if (ClientPrefs.controllerMode)
 		{
 			var controlArray:Array<Bool> = [
@@ -4386,8 +4432,7 @@ class PlayState extends MusicBeatState
 		}
 
 		// TO DO: Find a better way to handle controller inputs, this should work for now
-		//if (keyPressByController)
-		if (ClientPrefs.controllerMode)
+		if (keyPressByController)
 		{
 			var controlArray:Array<Bool> = [
 				controls.NOTE_LEFT_R,
@@ -4422,7 +4467,6 @@ class PlayState extends MusicBeatState
 				note.destroy();
 			}
 		});
-		combo = 0;
 
 		health -= daNote.missHealth * healthLoss;
 		if (instakillOnMiss)
@@ -5265,6 +5309,8 @@ class PlayState extends MusicBeatState
 		setOnLuas('misses', songMisses);
 		setOnLuas('hits', songHits);
 
+		devtwo(dirtwo);
+
 		var ret:Dynamic = callOnLuas('onRecalculateRating', []);
 		if (ret != FunkinLua.Function_Stop)
 		{
@@ -5277,21 +5323,18 @@ class PlayState extends MusicBeatState
 			// Rating Name
 			if (ratingPercent >= 1)
 			{
-				if (ClientPrefs.letterGrades)
+				if (letterGrader)
 					ratingName = Ratings.ratingStuff[Ratings.ratingStuff.length - 1][0]; // Uses last string
-
-				if (!ClientPrefs.letterGrades)
+				else if (!letterGrader)
 					ratingName = Ratings.ratingSimple[Ratings.ratingSimple.length - 1][0];
-
-                if (ClientPrefs.letterGrades && ClientPrefs.keAccuracy)
+                if (letterGrader && ClientPrefs.keAccuracy)
                     ratingName = Ratings.ratingComplex[Ratings.ratingComplex.length - 1][0];
-
-                else if (!ClientPrefs.letterGrades && ClientPrefs.keAccuracy)
+                else if (!letterGrader && ClientPrefs.keAccuracy)
                     ratingName = Ratings.errorRating[Ratings.errorRating.length - 1][0];
 			}
 			else
 			{
-				if (ClientPrefs.letterGrades && !ClientPrefs.keAccuracy)
+				if (letterGrader && !ClientPrefs.keAccuracy)
 				{
 					for (i in 0...Ratings.ratingStuff.length - 1)
 					{
@@ -5302,7 +5345,7 @@ class PlayState extends MusicBeatState
 						}
 					}
 				}
-		        else if (!ClientPrefs.letterGrades && !ClientPrefs.keAccuracy)
+		        else if (!letterGrader && !ClientPrefs.keAccuracy)
 				{
 					for (i in 0...Ratings.ratingSimple.length - 1)
 					{
@@ -5313,7 +5356,7 @@ class PlayState extends MusicBeatState
 						}
 					}
 				}
-                else if (ClientPrefs.letterGrades && ClientPrefs.keAccuracy)
+                else if (letterGrader && ClientPrefs.keAccuracy)
 				{
 					for (i in 0...Ratings.ratingComplex.length - 1)
 					{
@@ -5324,7 +5367,7 @@ class PlayState extends MusicBeatState
 						}
 					}
 				}
-                else if (!ClientPrefs.letterGrades && ClientPrefs.keAccuracy)
+                else if (!letterGrader && ClientPrefs.keAccuracy)
 				{
 					for (i in 0...Ratings.errorRating.length - 1)
 					{
@@ -5335,8 +5378,9 @@ class PlayState extends MusicBeatState
 						}
 					}
 				}
+
 			}
-		
+
 			// Rating FC
 			ratingFC = "";
 			if (marvelouses > 0)
@@ -5356,6 +5400,8 @@ class PlayState extends MusicBeatState
 			else if (totalMisses >= 10)
 				ratingFC = "Clear";
 		}
+		devtwo(dirtwo);
+
 		setOnLuas('rating', ratingPercent);
 		setOnLuas('ratingName', ratingName);
 		setOnLuas('ratingFC', ratingFC);
