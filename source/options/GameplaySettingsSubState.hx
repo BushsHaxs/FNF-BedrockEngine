@@ -35,10 +35,7 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		rpcTitle = 'Adjusting the Gameplay Settings'; //for Discord Rich Presence
 
 		var Option = new Option('Complex Accuracy',
-		"If checked, the accuracy will follow a harsher system, Based on Etterna and Kade Engine. 
-                 also enable complex ratings. If you see your rating is called 'NaN', it means complex accuracy
-                 is enabled and letter gradings are disabled. Make sure your letter gradings are enabled if you
-                 want complex ratings.",
+		"If checked, the accuracy will follow a harsher system, Based on Etterna.",
 		'keAccuracy',
 		'bool',
 		false);

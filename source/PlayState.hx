@@ -5559,12 +5559,14 @@ class PlayState extends MusicBeatState
 		switch (curStage)
 		{
 			case 'limo':
-				bfPos[0] = boyfriend.getMidpoint().x - 300;
+				bfPos[0] = boyfriend.getMidpoint().x - 100;
+				bfPos[1] = boyfriend.getMidpoint().y - 70;
 			case 'mall':
-				bfPos[1] = boyfriend.getMidpoint().y - 200;
-			case 'school' | 'schoolEvil':
-				bfPos[0] = boyfriend.getMidpoint().x - 200;
-				bfPos[1] = boyfriend.getMidpoint().y - 200;
+				bfPos[0] = boyfriend.getMidpoint().x - 100;
+				bfPos[1] = boyfriend.getMidpoint().y - 70;
+			/*case 'school' | 'schoolEvil':
+				bfPos[0] = boyfriend.getMidpoint().x - 300;
+				bfPos[1] = boyfriend.getMidpoint().y - 280;*/
 			default:
 				bfPos[0] = boyfriend.getMidpoint().x - 100 - boyfriend.cameraPosition[0];
 				bfPos[1] = boyfriend.getMidpoint().y - 100 + boyfriend.cameraPosition[1];	
