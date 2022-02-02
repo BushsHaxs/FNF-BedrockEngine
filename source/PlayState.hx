@@ -734,9 +734,7 @@ class PlayState extends MusicBeatState
 			introSoundsSuffix = '-pixel';
 		}
 
-		if(ClientPrefs.hideGf || ClientPrefs.maniaMode)
-			remove(gfGroup);
-		else
+		if(!ClientPrefs.hideGf || !ClientPrefs.maniaMode)
 			add(gfGroup);
 
 		// Shitty layering but whatev it works LOL
