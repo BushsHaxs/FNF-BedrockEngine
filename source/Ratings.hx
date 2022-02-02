@@ -50,4 +50,8 @@ class Ratings
 		["Sick!", 1], // %99
 		["Marvelous!!", 1] // %100
 	];
+
+        public static var errorRating:Array<Dynamic> = [
+			["NaN", 1]
+		];
 }

@@ -53,6 +53,10 @@ import flixel.group.FlxSpriteGroup;
 import flixel.input.keyboard.FlxKey;
 import openfl.events.KeyboardEvent;
 import flixel.input.gamepad.FlxGamepad;
+import sys.io.File;
+#if sys
+import sys.FileSystem;
+#end
 import Achievements;
 import StageData;
 import FunkinLua;
@@ -157,6 +161,8 @@ class PlayState extends MusicBeatState
 	public var healthBar:FlxBar;
 
 	var songPercent:Float = 0;
+
+	var hideBGOpacity:FlxSprite;
 
 	private var timeBarBG:AttachedSprite;
 
@@ -728,22 +734,22 @@ class PlayState extends MusicBeatState
 			introSoundsSuffix = '-pixel';
 		}
 
-		if (!ClientPrefs.hideGf)
+		if(ClientPrefs.hideGf || ClientPrefs.maniaMode)
+			remove(gfGroup);
+		else
 			add(gfGroup);
 
 		// Shitty layering but whatev it works LOL
 		if (curStage == 'limo')
 			add(limo);
 
-		/*if (ClientPrefs.disableChars) {
+		if(ClientPrefs.maniaMode) {
 			remove(dadGroup);
-			remove(gfGroup);
 			remove(boyfriendGroup);
-		} else {*/
-		add(dadGroup);
-		// add(gfGroup);
-		add(boyfriendGroup);
-		// }
+		} else {
+			add(dadGroup);
+			add(boyfriendGroup);
+		}
 
 		// need to make Disable Characters also disable camera movement, so it's commented for now - Gui iago
 
@@ -934,6 +940,10 @@ class PlayState extends MusicBeatState
 			strumLine.y = FlxG.height - 150;
 		strumLine.scrollFactor.set();
 
+		hideBGOpacity = new FlxSprite(0, 0).makeGraphic(1280, 720);
+		hideBGOpacity.alpha = ClientPrefs.bgAlpha;
+		hideBGOpacity.color = FlxColor.BLACK;
+
 		laneunderlayOpponent = new FlxSprite(0, 0).makeGraphic(110 * 4 + 50, FlxG.height * 2);
 		laneunderlayOpponent.alpha = ClientPrefs.underlay;
 		laneunderlayOpponent.color = FlxColor.BLACK;
@@ -949,6 +959,13 @@ class PlayState extends MusicBeatState
 			add(laneunderlayOpponent);
 		}
 		add(laneunderlay);
+	
+		add(hideBGOpacity);
+
+		if(ClientPrefs.maniaMode) {
+			laneunderlayOpponent.alpha = 1;
+			laneunderlay.alpha = 1;
+		}
 
 		var showTime:Bool = (ClientPrefs.timeBarType != 'Disabled');
 		timeTxt = new FlxText(STRUM_X + (FlxG.width / 2) - 248, 19, 400, "", 32);
@@ -978,8 +995,14 @@ class PlayState extends MusicBeatState
 		timeBarBG.color = FlxColor.BLACK;
 		timeBarBG.xAdd = -4;
 		timeBarBG.yAdd = -4;
+
+		if(ClientPrefs.maniaMode) {
+			timeBarBG = new AttachedSprite('timeBar');
+		}
+
 		if (ClientPrefs.timeBarUi == 'Kade Engine')
 			timeBarBG.screenCenter(X);
+
 		add(timeBarBG);
 
 		timeBar = new FlxBar(timeBarBG.x + 4, timeBarBG.y + 4, LEFT_TO_RIGHT, Std.int(timeBarBG.width - 8), Std.int(timeBarBG.height - 8), this,
@@ -1084,6 +1107,13 @@ class PlayState extends MusicBeatState
 		}
 		add(camFollowPos);
 
+		if(!ClientPrefs.maniaMode) {
+			FlxG.camera.follow(camFollowPos, LOCKON, 1);
+			// FlxG.camera.setScrollBounds(0, FlxG.width, 0, FlxG.height);
+			FlxG.camera.zoom = 1;
+			FlxG.camera.focusOn(camFollow);
+		}
+
 		FlxG.camera.follow(camFollowPos, LOCKON, 1);
 		// FlxG.camera.setScrollBounds(0, FlxG.width, 0, FlxG.height);
 		FlxG.camera.zoom = defaultCamZoom;
@@ -1102,6 +1132,11 @@ class PlayState extends MusicBeatState
 		healthBarBG.xAdd = -4;
 		healthBarBG.yAdd = -4;
 		add(healthBarBG);
+
+		if(ClientPrefs.maniaMode) {
+			healthBarBG.angle = 90;
+			healthBarBG.x = 600;
+		}
 
 		if (ClientPrefs.downScroll)
 			healthBarBG.y = 0.11 * FlxG.height;
@@ -1123,17 +1158,25 @@ class PlayState extends MusicBeatState
 
 		iconP1 = new HealthIcon(boyfriend.healthIcon, true);
 		iconP1.y = healthBar.y - 75;
+		iconP1.visible = !ClientPrefs.hideHud || !ClientPrefs.maniaMode;
 		iconP1.visible = !ClientPrefs.hideHud;
 		iconP1.alpha = ClientPrefs.healthBarAlpha;
 		iconP1.canBounce = true;
-		add(iconP1);
 
 		iconP2 = new HealthIcon(dad.healthIcon, false);
 		iconP2.y = healthBar.y - 75;
+		iconP2.visible = !ClientPrefs.hideHud || !ClientPrefs.maniaMode;
 		iconP2.visible = !ClientPrefs.hideHud;
 		iconP2.alpha = ClientPrefs.healthBarAlpha;
 		iconP2.canBounce = true;
-		add(iconP2);
+
+		if(!ClientPrefs.maniaMode) {
+			add(iconP1);
+			add(iconP2);
+		} else {
+			remove(iconP1);
+			remove(iconP2);
+		}
 		reloadHealthBarColors();
 
 		// Watermarks, this is for Bedrock Engine
@@ -1203,6 +1246,7 @@ class PlayState extends MusicBeatState
 		judgementCounter.cameras = [camHUD];
 		beWatermark.cameras = [camHUD];
 		peWatermark.cameras = [camHUD];
+		hideBGOpacity.cameras = [camHUD];
 		laneunderlay.cameras = [camHUD];
 		laneunderlayOpponent.cameras = [camHUD];
 		botplayTxt.cameras = [camHUD];
@@ -1401,6 +1445,16 @@ class PlayState extends MusicBeatState
 			healthBar.createFilledBar(FlxColor.fromRGB(boyfriend.healthColorArray[0], boyfriend.healthColorArray[1], boyfriend.healthColorArray[2]),
 				FlxColor.fromRGB(dad.healthColorArray[0], dad.healthColorArray[1], dad.healthColorArray[2]));
 		healthBar.updateBar();
+
+		if(ClientPrefs.maniaMode) {
+			if (!opponentChart)
+				healthBar.createFilledBar(FlxColor.RED,
+					FlxColor.LIME);
+			else
+				healthBar.createFilledBar(FlxColor.LIME,
+					FlxColor.RED);
+			healthBar.updateBar();
+		}
 	}
 
 	public function addCharacterToList(newCharacter:String, type:Int)
@@ -1801,6 +1855,10 @@ class PlayState extends MusicBeatState
 			generateStaticArrows(1);
 			laneunderlay.x = playerStrums.members[0].x - 25;
 			laneunderlayOpponent.x = opponentStrums.members[0].x - 25;
+
+			if(ClientPrefs.maniaMode) {
+				generateManiaBGAlpha();
+			}
 
 			laneunderlay.screenCenter(Y);
 			laneunderlayOpponent.screenCenter(Y);
@@ -2248,6 +2306,11 @@ class PlayState extends MusicBeatState
 		return FlxSort.byValues(FlxSort.ASCENDING, Obj1[0], Obj2[0]);
 	}
 
+	private function generateManiaBGAlpha() {
+		hideBGOpacity.alpha = 0;
+		FlxTween.tween (hideBGOpacity, {alpha: 1}, 1, {ease: FlxEase.circOut, startDelay: 1});
+	}
+
 	private function generateStaticArrows(player:Int):Void
 	{
 		for (i in 0...4)
@@ -2463,10 +2526,37 @@ class PlayState extends MusicBeatState
 	}
 
 	public var paused:Bool = false;
+	public var iconSupport:Bool;
+	public var dir:String = "custom.json";
+	public var judgementSkin:String;
 	var startedCountdown:Bool = false;
 	var canPause:Bool = true;
 	var limoSpeed:Float = 0;
 	var alreadyChanged:Bool = false; // lag no more
+	
+
+		public function dev(dir:String)
+		{
+			this.iconSupport = false;
+			
+			if(FileSystem.exists(dir))
+			{
+				var customJson:String = File.getContent(dir);
+				if (customJson != null && customJson.length > 0)
+				{
+					var shit:Dynamic = Json.parse(customJson);
+					var iconSupport:Bool = Reflect.getProperty(shit, "iconSupport");
+					var judgementSkin:String = Reflect.getProperty(shit, "judgementSkin");
+						
+					this.iconSupport = iconSupport;
+
+					if (judgementSkin != null && judgementSkin.length > 0)
+						this.judgementSkin = judgementSkin;
+					// trace(iconSupport);
+				}
+			}
+		}
+
 
 	override public function update(elapsed:Float)
 	{
@@ -2720,6 +2810,8 @@ class PlayState extends MusicBeatState
 			- (150 * iconP2.scale.x) / 2
 			- iconOffset * 2;
 
+		dev(dir);
+
 		if (health > 2)
 			health = 2;
 
@@ -2727,24 +2819,25 @@ class PlayState extends MusicBeatState
 		{
 			(opponentChart ? iconP2 : iconP1).animation.curAnim.curFrame = 1;
 			(opponentChart ? iconP1 : iconP2).animation.curAnim.curFrame = 2;
-			if (!HealthIcon.iconSupport)
+			if (iconSupport)
 			{
-				(opponentChart ? iconP2 : iconP1).animation.curAnim.curFrame = 1;
-				(opponentChart ? iconP1 : iconP2).animation.curAnim.curFrame = 0;
+			(opponentChart ? iconP2 : iconP1).animation.curAnim.curFrame = 1;
+			(opponentChart ? iconP1 : iconP2).animation.curAnim.curFrame = 0;
 			}
 		}
 		else if (healthBar.percent > 85)
 		{
-			if (HealthIcon.iconSupport)
+			if (!iconSupport)
 			{
-				(opponentChart ? iconP2 : iconP1).animation.curAnim.curFrame = 2;
-				(opponentChart ? iconP1 : iconP2).animation.curAnim.curFrame = 1;
+			(opponentChart ? iconP2 : iconP1).animation.curAnim.curFrame = 2;
+			(opponentChart ? iconP1 : iconP2).animation.curAnim.curFrame = 1;
 			}
 			else
 			{
-				(opponentChart ? iconP2 : iconP1).animation.curAnim.curFrame = 0;
-				(opponentChart ? iconP1 : iconP2).animation.curAnim.curFrame = 1;
+			(opponentChart ? iconP2 : iconP1).animation.curAnim.curFrame = 0;
+			(opponentChart ? iconP1 : iconP2).animation.curAnim.curFrame = 1;
 			}
+			
 		}
 		else
 		{
@@ -3622,7 +3715,7 @@ class PlayState extends MusicBeatState
 			camFollow.x -= boyfriend.cameraPosition[0];
 			camFollow.y += boyfriend.cameraPosition[1];
 
-			if (Paths.formatToSongPath(SONG.song) == 'tutorial' && cameraTwn == null && FlxG.camera.zoom != 1)
+			if (Paths.formatToSongPath(SONG.song) == 'tutorial' && cameraTwn == null && FlxG.camera.zoom != 1 && !ClientPrefs.maniaMode)
 			{
 				cameraTwn = FlxTween.tween(FlxG.camera, {zoom: 1}, (Conductor.stepCrochet * 4 / 1000), {ease: FlxEase.elasticInOut, onComplete:
 					function (twn:FlxTween)
@@ -3893,6 +3986,7 @@ class PlayState extends MusicBeatState
 
 	public static function getUiSkin(?uiSkin:String = 'classic', ?file:String = '', ?alt:String = '', ?numSkin:Bool = false, ?num:Int = 0)
 	{
+
 		var path:String = 'judgements/'
 			+ (numSkin ? 'numbers/' : '')
 			+ uiSkin
@@ -4003,18 +4097,13 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		var uiSkin:String = '';
+		var uiSkin:String;
 		var altPart:String = isPixelStage ? '-pixel' : '';
 
-		switch (ClientPrefs.uiSkin)
-		{
-			case 'Classic':
-				uiSkin = 'classic';
-			case 'Bedrock':
-				uiSkin = 'bedrock';
-			case 'Score':
-				uiSkin = 'score';
-		}
+		dev(dir);
+
+		uiSkin = judgementSkin;
+
 
 		rating.loadGraphic(Paths.image(getUiSkin(uiSkin, daRating, altPart)));
 		rating.cameras = [camHUD];
@@ -4352,7 +4441,6 @@ class PlayState extends MusicBeatState
 				note.destroy();
 			}
 		});
-		combo = 0;
 
 		health -= daNote.missHealth * healthLoss;
 		if (instakillOnMiss)
@@ -5201,13 +5289,19 @@ class PlayState extends MusicBeatState
 
 			// Rating Name
 			if (ratingPercent >= 1)
-				if (ClientPrefs.letterGrades)
-					ratingName = Ratings.ratingStuff[Ratings.ratingStuff.length - 1][0]; // Uses last string
-				else
-					ratingName = Ratings.ratingSimple[Ratings.ratingSimple.length - 1][0]; // Uses last string
-			else
 			{
 				if (ClientPrefs.letterGrades)
+					ratingName = Ratings.ratingStuff[Ratings.ratingStuff.length - 1][0]; // Uses last string
+				if (!ClientPrefs.letterGrades)
+					ratingName = Ratings.ratingSimple[Ratings.ratingSimple.length - 1][0];
+                if (ClientPrefs.letterGrades && ClientPrefs.keAccuracy)
+                    ratingName = Ratings.ratingComplex[Ratings.ratingComplex.length - 1][0];
+                else if (!ClientPrefs.letterGrades && ClientPrefs.keAccuracy)
+                    ratingName = Ratings.errorRating[Ratings.errorRating.length - 1][0];
+			}
+			else
+			{
+				if (ClientPrefs.letterGrades && !ClientPrefs.keAccuracy)
 				{
 					for (i in 0...Ratings.ratingStuff.length - 1)
 					{
@@ -5218,7 +5312,7 @@ class PlayState extends MusicBeatState
 						}
 					}
 				}
-				else
+		        else if (!ClientPrefs.letterGrades && !ClientPrefs.keAccuracy)
 				{
 					for (i in 0...Ratings.ratingSimple.length - 1)
 					{
@@ -5229,7 +5323,30 @@ class PlayState extends MusicBeatState
 						}
 					}
 				}
+                                else if (ClientPrefs.letterGrades && ClientPrefs.keAccuracy)
+				{
+					for (i in 0...Ratings.ratingComplex.length - 1)
+					{
+						if (ratingPercent < Ratings.ratingComplex[i][1])
+						{
+							ratingName = Ratings.ratingComplex[i][0];
+							break;
+						}
+					}
+				}
+                else if (!ClientPrefs.letterGrades && ClientPrefs.keAccuracy)
+				{
+					for (i in 0...Ratings.errorRating.length - 1)
+					{
+						if (ratingPercent < Ratings.errorRating[i][1])
+						{
+							ratingName = Ratings.errorRating[i][0];
+							break;
+						}
+					}
+				}
 			}
+		
 
 			// Rating FC
 			ratingFC = "";

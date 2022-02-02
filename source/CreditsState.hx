@@ -134,6 +134,13 @@ class CreditsState extends MusicBeatState
 				'ff0062'
 			],
 			[
+				'Gazozoz',
+				'gazozoz',
+				'Camera Movement Code',
+				'https://twitter.com/Gazozoz_',
+				'ff0062'
+			],
+			[
 				'Prynnho',
 				'prynn',
 				'Rich Presence Designer',

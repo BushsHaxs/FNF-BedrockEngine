@@ -19,6 +19,11 @@ import flixel.util.FlxColor;
 import lime.app.Application;
 import Achievements;
 import editors.MasterEditorMenu;
+#if sys
+import sys.FileSystem;
+import sys.io.File;
+#end
+import haxe.Json;
 import flixel.input.keyboard.FlxKey;
 
 using StringTools;
@@ -83,6 +88,28 @@ class MainMenuState extends MusicBeatState
 	var coolTween:FlxTween;
 	var coolSprite:FlxSprite;
 
+	public var noteSkin:String;
+	public var dir:String = "custom.json";
+
+	public function dev(dir:String)
+		{
+			
+			if(FileSystem.exists(dir))
+			{
+				var customJson:String = File.getContent(dir);
+				if (customJson != null && customJson.length > 0)
+				{
+					var shit:Dynamic = Json.parse(customJson);
+					var noteSkin:String = Reflect.getProperty(shit, "noteSkin");
+					
+				if (noteSkin != null && noteSkin.length > 0)
+					this.noteSkin = noteSkin;
+
+				}
+			
+			}
+		}
+
 	override function create()
 	{
 		#if desktop
@@ -140,7 +167,7 @@ class MainMenuState extends MusicBeatState
 		downshadow.antialiasing = ClientPrefs.globalAntialiasing;
 		downshadow.color = FlxColor.BLACK;
 		downshadow.alpha = 0.7;
-		add(downshadow);
+		/*add(downshadow);*/
 
 		// magenta.scrollFactor.set();
 
@@ -152,7 +179,7 @@ class MainMenuState extends MusicBeatState
 			scale = 6 / optionShit.length;
 		}*/
 
-		for (i in 0...optionShit.length)
+		/*for (i in 0...optionShit.length)
 		{
 			var offset:Float = 108 - (Math.max(optionShit.length, 4) - 4) * 80;
 			var menuItem:FlxSprite = new FlxSprite(0, 110 + (i * 100));
@@ -174,7 +201,27 @@ class MainMenuState extends MusicBeatState
 			menuItem.antialiasing = ClientPrefs.globalAntialiasing;
 			// menuItem.setGraphicSize(Std.int(menuItem.width * 0.58));
 			menuItem.updateHitbox();
-		}
+		}*/
+		for (i in 0...optionShit.length)
+			{
+				var offset:Float = 108 - (Math.max(optionShit.length, 4) - 4) * 80;
+				var menuItem:FlxSprite = new FlxSprite(0, (i * 140)  + offset);
+				menuItem.scale.x = scale;
+				menuItem.scale.y = scale;
+				menuItem.frames = Paths.getSparrowAtlas('mainmenu/menu_' + optionShit[i]);
+				menuItem.animation.addByPrefix('idle', optionShit[i] + " basic", 24);
+				menuItem.animation.addByPrefix('selected', optionShit[i] + " white", 24);
+				menuItem.animation.play('idle');
+				menuItem.ID = i;
+				menuItem.screenCenter(X);
+				menuItems.add(menuItem);
+				var scr:Float = (optionShit.length - 4) * 0.135;
+				if(optionShit.length < 6) scr = 0;
+				menuItem.scrollFactor.set(0, scr);
+				menuItem.antialiasing = ClientPrefs.globalAntialiasing;
+				//menuItem.setGraphicSize(Std.int(menuItem.width * 0.58));
+				menuItem.updateHitbox();
+			}
 
 		if (!ClientPrefs.lowQuality)
 		{
@@ -431,19 +478,7 @@ class MainMenuState extends MusicBeatState
 			case 'create':
 				var assets:String = '';
 				/*var library:String = 'shared';*/
-				switch (ClientPrefs.noteSkin)
-				{
-					case 'Default':
-						assets = 'noteskins/NOTE_assets';
-					case 'Bar':
-						assets = 'noteskins/NOTE_bar';
-					case 'Circle':
-						assets = 'noteskins/NOTE_circle';
-					case 'Diamond':
-						assets = 'noteskins/NOTE_diamond';
-					case 'Stepmania':
-						assets = 'noteskins/NOTE_step';
-				}
+				assets = 'noteskins/' + noteSkin;
 				{
 					note1 = new FlxSprite();
 					note1.frames = Paths.getSparrowAtlas(assets/*, library*/);
@@ -755,14 +790,14 @@ class MainMenuState extends MusicBeatState
 							note8.y - 800;
 					}
 
-					add(note1);
+					/*add(note1);
 					add(note2);
 					add(note3);
 					add(note4);
 					add(note5);
 					add(note6);
 					add(note7);
-					add(note8);
+					add(note8);*/
 				}
 			case 'update':
 				{
