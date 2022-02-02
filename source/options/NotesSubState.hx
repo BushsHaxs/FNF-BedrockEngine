@@ -46,6 +46,29 @@ class NotesSubState extends MusicBeatSubstate
 	var hsbText:Alphabet;
 
 	var posX = 230;
+
+	
+	public var noteSkin:String;
+	public var dir:String = "settings/uiSettings.json";
+	
+	public function dev(dir:String)
+		{
+
+			if(FileSystem.exists(dir))
+			{
+				var customJson:String = File.getContent(dir);
+				if (customJson != null && customJson.length > 0)
+				{
+					var shit:Dynamic = Json.parse(customJson);
+					var noteSkin = Reflect.getProperty(shit, "noteSkin");
+
+					if (noteSkin != null && noteSkin.length > 0)
+						this.noteSkin = noteSkin;
+					
+				}
+			}
+		}
+
 	public function new() {
 		super();
 		
@@ -73,19 +96,10 @@ class NotesSubState extends MusicBeatSubstate
 			}
 
 			var note:FlxSprite = new FlxSprite(posX, yPos);
-			switch(ClientPrefs.noteSkin)
-			{
-				case "Default":
-					note.frames = Paths.getSparrowAtlas('noteskins/NOTE_assets');
-				case "Circle":
-					note.frames = Paths.getSparrowAtlas('noteskins/NOTE_circle');
-				case "Bar":
-					note.frames = Paths.getSparrowAtlas('noteskins/NOTE_bar');
-				case "Diamond":
-					note.frames = Paths.getSparrowAtlas('noteskins/NOTE_diamond');
-				case "Stepmania":
-					note.frames = Paths.getSparrowAtlas('noteskins/NOTE_step');
-			}
+			
+			dev(dir);
+			
+			note.frames = Paths.getSparrowAtlas('noteskins/'+noteSkin);
 					
 			var animations:Array<String> = ['purple0', 'blue0', 'green0', 'red0'];
 			note.animation.addByPrefix('idle', animations[i]);
