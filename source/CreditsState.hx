@@ -138,7 +138,7 @@ class CreditsState extends MusicBeatState
 				'gazozoz',
 				'Camera Movement Code',
 				'https://twitter.com/Gazozoz_',
-				'ff0062'
+				'982f2F'
 			],
 			[
 				'Prynnho',
