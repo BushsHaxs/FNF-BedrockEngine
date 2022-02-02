@@ -99,7 +99,7 @@ class NotesSubState extends MusicBeatSubstate
 			
 			dev(dir);
 			
-			note.frames = Paths.getSparrowAtlas('noteskins'+noteSkin);
+			note.frames = Paths.getSparrowAtlas('noteskins/'+noteSkin);
 			
 					
 			var animations:Array<String> = ['purple0', 'blue0', 'green0', 'red0'];
