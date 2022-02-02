@@ -40,8 +40,8 @@ class VisualsUISubState extends BaseOptionsMenu
 		'bool',
 		true);
 	addOption(option);
-
-		var option:Option = new Option('Controller Mode',
+	
+	var option:Option = new Option('Controller Mode',
 		'Check this if you want to play with\na controller instead of using your Keyboard.',
 		'controllerMode',
 		'bool',
@@ -84,7 +84,7 @@ class VisualsUISubState extends BaseOptionsMenu
 			'maniaMode', 
 			'bool', 
 			false);
-	addOption(option);
+		addOption(option);
 
 		var option:Option = new Option('Note Splashes',
 		"If unchecked, hitting \"Marvelous!\" or \"Sick!\" notes won't show particles.",
@@ -172,24 +172,6 @@ class VisualsUISubState extends BaseOptionsMenu
 			'string',
 			'Psych Engine',
 		['Psych Engine', 'Kade Engine'/*, 'Only Text'*/]);
-		addOption(option);
-
-			var option:Option = new Option('Judgement Skin:',
-			"What should your Judgements look like?",
-			'uiSkin', 'string', 'Bedrock',
-		['Classic', 'Bedrock'/*, 'Score'*/]);
-		/*option.showMarv = true;
-		option.onChange = onChangeJudgSkin;*/
-		addOption(option);
-
-			var option:Option = new Option('Note Skin:',
-			"Funny Notes, going up and down, How should they look like?",
-			'noteSkin',
-			'string',
-			'Default',
-		['Default', 'Circle', 'Bar', 'Stepmania', 'Diamond']);
-		option.showNotes = true;
-		option.onChange = onChangeNoteSkin;
 		addOption(option);
 
 		super();

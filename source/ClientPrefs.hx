@@ -63,19 +63,12 @@ class ClientPrefs {
 	public static var playMissSounds:Bool = true;
 	public static var playHitSounds:Bool = false;
 	public static var hideGf:Bool = false;
-	#if PSYCH_WATERMARKS
-	public static var uiSkin:String = 'Bedrock';
-	#else
-	public static var uiSkin:String = 'Classic';
-	#end
 	public static var judgCounter:Bool = true;
 	public static var timeBarUi:String = 'Psych Engine';
-	public static var noteSkin:String = 'Default';
 	public static var strumLineAlpha:Float = 1;
 	public static var underlay:Float = 0;
 	public static var keAccuracy:Bool = false;
 	public static var instantRespawn:Bool = false;
-	public static var letterGrades:Bool = true;
 	public static var disableChars:Bool = false;
 	public static var maniaMode:Bool = false;
 	public static var bgAlpha:Float = 0;
@@ -141,6 +134,7 @@ class ClientPrefs {
 		FlxG.save.data.comboOffset = comboOffset;
 		FlxG.save.data.achievementsMap = Achievements.achievementsMap;
 		FlxG.save.data.henchmenDeath = Achievements.henchmenDeath;
+		FlxG.save.data.controllerMode = controllerMode;
 
 		FlxG.save.data.ratingOffset = ratingOffset;
 		FlxG.save.data.sickWindow = sickWindow;
@@ -148,7 +142,6 @@ class ClientPrefs {
 		FlxG.save.data.badWindow = badWindow;
 		FlxG.save.data.safeFrames = safeFrames;
 		FlxG.save.data.gameplaySettings = gameplaySettings;
-		FlxG.save.data.controllerMode = controllerMode;
 
 		// Added by Bedrock Engine 
 		FlxG.save.data.maxOptimization = maxOptimization;
@@ -156,14 +149,11 @@ class ClientPrefs {
 		FlxG.save.data.playHitSounds = playHitSounds;
 		FlxG.save.data.hideGf = hideGf;
 		FlxG.save.data.strumLineAlpha = strumLineAlpha;
-		FlxG.save.data.uiSkin = uiSkin;
 		FlxG.save.data.judgCounter = judgCounter;
 		FlxG.save.data.timeBarUi = timeBarUi;
-		FlxG.save.data.noteSkin = noteSkin;
 		FlxG.save.data.underlay = underlay;
 		FlxG.save.data.keAccuracy = keAccuracy;
 		FlxG.save.data.instantRespawn = instantRespawn;
-		FlxG.save.data.letterGrades = letterGrades;
 		FlxG.save.data.disableChars = disableChars;
 		FlxG.save.data.maniaMode = maniaMode;
 		FlxG.save.data.bgAlpha = bgAlpha;
@@ -299,14 +289,8 @@ class ClientPrefs {
 		if (FlxG.save.data.strumLineAlpha != null) {
 			strumLineAlpha = FlxG.save.data.strumLineAlpha;
 		}
-		if (FlxG.save.data.uiSkin != null) {
-			uiSkin = FlxG.save.data.uiSkin;
-		}
 		if (FlxG.save.data.timeBarUi != null) {
 			timeBarUi = FlxG.save.data.timeBarUi;
-		}
-		if (FlxG.save.data.noteSkin != null) {
-			noteSkin = FlxG.save.data.noteSkin;
 		}
 		if (FlxG.save.data.judgCounter != null) {
 			judgCounter = FlxG.save.data.judgCounter;
@@ -319,9 +303,6 @@ class ClientPrefs {
 		}
 		if(FlxG.save.data.instantRespawn != null) {
 			instantRespawn = FlxG.save.data.instantRespawn;
-		}
-		if(FlxG.save.data.letterGrades != null) {
-			letterGrades = FlxG.save.data.letterGrades;
 		}
 		if(FlxG.save.data.disableChars != null) {
 			disableChars = FlxG.save.data.disableChars;

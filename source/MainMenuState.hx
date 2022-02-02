@@ -57,6 +57,9 @@ class MainMenuState extends MusicBeatState
 	var magenta:FlxSprite;
 	var bg:FlxSprite;
 
+	public var noteSkin:String;
+	public var dir:String = "settings/uiSettings.json";
+
 	public var note1:FlxSprite;
 	public var note2:FlxSprite;
 	public var note3:FlxSprite;
@@ -443,6 +446,25 @@ class MainMenuState extends MusicBeatState
 		});
 	}
 
+	
+	public function dev(dir:String)
+		{
+
+			if(FileSystem.exists(dir))
+			{
+				var customJson:String = File.getContent(dir);
+				if (customJson != null && customJson.length > 0)
+				{
+					var shit:Dynamic = Json.parse(customJson);
+					var noteSkin = Reflect.getProperty(shit, "noteSkin");
+
+					if (noteSkin != null && noteSkin.length > 0)
+						this.noteSkin = noteSkin;
+					
+				}
+			}
+		}
+
 	override function beatHit()
 	{
 		super.beatHit();
@@ -452,24 +474,13 @@ class MainMenuState extends MusicBeatState
 
 	function danote(whatvar:String)
 	{
+		dev(dir);
 		switch (whatvar)
 		{
 			case 'create':
 				var assets:String = '';
 				/*var library:String = 'shared';*/
-				switch (ClientPrefs.noteSkin)
-				{
-					case 'Default':
-						assets = 'noteskins/NOTE_assets';
-					case 'Bar':
-						assets = 'noteskins/NOTE_bar';
-					case 'Circle':
-						assets = 'noteskins/NOTE_circle';
-					case 'Diamond':
-						assets = 'noteskins/NOTE_diamond';
-					case 'Stepmania':
-						assets = 'noteskins/NOTE_step';
-				}
+				assets = 'noteskins/' + noteSkin;
 				{
 					note1 = new FlxSprite();
 					note1.frames = Paths.getSparrowAtlas(assets/*, library*/);
