@@ -5276,14 +5276,19 @@ class PlayState extends MusicBeatState
 
 			// Rating Name
 			if (ratingPercent >= 1)
+			{
 				if (ClientPrefs.letterGrades)
 					ratingName = Ratings.ratingStuff[Ratings.ratingStuff.length - 1][0]; // Uses last string
+
 				if (!ClientPrefs.letterGrades)
-					ratingName = Ratings.ratingSimple[Ratings.ratingSimple.length - 1][
-                                if (ClientPrefs.letterGrades && ClientPrefs.keAccuracy)
-                                        ratingName = Ratings.ratingComplex[Ratings.ratingComplex.length - 1][0];
-                                else if (!ClientPrefs.letterGrades && ClientPrefs.keAccuracy)
-                                        ratingName = Ratings.errorRating[Ratings.errorRating.length - 1][0];
+					ratingName = Ratings.ratingSimple[Ratings.ratingSimple.length - 1][0];
+
+                if (ClientPrefs.letterGrades && ClientPrefs.keAccuracy)
+                    ratingName = Ratings.ratingComplex[Ratings.ratingComplex.length - 1][0];
+
+                else if (!ClientPrefs.letterGrades && ClientPrefs.keAccuracy)
+                    ratingName = Ratings.errorRating[Ratings.errorRating.length - 1][0];
+			}
 			else
 			{
 				if (ClientPrefs.letterGrades && !ClientPrefs.keAccuracy)
@@ -5297,7 +5302,7 @@ class PlayState extends MusicBeatState
 						}
 					}
 				}
-		              else if (!ClientPrefs.letterGrades && !ClientPrefs.keAccuracy)
+		        else if (!ClientPrefs.letterGrades && !ClientPrefs.keAccuracy)
 				{
 					for (i in 0...Ratings.ratingSimple.length - 1)
 					{
@@ -5308,7 +5313,7 @@ class PlayState extends MusicBeatState
 						}
 					}
 				}
-                                else if (ClientPrefs.letterGrades && ClientPrefs.keAccuracy)
+                else if (ClientPrefs.letterGrades && ClientPrefs.keAccuracy)
 				{
 					for (i in 0...Ratings.ratingComplex.length - 1)
 					{
@@ -5319,7 +5324,7 @@ class PlayState extends MusicBeatState
 						}
 					}
 				}
-                                else if (!ClientPrefs.letterGrades && ClientPrefs.keAccuracy)
+                else if (!ClientPrefs.letterGrades && ClientPrefs.keAccuracy)
 				{
 					for (i in 0...Ratings.errorRating.length - 1)
 					{
@@ -5330,9 +5335,8 @@ class PlayState extends MusicBeatState
 						}
 					}
 				}
-
 			}
-
+		
 			// Rating FC
 			ratingFC = "";
 			if (marvelouses > 0)

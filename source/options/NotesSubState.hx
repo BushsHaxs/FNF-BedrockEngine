@@ -73,17 +73,6 @@ class NotesSubState extends MusicBeatSubstate
 			}
 
 			var note:FlxSprite = new FlxSprite(posX, yPos);
-			
-<<<<<<< HEAD
-			dev(dir);
-			
-<<<<<<< HEAD
-			note.frames = Paths.getSparrowAtlas('noteskins/'+noteSkin);
-=======
-			note.frames = Paths.getSparrowAtlas(noteSkin);
->>>>>>> parent of db853f1 (Customizing engine with json, more features will be added)
-			
-=======
 			switch(ClientPrefs.noteSkin)
 			{
 				case "Default":
@@ -97,7 +86,6 @@ class NotesSubState extends MusicBeatSubstate
 				case "Stepmania":
 					note.frames = Paths.getSparrowAtlas('noteskins/NOTE_step');
 			}
->>>>>>> parent of 9a9fe06 (Customizing engine with json, more features will be added)
 					
 			var animations:Array<String> = ['purple0', 'blue0', 'green0', 'red0'];
 			note.animation.addByPrefix('idle', animations[i]);

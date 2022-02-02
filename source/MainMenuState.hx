@@ -452,7 +452,6 @@ class MainMenuState extends MusicBeatState
 
 	function danote(whatvar:String)
 	{
-		dev(dir);
 		switch (whatvar)
 		{
 			case 'create':

@@ -39,24 +39,19 @@ class Ratings
 	];
 
 	public static var ratingSimple:Array<Dynamic> = [
-		["What the fuck bro", 0.001], // %0
-		["Fuck...", 0.2], // %19
-		["Shit", 0.4], // %39
-		["Bad", 0.6], // %59
-		["Okay", 0.69], // %68
+		["You Suck!", 0.001], // %0
+		["Shit", 0.2], // %19
+		["Bad", 0.4], // %39
+		["Bruh", 0.6], // %59
+		["Meh", 0.69], // %68
 		["Nice", 0.691], // %69
-		["Cool", 0.8], // %79
+		["Good", 0.8], // %79
 		["Great!", 0.9], // %89
 		["Sick!", 1], // %99
 		["Marvelous!!", 1] // %100
 	];
 
-<<<<<<< HEAD
         public static var errorRating:Array<Dynamic> = [
 			["NaN", 1]
 		];
-=======
-        public static var errorRating:Array<Dynamic> = 
-                [["NaN"], 1]];
->>>>>>> parent of 16d3533 (Customizing engine with json, more features will be added)
 }
