@@ -1,5 +1,6 @@
 {
 	"iconSupport":false,
 	"noteSkin": "NOTE_assets", 
+	"noteSplashSkin": "noteSplashes",
 	"judgementSkin": "bedrock" 
 }

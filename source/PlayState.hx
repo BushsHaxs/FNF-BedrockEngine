@@ -2541,6 +2541,8 @@ class PlayState extends MusicBeatState
 	public var iconSupport:Bool;
 	public var dir:String = "settings/uiSettings.json";
 	public var judgementSkin:String;
+	public var scoretext:String;
+	public var noteSplashSkin:String;
 
 	public var letterGrader:Bool;
 	public var dirtwo:String = "settings/gameplaySettings.json";
@@ -2576,11 +2578,18 @@ class PlayState extends MusicBeatState
 					var shit:Dynamic = Json.parse(customJson);
 					var iconSupport:Bool = Reflect.getProperty(shit, "iconSupport");
 					var judgementSkin:String = Reflect.getProperty(shit, "judgementSkin");
+					var scoretext:String = Reflect.getProperty(shit, "scoretext");
+					var noteSplashSkin:String = Reflect.getProperty(shit, "noteSplashSkin");
+					
 
 					this.iconSupport = iconSupport;
 
 					if (judgementSkin != null && judgementSkin.length > 0)
 					this.judgementSkin = judgementSkin;
+					if (scoretext != null && judgementSkin.length > 0)
+					this.scoretext = scoretext;
+					if (noteSplashSkin != null && noteSplashSkin.length > 0)
+					this.noteSplashSkin = noteSplashSkin;
 				}
 			}
 		}
@@ -2760,14 +2769,16 @@ class PlayState extends MusicBeatState
 		}
 
 		super.update(elapsed);
+		 
+		dev(dir);
 
 		// Info Bar
 		var ratingNameTwo:String = ratingName;
 
 		if (ratingFC == "")
-			scoreTxt.text = 'Score: ' + songScore + ' - Accuracy: ' + Highscore.floorDecimal(ratingPercent * 100, 2) + '% ' + ' - Combo Breaks: ' + songMisses + ' - Rank: ?';
+			scoreTxt.text = 'Score: ' + songScore + ' '+scoretext+' Accuracy: ' + Highscore.floorDecimal(ratingPercent * 100, 2) + '% ' + ' '+scoretext+' Combo Breaks: ' + songMisses + ' '+scoretext+' Rank: ?';
 		else
-			scoreTxt.text = 'Score: ' + songScore + ' - Accuracy: ' + Highscore.floorDecimal(ratingPercent * 100, 2) + '% ' + '[' + ratingFC + '] ' + ' - Combo Breaks: ' + songMisses + ' - Rank: ' + ratingName;
+			scoreTxt.text = 'Score: ' + songScore + ' '+scoretext+' Accuracy: ' + Highscore.floorDecimal(ratingPercent * 100, 2) + '% ' + '[' + ratingFC + '] ' + ' '+scoretext+' Combo Breaks: ' + songMisses + ' '+scoretext+' Rank: ' + ratingName;
 
 		if (botplayTxt.visible)
 		{
@@ -4827,7 +4838,8 @@ class PlayState extends MusicBeatState
 
 	public function spawnNoteSplash(x:Float, y:Float, data:Int, ?note:Note = null)
 	{
-		var skin:String = 'noteSplashes';
+		dev(dir);
+		var skin:String = noteSplashSkin;
 		if (PlayState.SONG.splashSkin != null && PlayState.SONG.splashSkin.length > 0)
 			skin = PlayState.SONG.splashSkin;
 

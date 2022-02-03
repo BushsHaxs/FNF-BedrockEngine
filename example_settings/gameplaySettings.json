@@ -1,3 +1,5 @@
 {
-	"letterGrader":true
+	"letterGrader":true,
+	"marvelouses": true,
+	"scoretext": "-"
 }

@@ -1,7 +1,11 @@
+DO NOT PUT YOUR SKINS TO ASSETS, BEDROCK WILL IGNORE ASSETS FOLDER IF YOU DON'T MESS WITH SOURCE
+
+
 more options will be ported to this json file if needed.
 
 iconSupport means 300x150 icon support.
-those icons need to be placed on assets/images/icons-old or mods/images/icons-old
+those icons need to be placed on mods/images/icons-old
+
 
 --------------NOTE SKINS---------------
 Available note skins are:
@@ -13,10 +17,10 @@ Available note skins are:
 -NOTE_simplyarrow
 
 you can also add your own noteskins
-just place them on "mods/images/noteskins" or "assets/images/noteskins"
+just place them on "mods/images/noteskins"
 
 if a skin doesn't have a pixel variant, pixel stages will crash
-so make sure to create or copy any existing skin to mods/pixelUI/noteskins or assets/pixelUI/noteskins so your noteskin won't crash
+so make sure to create or copy any existing skin to mods/pixelUI/noteskins so your noteskin won't crash
 
 -------JUDGEMENT SKINS-------
 Available judgement skins are:
@@ -25,10 +29,12 @@ Available judgement skins are:
 -bedrock
 
 you can also add your own judgement skins
-just place them on "mods/images/judgements" or "assets/shared/images/judgements"
+just place them on "mods/images/judgements"
 
 at the moment, botplay crashes no matter which noteskins or judgement skin you are using, this will be fixed soon
 
 -------UI SETINGS-------
-letterGrader on true means that the game will use Letter Ratings
-set it to false if you don't want it
+letterGrader on true means that the game will use Letter Ratings.
+Example, if accuracy is below %20 rank will be 'D'.
+letterGrader on false means game will use original ratings.
+Example, if accuracy is below %20 rank will be 'You suck!'.
