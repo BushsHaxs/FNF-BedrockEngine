@@ -74,6 +74,8 @@ class TitleState extends MusicBeatState
 	var lastKeysPressed:Array<FlxKey> = [];
 
 	var mustUpdate:Bool = false;
+	var cantBump:Bool = false;
+	var idk:Bool = false;
 
 	var titleJSON:TitleData;
 
@@ -282,6 +284,7 @@ class TitleState extends MusicBeatState
 		logoBl.antialiasing = ClientPrefs.globalAntialiasing;
 		logoBl.setGraphicSize(Std.int(logoBl.width * 0.8));
 		logoBl.animation.addByPrefix('bump', 'logo bumpin', 24, false);
+		logoBl.animation.addByPrefix('press', 'logo press', 24, false);
 		logoBl.animation.play('bump');
 		logoBl.updateHitbox();
 		FlxTween.tween(logoBl, {
@@ -451,6 +454,15 @@ class TitleState extends MusicBeatState
 		{
 			if (pressedEnter)
 			{
+				cantBump = true;
+				if (logoBl != null)
+					if (!idk) {
+						idk = true;
+						logoBl.animation.play('press');
+						new FlxTimer().start(0.3, (tmr: FlxTimer) -> {
+							logoBl.animation.stop();
+						});
+					}
 				if (titleText != null)
 					titleText.animation.play('press');
 
@@ -590,7 +602,8 @@ class TitleState extends MusicBeatState
 		super.beatHit();
 
 		if (logoBl != null)
-			logoBl.animation.play('bump', true);
+			if (!cantBump)
+				logoBl.animation.play('bump', true);
 
 		if (candance)
 		{
