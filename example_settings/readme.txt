@@ -15,6 +15,9 @@ Available note skins are:
 you can also add your own noteskins
 just place them on "mods/images/noteskins" or "assets/images/noteskins"
 
+if a skin doesn't have a pixel variant, pixel stages will crash
+so make sure to create or copy any existing skin to mods/pixelUI/noteskins or assets/pixelUI/noteskins so your noteskin won't crash
+
 -------JUDGEMENT SKINS-------
 Available judgement skins are:
 
