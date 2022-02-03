@@ -139,8 +139,8 @@ class MainMenuState extends MusicBeatState
 		magenta.visible = false;
 		add(magenta);
 
-		if (!ClientPrefs.lowQuality)
-			danote('create');
+		/*if (!ClientPrefs.lowQuality)
+			danote('create'); */
 
 		downshadow = new FlxSprite(0, 0).loadGraphic(Paths.image('idkhowtonameit'));
 		downshadow.scrollFactor.set();
@@ -392,17 +392,16 @@ class MainMenuState extends MusicBeatState
 			#end
 		}
 
-		if (!ClientPrefs.lowQuality)
-			danote('update');
-
-		FlxG.watch.addQuick("note1.y:", note1.y);
-		FlxG.watch.addQuick("note2.y:", note2.y);
-		FlxG.watch.addQuick("note3.y:", note3.y);
-		FlxG.watch.addQuick("note4.y:", note4.y);
-		FlxG.watch.addQuick("note5.y:", note5.y);
-		FlxG.watch.addQuick("note6.y:", note6.y);
-		FlxG.watch.addQuick("note7.y:", note7.y);
-		FlxG.watch.addQuick("note8.y:", note8.y);
+		/*if (!ClientPrefs.lowQuality)
+			danote('update'); */
+		/*FlxG.watch.addQuick("note1.y:", note1.y);
+			FlxG.watch.addQuick("note2.y:", note2.y);
+			FlxG.watch.addQuick("note3.y:", note3.y);
+			FlxG.watch.addQuick("note4.y:", note4.y);
+			FlxG.watch.addQuick("note5.y:", note5.y);
+			FlxG.watch.addQuick("note6.y:", note6.y);
+			FlxG.watch.addQuick("note7.y:", note7.y);
+			FlxG.watch.addQuick("note8.y:", note8.y); */
 
 		super.update(elapsed);
 
@@ -789,14 +788,14 @@ class MainMenuState extends MusicBeatState
 							note8.y - 800;
 					}
 
-					/*add(note1);
-						add(note2);
-						add(note3);
-						add(note4);
-						add(note5);
-						add(note6);
-						add(note7);
-						add(note8); */
+					add(note1);
+					add(note2);
+					add(note3);
+					add(note4);
+					add(note5);
+					add(note6);
+					add(note7);
+					add(note8);
 				}
 			case 'update':
 				{
