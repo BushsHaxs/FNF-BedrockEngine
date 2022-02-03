@@ -41,7 +41,7 @@ class Conductor
 
 	public static var nonmultilmao_crochet:Float = ((60 / bpm) * 1000); // beats in milliseconds
 	public static var nonmultilmao_stepCrochet:Float = nonmultilmao_crochet / 4; // steps in milliseconds
-	public static var marv:Bool;
+	//public static var marv:Bool;
 	public static var dir:String = "gameplaySettings/gameplaySettings.json";
 
 
@@ -67,7 +67,7 @@ class Conductor
 		}
 	}
 
-	public static function judgeNote(note:Note, diff:Float=0, marv:Bool, dir:String) //STOLEN FROM KADE ENGINE (bbpanzu) - I had to rewrite it later anyway after i added the custom hit windows lmao (Shadow Mario)
+	public static function judgeNote(note:Note, diff:Float=0, dir:String) //STOLEN FROM KADE ENGINE (bbpanzu) - I had to rewrite it later anyway after i added the custom hit windows lmao (Shadow Mario)
 	{
 	
 		if (FileSystem.exists(dir))
@@ -76,12 +76,10 @@ class Conductor
 				if (customJson != null && customJson.length > 0)
 				{
 					var poop:Dynamic = Json.parse(dir);
-					marv = Reflect.getProperty(poop, "marvelouses");
+					var marv:Bool = Reflect.getProperty(poop, "marvelouses");
 				}
 			}
-		
-		else
-			marv = true;
+	
 
 		var timingWindows:Array<Int> = [ClientPrefs.marvelousWindow, ClientPrefs.sickWindow, ClientPrefs.goodWindow, ClientPrefs.badWindow];
 		if (ClientPrefs.keAccuracy)

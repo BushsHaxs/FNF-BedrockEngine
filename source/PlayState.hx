@@ -4066,7 +4066,7 @@ class PlayState extends MusicBeatState
 		var score:Int = 350;
 
 		// tryna do MS based judgment due to popular demand
-		var daRating:String = Conductor.judgeNote(note, noteDiff, marv, dir);
+		var daRating:String = Conductor.judgeNote(note, noteDiff, dir);
 
 		devtwo(dirtwo);
 
