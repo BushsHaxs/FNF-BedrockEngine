@@ -33,6 +33,7 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
+import flixel.util.FlxGradient;
 import lime.app.Application;
 import openfl.Assets;
 
@@ -73,6 +74,8 @@ class TitleState extends MusicBeatState
 	var lastKeysPressed:Array<FlxKey> = [];
 
 	var mustUpdate:Bool = false;
+	var cantBump:Bool = false;
+	var idk:Bool = false;
 
 	var titleJSON:TitleData;
 
@@ -253,7 +256,7 @@ class TitleState extends MusicBeatState
 		Conductor.changeBPM(titleJSON.bpm);
 		persistentUpdate = true;
 
-		bgGrad = new FlxSprite().loadGraphic(Paths.image('titleGradient'));
+		bgGrad = FlxGradient.createGradientFlxSprite(1460, 821, [FlxColor.TRANSPARENT, FlxColor.fromInt(0xFFDF52A7)]);
 		bgGrad.antialiasing = ClientPrefs.globalAntialiasing;
 		bgGrad.updateHitbox();
 		bgGrad.y = 300;
@@ -284,6 +287,7 @@ class TitleState extends MusicBeatState
 		logoBl.antialiasing = ClientPrefs.globalAntialiasing;
 		logoBl.setGraphicSize(Std.int(logoBl.width * 0.8));
 		logoBl.animation.addByPrefix('bump', 'logo bumpin', 24, false);
+		logoBl.animation.addByPrefix('press', 'logo press', 24, false);
 		logoBl.animation.play('bump');
 		logoBl.updateHitbox();
 		FlxTween.tween(logoBl, {
@@ -383,7 +387,7 @@ class TitleState extends MusicBeatState
 
 		FlxTween.tween(credTextShit, {y: credTextShit.y + 20}, 2.9, {ease: FlxEase.quadInOut, type: PINGPONG});
 
-		fgGrad = new FlxSprite().loadGraphic(Paths.image('titleGradient'));
+		fgGrad = FlxGradient.createGradientFlxSprite(1460, 821, [FlxColor.TRANSPARENT, FlxColor.fromInt(0xFFDF52A7)]);
 		fgGrad.antialiasing = ClientPrefs.globalAntialiasing;
 		fgGrad.updateHitbox();
 		fgGrad.alpha = 0.4;
@@ -453,6 +457,15 @@ class TitleState extends MusicBeatState
 		{
 			if (pressedEnter)
 			{
+				cantBump = true;
+				if (logoBl != null)
+					if (!idk) {
+						idk = true;
+						logoBl.animation.play('press');
+						new FlxTimer().start(0.3, (tmr: FlxTimer) -> {
+							logoBl.animation.stop();
+						});
+					}
 				if (titleText != null)
 					titleText.animation.play('press');
 
@@ -592,7 +605,8 @@ class TitleState extends MusicBeatState
 		super.beatHit();
 
 		if (logoBl != null)
-			logoBl.animation.play('bump', true);
+			if (!cantBump)
+				logoBl.animation.play('bump', true);
 
 		if (candance)
 		{
