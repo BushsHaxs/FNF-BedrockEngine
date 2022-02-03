@@ -67,16 +67,7 @@ class StrumNote extends FlxSprite
 
 		dev(dir);
 
-		var cpu:Bool;
-
-		cpu = ClientPrefs.getGameplaySetting('botplay', false);
-
 		skin = 'noteskins/'+noteSkin;
-
-		if (cpu)
-		{
-			skin = 'noteskins/classic';
-		}
 
 		/*
 		#if PSYCH_WATERMARKS

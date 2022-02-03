@@ -538,7 +538,7 @@ class FreeplayState extends MusicBeatState
 
 		lastDifficultyName = CoolUtil.difficulties[curDifficulty];
 
-		switch (curDifficulty)
+		switch (curDifficulty) //if you want to put colors on your custom difficulties, create a new case with your color of choice
 		{
 			case 0:
 				FlxTween.color(diffText, 0.3, diffText.color, FlxColor.LIME, {ease: FlxEase.quadInOut});
