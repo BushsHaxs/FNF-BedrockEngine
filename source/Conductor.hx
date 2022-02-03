@@ -41,7 +41,7 @@ class Conductor
 
 	public static var nonmultilmao_crochet:Float = ((60 / bpm) * 1000); // beats in milliseconds
 	public static var nonmultilmao_stepCrochet:Float = nonmultilmao_crochet / 4; // steps in milliseconds
-	//public static var marv:Bool;
+	public static var marv:Bool;
 	public static var dir:String = "gameplaySettings/gameplaySettings.json";
 
 
@@ -76,12 +76,12 @@ class Conductor
 				if (customJson != null && customJson.length > 0)
 				{
 					var poop:Dynamic = Json.parse(dir);
-					var marv:Bool = Reflect.getProperty(poop, "marvelouses");
+					marv = Reflect.getProperty(poop, "marvelouses");
 				}
 			}
 		
 		else
-			var marv:Bool = true;
+			marv = true;
 
 		var timingWindows:Array<Int> = [ClientPrefs.marvelousWindow, ClientPrefs.sickWindow, ClientPrefs.goodWindow, ClientPrefs.badWindow];
 		if (ClientPrefs.keAccuracy)
