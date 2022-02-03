@@ -214,9 +214,7 @@ You can now Change your Judgements' Appearance with the new UI Skins
 ![image](https://user-images.githubusercontent.com/45212377/150618407-b18087c6-96d1-4968-9b4f-c4e3e20ab859.png)
 ![image](https://user-images.githubusercontent.com/45212377/150618450-f25e5a73-2b2d-4304-ace9-5ae346a65c37.png)
 
-right now this feature is hardcoded, but I plan to make it softcoded soon
-
-in case you wanna add your own, on source, go to PlayState.hx, search for switch ``(ClientPrefs.uiSkin)``, then add a new case with a new name ad folder attached to it
+read the readme.txt on the settings folder formore information on how to add custom judgement skins
 
 ## Note Skins:
 
@@ -225,14 +223,15 @@ Change them in Visual and UI menu!
 
 ![image](https://imgyukle.com/f/2022/01/30/olXLUI.png)
 
+read the readme.txt on the settings folder for more information on how to add custom noteskins
 
 ## Winning Icons
-
-ATTENTION: DO NOT FORGET TO READ README FILE IN YOUR GAME IF YOU DO NOT WANT TO USE WINNING ICONS.
 
 ![image](https://user-images.githubusercontent.com/45212377/151046960-011d0af2-d638-4f30-9169-3e8dee41ba91.png)
 
 Template: ![icon-template](https://user-images.githubusercontent.com/45212377/151059381-3d366efc-65f8-42de-8cb1-dc90f65b1e9f.png)
+
+read the readme.txt file on the settings folder for more information on how to enable old icons
 
 ## and more!
 I will keep updating this fork as much as possible for it to be in sync with the main repository, and adding more features to it in the future!
