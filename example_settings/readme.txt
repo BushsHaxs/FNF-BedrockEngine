@@ -1,17 +1,16 @@
-more options will be ported to json.
+more options will be ported to this json file if needed.
 
 iconSupport means 300x150 icon support.
 those icons need to be placed on assets/images/icons-old or mods/images/icons-old
 
 --------------NOTE SKINS---------------
-
 Available note skins are:
 -NOTE_assets
 -NOTE_circle
 -NOTE_bar
 -NOTE_diamond
 -NOTE_step
--NOTE_osuarrow
+-NOTE_simplyarrow
 
 you can also add your own noteskins
 just place them on "mods/images/noteskins" or "assets/images/noteskins"
@@ -25,5 +24,8 @@ Available judgement skins are:
 you can also add your own judgement skins
 just place them on "mods/images/judgements" or "assets/shared/images/judgements"
 
-
 at the moment, botplay crashes no matter which noteskins or judgement skin you are using, this will be fixed soon
+
+-------UI SETINGS-------
+letterGrader on true means that the game will use Letter Ratings
+set it to false if you don't want it
