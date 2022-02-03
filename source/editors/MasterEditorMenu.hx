@@ -108,9 +108,6 @@ class MasterEditorMenu extends MusicBeatState
 		if (controls.BACK)
 		{
 			MusicBeatState.switchState(new MainMenuState());
-			if(ClientPrefs.lowEndMode) {
-				MusicBeatState.switchState(new SimpleMenuState());
-			}
 		}
 
 		if (controls.ACCEPT)

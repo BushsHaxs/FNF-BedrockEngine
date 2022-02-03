@@ -18,6 +18,7 @@ import flixel.util.FlxSort;
 import flixel.util.FlxTimer;
 import flixel.input.keyboard.FlxKey;
 import openfl.events.KeyboardEvent;
+import flixel.input.gamepad.FlxGamepad;
 import FunkinLua;
 
 using StringTools;
@@ -60,6 +61,9 @@ class EditorPlayState extends MusicBeatState
 	
 	// Less laggy controls
 	private var keysArray:Array<Dynamic>;
+	
+	// Shit used for controller
+	/*private var keyPressByController:Bool = false;*/
 
 	public static var instance:EditorPlayState;
 
@@ -177,11 +181,15 @@ class EditorPlayState extends MusicBeatState
 		FlxG.mouse.visible = false;
 
 		//sayGo();
+
 		if(!ClientPrefs.controllerMode)
 		{
 			FlxG.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
 			FlxG.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyRelease);
 		}
+		/*FlxG.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
+		FlxG.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyRelease);*/
+
 		super.create();
 	}
 
@@ -567,7 +575,7 @@ class EditorPlayState extends MusicBeatState
 		var key:Int = getKeyFromEvent(eventKey);
 		//trace('Pressed: ' + eventKey);
 
-		if (key > -1 && (FlxG.keys.checkStatus(eventKey, JUST_PRESSED) || ClientPrefs.controllerMode))
+		if (key > -1 && (FlxG.keys.checkStatus(eventKey, JUST_PRESSED) || ClientPrefs.controllerMode /*keyPressByController*/))
 		{
 			if(generatedMusic)
 			{
@@ -672,15 +680,18 @@ class EditorPlayState extends MusicBeatState
 
 	private function keyShit():Void
 	{
-
 		// HOLDING
 		var up = controls.NOTE_UP;
 		var right = controls.NOTE_RIGHT;
 		var down = controls.NOTE_DOWN;
 		var left = controls.NOTE_LEFT;
 		var controlHoldArray:Array<Bool> = [left, down, up, right];
-		
+
+		/*var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
+		keyPressByController = (gamepad != null && (!gamepad.justReleased.ANY || gamepad.pressed.ANY));*/
+
 		// TO DO: Find a better way to handle controller inputs, this should work for now
+		//if(keyPressByController)
 		if(ClientPrefs.controllerMode)
 		{
 			var controlArray:Array<Bool> = [controls.NOTE_LEFT_P, controls.NOTE_DOWN_P, controls.NOTE_UP_P, controls.NOTE_RIGHT_P];
@@ -709,6 +720,7 @@ class EditorPlayState extends MusicBeatState
 		}
 
 		// TO DO: Find a better way to handle controller inputs, this should work for now
+		//if(keyPressByController)
 		if(ClientPrefs.controllerMode)
 		{
 			var controlArray:Array<Bool> = [controls.NOTE_LEFT_R, controls.NOTE_DOWN_R, controls.NOTE_UP_R, controls.NOTE_RIGHT_R];
@@ -1048,6 +1060,8 @@ class EditorPlayState extends MusicBeatState
 			FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
 			FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyRelease);
 		}
+		/*FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
+		FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyRelease);*/
 
 		super.destroy();
 	}

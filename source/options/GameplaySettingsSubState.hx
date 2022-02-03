@@ -34,45 +34,76 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		title = 'Gameplay Settings';
 		rpcTitle = 'Adjusting the Gameplay Settings'; //for Discord Rich Presence
 
-		var option:Option = new Option('Center Notes', 'If checked, your notes get centered.', 'middleScroll', 'bool', false);
-	addOption(option);
-
-		var Option = new Option('Complex Accuracy', "If checked, the accuracy will follow a harsher system, Based on Etterna and Kade Engine", 'keAccuracy', 'bool', false);
+		var Option = new Option('Complex Accuracy',
+		"If checked, the accuracy will follow a harsher system, Based on Etterna and Kade Engine.",
+		'keAccuracy',
+		'bool',
+		false);
 	addOption(Option);
 
-		var option:Option = new Option('Controller Mode', 'Check this if you want to play with\na controller instead of using your Keyboard.', 'controllerMode', 'bool', false);
+		var option:Option = new Option('Disable Reset Button',
+		"If checked, pressing Reset won't do anything.",
+		'noReset',
+		'bool',
+		false);
 	addOption(option);
 
-		var option:Option = new Option('Disable Reset Button', "If checked, pressing Reset won't do anything.", 'noReset', 'bool', false);
-	addOption(option);
-
-		var option:Option = new Option('Camera Movements','if unchecked, the camera won\'t follow the pressed notes.', 'dynamicCam', 'bool', true);
+		var option:Option = new Option('Camera Movements',
+		'if unchecked, the camera won\'t follow the pressed notes.',
+		'dynamicCam',
+		'bool',
+		true);
 	addOption(option);
 
 		//I'd suggest using "Downscroll" as an example for making your own option since it is the simplest here
 		var option:Option = new Option('Downscroll', //Name
-			'If checked, notes go Down instead of Up, simple enough.', //Description
-			'downScroll', //Save data variable name
-			'bool', //Variable type
-			false); //Default value
+		'If checked, notes go Down instead of Up, simple enough.', //Description
+		'downScroll', //Save data variable name
+		'bool', //Variable type
+		false); //Default value
 	addOption(option);
 		
-		var option:Option = new Option('Ghost Tapping', "If checked, you won't get misses from pressing keys\nwhile there are no notes able to be hit.", 'ghostTapping', 'bool', true);
+		var option:Option = new Option('Ghost Tapping',
+		"If checked, you won't get misses from pressing keys\nwhile there are no notes able to be hit.",
+		'ghostTapping',
+		'bool',
+		true);
 	addOption(option);
 
-		var option:Option = new Option('Instant Respawn', "If checked, skips the Game Over Screen entirely.", 'instantRespawn', 'bool', false);
+		var option:Option = new Option('Instant Respawn',
+		"If checked, skips the Game Over Screen entirely.",
+		'instantRespawn',
+		'bool',
+		false);
 	addOption(option);
 
-		var option:Option = new Option('Letter Grades', "If unchecked, engine won't use letter ratings, letters are based on Yoshubs' Forever Engine.", 'letterGrades', 'bool', true);
+
+		var option:Option = new Option('Marvelous Ratings',
+		'If unchecked, marvelous ratings will disappear.',
+		'marvelouses',
+		'bool',
+		true);
 	addOption(option);
 
-		var option:Option = new Option('Marvelous Ratings', 'If unchecked, marvelous ratings will disappear.', 'marvelouses', 'bool', true);
+	var option:Option = new Option('Middlescroll',
+		'If checked, your notes get centered.',
+		'middleScroll',
+		'bool',
+		false);
 	addOption(option);
 
-		var option:Option = new Option('Play Hit Sounds', "If checked, will play a sound when you hit a note", 'playHitSounds', 'bool', false);
+		var option:Option = new Option('Play Hit Sounds',
+		"If checked, will play a sound when you hit a note",
+		'playHitSounds',
+		'bool',
+		false);
 	addOption(option);
 
-		var option:Option = new Option('Play Miss Sounds', "If unchecked, sounds for when you miss a Note will be disabled entirely", 'playMissSounds', 'bool', true);
+		var option:Option = new Option('Play Miss Sounds',
+		"If unchecked, sounds for when you miss a Note will be disabled entirely",
+		'playMissSounds',
+		'bool',
+		true);
 	addOption(option);
 
 		/*var option:Option = new Option('Note Delay',
@@ -95,17 +126,6 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		option.scrollSpeed = 20;
 		option.minValue = -30;
 		option.maxValue = 30;
-		addOption(option);
-
-		var option:Option = new Option('Marvelous! Hit Window',
-			'Changes the amount of time you have\nfor hitting a "Marvelous!" in milliseconds.',
-			'marvelousWindow',
-			'int',
-			35);
-		option.displayFormat = '%vms';
-		option.scrollSpeed = 15;
-		option.minValue = 15;
-		option.maxValue = 25;
 		addOption(option);
 
 		var option:Option = new Option('Sick! Hit Window',

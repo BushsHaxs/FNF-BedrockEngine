@@ -39,12 +39,10 @@ class BaseOptionsMenu extends MusicBeatSubstate
 
 	private var boyfriend:Character = null;
 	private var previewNotes:AttachedSprite;
-	private var previewJudgements:AttachedSprite;
 	private var descBox:FlxSprite;
 	private var descText:FlxText;
 
 	private var previewNoteOption:Option;
-	private var previewJudgementOption:Option;
 
 	public var title:String;
 	public var rpcTitle:String;
@@ -54,7 +52,7 @@ class BaseOptionsMenu extends MusicBeatSubstate
 		super();
 
 		if(title == null) title = 'Options';
-		if(rpcTitle == null) rpcTitle = 'In the Options Menu';
+		if(rpcTitle == null) rpcTitle = 'in the Options Menu';
 		
 		#if desktop
 		DiscordClient.changePresence(rpcTitle, null);
@@ -103,67 +101,52 @@ class BaseOptionsMenu extends MusicBeatSubstate
 			optionText.targetY = i;
 			grpOptions.add(optionText);
 
-				var textChild:AttachedText = null;
-				if(optionsArray[i].type == 'bool') {
-					var checkbox:CheckboxThingie = new CheckboxThingie(optionText.x - 105, optionText.y, optionsArray[i].getValue() == true);
-					checkbox.sprTracker = optionText;
-					checkbox.ID = i;
-					checkboxGroup.add(checkbox);
-				} else {
-					optionText.x -= 80;
-					optionText.xAdd -= 80;
-					textChild = new AttachedText('' + optionsArray[i].getValue(), optionText.width + 80);
-					textChild.sprTracker = optionText;
-					textChild.copyAlpha = true;
-					textChild.ID = i;
-					grpTexts.add(textChild);
-					optionsArray[i].setChild(textChild);
-				}
-
-				if(optionsArray[i].showBoyfriend && boyfriend == null)
-				{
-					reloadBoyfriend();
-				}
-				if(optionsArray[i].showNotes && previewNotes == null)
-				{
-					var colorSwap:ColorSwap = new ColorSwap();
-					colorSwap.hue = ClientPrefs.arrowHSV[2][0] / 360;
-					colorSwap.saturation = ClientPrefs.arrowHSV[2][1] / 100;
-					colorSwap.brightness = ClientPrefs.arrowHSV[2][2] / 100;
-
-					previewNotes = new AttachedSprite();
-					previewNotes.loadGraphic(Paths.image('noteGrid'), true, 164, 164);
-					previewNotes.shader = colorSwap.shader;
-					previewNotes.animation.add('frames', [0, 1, 2, 3, 4], 0);
-					previewNotes.animation.play('frames');
-					previewNotes.sprTracker = textChild;
-					previewNoteOption = optionsArray[i];
-					previewNotes.setGraphicSize(Std.int(previewNotes.width * 0.7));
-					previewNotes.updateHitbox();
-					previewNotes.yAdd = 20;
-					add(previewNotes);
-					updateNotes();
-				/*if(optionsArray[i].showMarv && previewJudgements == null)
-				{
-					previewJudgements = new AttachedSprite();
-					previewJudgements.loadGraphic(Paths.image('judgementGrid'), true, 164, 164);
-					previewJudgements.shader = colorSwap.shader;
-					previewJudgements.animation.add('frames', [0, 1], 0);
-					previewJudgements.animation.play('frames');
-					previewJudgements.sprTracker = textChild;
-					previewJudgementOption = optionsArray[i];
-					previewJudgements.setGraphicSize(Std.int(previewJudgements.width * 0.7));
-					previewJudgements.updateHitbox();
-					previewJudgements.yAdd = 20;
-					add(previewJudgements);
-					updateJudgements();
-				}*/
-				updateTextFrom(optionsArray[i]);
+			var textChild:AttachedText = null;
+			if(optionsArray[i].type == 'bool') {
+				var checkbox:CheckboxThingie = new CheckboxThingie(optionText.x - 105, optionText.y, optionsArray[i].getValue() == true);
+				checkbox.sprTracker = optionText;
+				checkbox.ID = i;
+				checkboxGroup.add(checkbox);
+			} else {
+				optionText.x -= 80;
+				optionText.xAdd -= 80;
+				textChild = new AttachedText('' + optionsArray[i].getValue(), optionText.width + 80);
+				textChild.sprTracker = optionText;
+				textChild.copyAlpha = true;
+				textChild.ID = i;
+				grpTexts.add(textChild);
+				optionsArray[i].setChild(textChild);
 			}
 
-			changeSelection();
-			reloadCheckboxes();
+			if(optionsArray[i].showBoyfriend && boyfriend == null)
+			{
+				reloadBoyfriend();
+			}
+			if(optionsArray[i].showNotes && previewNotes == null)
+			{
+				var colorSwap:ColorSwap = new ColorSwap();
+				colorSwap.hue = ClientPrefs.arrowHSV[2][0] / 360;
+				colorSwap.saturation = ClientPrefs.arrowHSV[2][1] / 100;
+				colorSwap.brightness = ClientPrefs.arrowHSV[2][2] / 100;
+
+				previewNotes = new AttachedSprite();
+				previewNotes.loadGraphic(Paths.image('noteGrid'), true, 164, 164);
+				previewNotes.shader = colorSwap.shader;
+				previewNotes.animation.add('frames', [0, 1, 2, 3], 0);
+				previewNotes.animation.play('frames');
+				previewNotes.sprTracker = textChild;
+				previewNoteOption = optionsArray[i];
+				previewNotes.setGraphicSize(Std.int(previewNotes.width * 0.7));
+				previewNotes.updateHitbox();
+				previewNotes.yAdd = 20;
+				add(previewNotes);
+				updateNotes();
+			}
+			updateTextFrom(optionsArray[i]);
 		}
+
+		changeSelection();
+		reloadCheckboxes();
 	}
 
 	public function updateNotes()
@@ -171,11 +154,6 @@ class BaseOptionsMenu extends MusicBeatSubstate
 		previewNotes.animation.curAnim.curFrame = previewNoteOption.curOption;
 		previewNotes.xAdd = previewNotes.sprTracker.width + 20;
 	}
-	/*public function updateJudgements()
-	{
-		previewJudgements.animation.curAnim.curFrame = previewJudgementOption.curOption;
-		previewJudgements.xAdd = previewJudgements.sprTracker.width + 20;
-	}*/
 
 	public function addOption(option:Option) {
 		if(optionsArray == null || optionsArray.length < 1) optionsArray = [];
@@ -185,15 +163,34 @@ class BaseOptionsMenu extends MusicBeatSubstate
 	var nextAccept:Int = 5;
 	var holdTime:Float = 0;
 	var holdValue:Float = 0;
+	
 	override function update(elapsed:Float)
 	{
+		var shiftMult:Int = 1;
+		if (FlxG.keys.pressed.SHIFT)
+			shiftMult = 3;
+
 		if (controls.UI_UP_P)
 		{
-			changeSelection(-1);
+			changeSelection(-shiftMult);
+			holdTime = 0;
 		}
 		if (controls.UI_DOWN_P)
 		{
-			changeSelection(1);
+			changeSelection(shiftMult);
+			holdTime = 0;
+		}
+
+		if (controls.UI_DOWN || controls.UI_UP)
+		{
+			var checkLastHold:Int = Math.floor((holdTime - 0.5) * 10);
+			holdTime += elapsed;
+			var checkNewHold:Int = Math.floor((holdTime - 0.5) * 10);
+
+			if (holdTime > 0.5 && checkNewHold - checkLastHold > 0)
+			{
+				changeSelection((checkNewHold - checkLastHold) * (controls.UI_UP ? -shiftMult : shiftMult));
+			}
 		}
 
 		if (controls.BACK) {
@@ -314,6 +311,10 @@ class BaseOptionsMenu extends MusicBeatSubstate
 		if(boyfriend != null && boyfriend.animation.curAnim.finished) {
 			boyfriend.dance();
 		}
+		if(previewNotes != null)
+		{
+			previewNotes.visible = optionsArray[curSelected].showNotes;
+		}
 
 		if(nextAccept > 0) {
 			nextAccept -= 1;
@@ -337,8 +338,11 @@ class BaseOptionsMenu extends MusicBeatSubstate
 		holdTime = 0;
 	}
 	
-	function changeSelection(change:Int = 0)
+	function changeSelection(change:Int = 0, playSound:Bool = true)
 	{
+		if (playSound)
+			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+
 		curSelected += change;
 		if (curSelected < 0)
 			curSelected = optionsArray.length - 1;
@@ -375,16 +379,7 @@ class BaseOptionsMenu extends MusicBeatSubstate
 		{
 			boyfriend.visible = optionsArray[curSelected].showBoyfriend;
 		}
-		if(previewNotes != null)
-		{
-			previewNotes.visible = optionsArray[curSelected].showNotes;
-		}
-		/*if(previewJudgements != null)
-		{
-			previewJudgements.visible = optionsArray[curSelected].showMarv;
-		}*/
 		curOption = optionsArray[curSelected]; //shorter lol
-		FlxG.sound.play(Paths.sound('scrollMenu'));
 	}
 
 	public function reloadBoyfriend()

@@ -3,6 +3,11 @@ package;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.graphics.frames.FlxAtlasFrames;
+#if sys
+import sys.io.File;
+import sys.FileSystem;
+#end
+import haxe.Json;
 
 using StringTools;
 
@@ -14,6 +19,10 @@ class StrumNote extends FlxSprite
 	public var direction:Float = 90;//plan on doing scroll directions soon -bb
 	public var downScroll:Bool = false;//plan on doing scroll directions soon -bb
 	public var sustainReduce:Bool = true;
+	public var noteSkin:String;
+	public var dir:String = "settings/uiSettings.json";
+	
+	
 	
 	private var player:Int;
 	
@@ -26,6 +35,24 @@ class StrumNote extends FlxSprite
 		return value;
 	}
 
+	public function dev(dir:String)
+		{
+
+			if(FileSystem.exists(dir))
+			{
+				var customJson:String = File.getContent(dir);
+				if (customJson != null && customJson.length > 0)
+				{
+					var shit:Dynamic = Json.parse(customJson);
+					var noteSkin = Reflect.getProperty(shit, "noteSkin");
+
+					if (noteSkin != null && noteSkin.length > 0)
+						this.noteSkin = noteSkin;
+					
+				}
+			}
+		}
+
 	public function new(x:Float, y:Float, leData:Int, player:Int) {
 		colorSwap = new ColorSwap();
 		shader = colorSwap.shader;
@@ -37,16 +64,25 @@ class StrumNote extends FlxSprite
 		var skin:String = '';
 	/*	if(PlayState.SONG.arrowSkin != null && PlayState.SONG.arrowSkin.length > 1) skin = PlayState.SONG.arrowSkin; */
 
-		if (ClientPrefs.noteSkin=='Default')
-			skin = 'noteskins/NOTE_assets';
-		else if (ClientPrefs.noteSkin=='Bar')
-			skin = 'noteskins/NOTE_bar';
-		else if (ClientPrefs.noteSkin=='Diamond')
-			skin = 'noteskins/NOTE_diamond';
-		else if (ClientPrefs.noteSkin=='Stepmania')
-			skin = 'noteskins/NOTE_step';
-		else
-			skin = 'noteskins/NOTE_circle';
+
+		dev(dir);
+
+		var cpu:Bool;
+
+		cpu = ClientPrefs.getGameplaySetting('botplay', false);
+
+		skin = 'noteskins/'+noteSkin;
+
+		if (cpu)
+		{
+			skin = 'noteskins/classic';
+		}
+
+		/*
+		#if PSYCH_WATERMARKS
+		skin = 'classic';
+		#end
+		*/
 
 		texture = skin; //Load texture and anims
 

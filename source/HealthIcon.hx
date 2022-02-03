@@ -3,9 +3,13 @@ package;
 import flixel.math.FlxMath;
 import flixel.FlxSprite;
 import openfl.utils.Assets as OpenFlAssets;
+import haxe.Json;
+import haxe.format.JsonParser;
 #if sys
+import sys.io.File;
 import sys.FileSystem;
 #end
+import haxe.Json;
 
 using StringTools;
 
@@ -17,8 +21,26 @@ class HealthIcon extends FlxSprite
 	private var isOldIcon:Bool = false;
 	private var isPlayer:Bool = false;
 	private var char:String = '';
+	
+	public var iconSupport:Bool;
+	public var dir:String = "settings/uiSettings.json";
+	
+	public function dev(dir:String)
+		{
+			this.iconSupport = false;
 
-	public static var iconSupport:Bool = false;
+			if(FileSystem.exists(dir))
+			{
+				var customJson:String = File.getContent(dir);
+				if (customJson != null && customJson.length > 0)
+				{
+					var shit:Dynamic = Json.parse(customJson);
+					var iconSupport:Bool = Reflect.getProperty(shit, "iconSupport");
+
+					this.iconSupport = iconSupport;
+				}
+			}
+		}
 
 	public function new(char:String = 'bf', isPlayer:Bool = false)
 	{
@@ -56,18 +78,11 @@ class HealthIcon extends FlxSprite
 
 	public function changeIcon(char:String) // this should stay like this until i find a way to softcode
 	{
+		dev(dir);
 		if (this.char != char)
 		{
-			if (!FileSystem.exists('mods/images/iconSupport.txt'))
-			{
-				// trace(iconSupport);
-			}
-			else
-			{
-				iconSupport = true;
-				// trace(iconSupport);
-			}
-			if (iconSupport)
+			
+			if (!iconSupport)
 			{
 				var name:String = 'icons/' + char;
 				if (!Paths.fileExists('images/' + name + '.png', IMAGE))

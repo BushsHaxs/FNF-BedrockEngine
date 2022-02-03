@@ -23,6 +23,10 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxTimer;
 import flixel.input.keyboard.FlxKey;
 import flixel.graphics.FlxGraphic;
+#if sys
+import sys.FileSystem;
+import sys.io.File;
+#end
 import Controls;
 
 using StringTools;
@@ -42,6 +46,29 @@ class NotesSubState extends MusicBeatSubstate
 	var hsbText:Alphabet;
 
 	var posX = 230;
+
+	
+	public var noteSkin:String;
+	public var dir:String = "settings/uiSettings.json";
+	
+	public function dev(dir:String)
+		{
+
+			if(FileSystem.exists(dir))
+			{
+				var customJson:String = File.getContent(dir);
+				if (customJson != null && customJson.length > 0)
+				{
+					var shit:Dynamic = Json.parse(customJson);
+					var noteSkin = Reflect.getProperty(shit, "noteSkin");
+
+					if (noteSkin != null && noteSkin.length > 0)
+						this.noteSkin = noteSkin;
+					
+				}
+			}
+		}
+
 	public function new() {
 		super();
 		
@@ -70,19 +97,9 @@ class NotesSubState extends MusicBeatSubstate
 
 			var note:FlxSprite = new FlxSprite(posX, yPos);
 			
-			switch(ClientPrefs.noteSkin)
-			{
-				case "Default":
-					note.frames = Paths.getSparrowAtlas('noteskins/NOTE_assets');
-				case "Circle":
-					note.frames = Paths.getSparrowAtlas('noteskins/NOTE_circle');
-				case "Bar":
-					note.frames = Paths.getSparrowAtlas('noteskins/NOTE_bar');
-				case "Diamond":
-					note.frames = Paths.getSparrowAtlas('noteskins/NOTE_diamond');
-				case "Stepmania":
-					note.frames = Paths.getSparrowAtlas('noteskins/NOTE_step');
-			}
+			dev(dir);
+			
+			note.frames = Paths.getSparrowAtlas('noteskins/'+noteSkin);
 					
 			var animations:Array<String> = ['purple0', 'blue0', 'green0', 'red0'];
 			note.animation.addByPrefix('idle', animations[i]);
@@ -107,6 +124,10 @@ class NotesSubState extends MusicBeatSubstate
 
 	var changingNote:Bool = false;
 	override function update(elapsed:Float) {
+		var shiftMult:Int = 1;
+		if (FlxG.keys.pressed.SHIFT)
+			shiftMult = 3;
+
 		if(changingNote) {
 			if(holdTime < 0.5) {
 				if(controls.UI_LEFT_P) {
@@ -141,12 +162,22 @@ class NotesSubState extends MusicBeatSubstate
 			}
 		} else {
 			if (controls.UI_UP_P) {
-				changeSelection(-1);
-				FlxG.sound.play(Paths.sound('scrollMenu'));
+				changeSelection(-shiftMult);
+				holdTime = 0;
 			}
 			if (controls.UI_DOWN_P) {
-				changeSelection(1);
-				FlxG.sound.play(Paths.sound('scrollMenu'));
+				changeSelection(shiftMult);
+				holdTime = 0;
+			}
+			if (controls.UI_DOWN || controls.UI_UP) {
+				var checkLastHold:Int = Math.floor((holdTime - 0.5) * 10);
+				holdTime += elapsed;
+				var checkNewHold:Int = Math.floor((holdTime - 0.5) * 10);
+
+				if (holdTime > 0.5 && checkNewHold - checkLastHold > 0)
+				{
+					changeSelection((checkNewHold - checkLastHold) * (controls.UI_UP ? -shiftMult : shiftMult));
+				}
 			}
 			if (controls.UI_LEFT_P) {
 				changeType(-1);
@@ -201,7 +232,9 @@ class NotesSubState extends MusicBeatSubstate
 		super.update(elapsed);
 	}
 
-	function changeSelection(change:Int = 0) {
+	function changeSelection(change:Int = 0, playSound:Bool = true) {
+		if (playSound)
+			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 		curSelected += change;
 		if (curSelected < 0)
 			curSelected = ClientPrefs.arrowHSV.length-1;
@@ -229,7 +262,6 @@ class NotesSubState extends MusicBeatSubstate
 				blackBG.y = item.y - 20;
 			}
 		}
-		FlxG.sound.play(Paths.sound('scrollMenu'));
 	}
 
 	function changeType(change:Int = 0) {

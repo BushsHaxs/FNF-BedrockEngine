@@ -41,7 +41,11 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 		option.onChange = onChangeAntiAliasing; //Changing onChange is only needed if you want to make a special interaction after it changes the value
 		addOption(option);
 
-		var option:Option = new Option('Disable Characters', 'If checked, disable stage characters in order to improve performance, may not improve as much as other options.', 'disableChars', 'bool', true);
+		var option:Option = new Option('Disable Characters',
+		'If checked, disable stage characters in order to improve performance, may not improve as much as other options.',
+		'disableChars',
+		'bool',
+		true);
 		//addOption(option);
 
 		#if !html5 //Apparently other framerates isn't correctly supported on Browser? Probably it has some V-Sync shit enabled by default, idk
@@ -57,7 +61,11 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 		option.displayFormat = '%v FPS';
 		option.onChange = onChangeFramerate;
 
-		var option:Option = new Option('Hide Girlfriend', "If checked, this will hide Girlfriend from Stages, improving performance, this does not apply if she's the Opponent", 'hideGf', 'bool', false);
+		var option:Option = new Option('Hide Girlfriend',
+		"If checked, this will hide Girlfriend from Stages, improving performance, this does not apply if she's the Opponent",
+		'hideGf',
+		'bool',
+		false);
 		addOption(option);
 
 		//I'd suggest using "Low Quality" as an example for making your own option since it is the simplest here
@@ -68,10 +76,11 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 			false); //Default value
 		addOption(option);
 
-		var option:Option = new Option('Simple Main Menu', 'If checked, disables all menu details and makes it more simple, \nthis should also decrease loading times for the Main Menu', 'lowEndMode', 'bool', false);
-		addOption(option);
-
-		var option:Option = new Option('Max Optimization', 'If checked, disables everything except the HUD.', 'maxOptimization', 'bool', false);
+		var option:Option = new Option('Max Optimization',
+		'If checked, disables everything except the HUD.',
+		'maxOptimization',
+		'bool',
+		false);
 		addOption(option);
 		
 		#end

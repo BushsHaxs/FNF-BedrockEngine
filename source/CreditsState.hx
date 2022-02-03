@@ -134,6 +134,13 @@ class CreditsState extends MusicBeatState
 				'ff0062'
 			],
 			[
+				'Gazozoz',
+				'gazozoz',
+				'Camera Movement Code',
+				'https://twitter.com/Gazozoz_',
+				'982f2F'
+			],
+			[
 				'Prynnho',
 				'prynn',
 				'Rich Presence Designer',
@@ -430,8 +437,6 @@ class CreditsState extends MusicBeatState
 			}
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			MusicBeatState.switchState(new MainMenuState());
-			if (ClientPrefs.lowEndMode)
-				MusicBeatState.switchState(new SimpleMenuState());
 		}
 		if (FlxG.keys.pressed.ENTER)
 		{
