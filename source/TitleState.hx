@@ -303,7 +303,7 @@ class TitleState extends MusicBeatState
 		gfDance = new FlxSprite(titleJSON.gfx, titleJSON.gfy);
 
 		#if (desktop && MODS_ALLOWED)
-		var path = "mods/" + Paths.currentModDirectory + "/images/GF_ass_sets.png";
+		var path = "mods/" + Paths.currentModDirectory + "/images/gfDanceTitle.png";
 		// trace(path, FileSystem.exists(path));
 		if (!FileSystem.exists(path))
 		{
