@@ -79,7 +79,23 @@ class Note extends FlxSprite
 	public var noteSkin:String;
 	public var dir:String = "settings/uiSettings.json";
 	
+	public function dev(dir:String)
+		{
 
+			if(FileSystem.exists(dir))
+			{
+				var customJson:String = File.getContent(dir);
+				if (customJson != null && customJson.length > 0)
+				{
+					var shit:Dynamic = Json.parse(customJson);
+					var noteSkin = Reflect.getProperty(shit, "noteSkin");
+
+					if (noteSkin != null && noteSkin.length > 0)
+						this.noteSkin = noteSkin;
+					
+				}
+			}
+		}
 
 	private function set_texture(value:String):String
 	{
@@ -251,24 +267,8 @@ class Note extends FlxSprite
 		x += offsetX;
 	}
 
-	function reloadNote(?prefix:String = '', ?texture:String = '', ?suffix:String = '', dir:String)
+	function reloadNote(?prefix:String = '', ?texture:String = '', ?suffix:String = '')
 	{
-		if(FileSystem.exists(dir))
-			{
-				var customJson:String = File.getContent(dir);
-				if (customJson != null && customJson.length > 0)
-				{
-					var shit:Dynamic = Json.parse(customJson);
-					var noteSkin = Reflect.getProperty(shit, "noteSkin");
-
-					if (noteSkin != null && noteSkin.length > 0)
-						this.noteSkin = noteSkin;
-					else 
-						this.noteSkin = 'NOTE_assets';
-					
-				}
-			}
-
 		if (prefix == null)
 			prefix = '';
 		if (texture == null)
@@ -279,6 +279,7 @@ class Note extends FlxSprite
 		var skin:String = texture;
 		if (texture.length < 1)
 		{
+			dev(dir);
 			skin = PlayState.SONG.arrowSkin;
 			if (skin == null || skin.length < 1)
 			{

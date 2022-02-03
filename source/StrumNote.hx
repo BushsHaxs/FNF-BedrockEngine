@@ -19,6 +19,8 @@ class StrumNote extends FlxSprite
 	public var direction:Float = 90;//plan on doing scroll directions soon -bb
 	public var downScroll:Bool = false;//plan on doing scroll directions soon -bb
 	public var sustainReduce:Bool = true;
+	public var noteSkin:String;
+	public var dir:String = "settings/uiSettings.json";
 	
 	
 	
@@ -33,12 +35,10 @@ class StrumNote extends FlxSprite
 		return value;
 	}
 
-	public var noteSkin:String;
-	public var dir:String = "settings/uiSettings.json";
+	public function dev(dir:String)
+		{
 
-	public function new(x:Float, y:Float, leData:Int, player:Int, dir:String) {
-
-		if(FileSystem.exists(dir))
+			if(FileSystem.exists(dir))
 			{
 				var customJson:String = File.getContent(dir);
 				if (customJson != null && customJson.length > 0)
@@ -48,12 +48,12 @@ class StrumNote extends FlxSprite
 
 					if (noteSkin != null && noteSkin.length > 0)
 						this.noteSkin = noteSkin;
-					else 
-						this.noteSkin = 'NOTE_assets';
 					
 				}
 			}
+		}
 
+	public function new(x:Float, y:Float, leData:Int, player:Int) {
 		colorSwap = new ColorSwap();
 		shader = colorSwap.shader;
 		noteData = leData;
@@ -61,10 +61,19 @@ class StrumNote extends FlxSprite
 		this.noteData = leData;
 		super(x, y);
 
-		var skin:String = 'noteskins/' + noteSkin;
+		var skin:String = '';
+	/*	if(PlayState.SONG.arrowSkin != null && PlayState.SONG.arrowSkin.length > 1) skin = PlayState.SONG.arrowSkin; */
 
-		if(PlayState.SONG.arrowSkin != null && PlayState.SONG.arrowSkin.length > 1) skin = PlayState.SONG.arrowSkin; 
-		/*this will probably wont work, unless you change it because arrowSkin will allways be null*/
+
+		dev(dir);
+
+		skin = 'noteskins/'+noteSkin;
+
+		/*
+		#if PSYCH_WATERMARKS
+		skin = 'classic';
+		#end
+		*/
 
 		texture = skin; //Load texture and anims
 
