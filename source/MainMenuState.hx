@@ -433,8 +433,6 @@ class MainMenuState extends MusicBeatState
 				/*var library:String = 'shared';*/
 				switch (ClientPrefs.noteSkin)
 				{
-					case 'Default':
-						assets = 'noteskins/NOTE_assets';
 					case 'Bar':
 						assets = 'noteskins/NOTE_bar';
 					case 'Circle':
@@ -443,10 +441,12 @@ class MainMenuState extends MusicBeatState
 						assets = 'noteskins/NOTE_diamond';
 					case 'Stepmania':
 						assets = 'noteskins/NOTE_step';
+					default:
+						assets = 'noteskins/NOTE_assets';
 				}
 				{
 					note1 = new FlxSprite();
-					note1.frames = Paths.getSparrowAtlas(assets/*, library*/);
+					note1.frames = Paths.getSparrowAtlas(assets /*, library*/);
 					note1.scrollFactor.set();
 					note1.antialiasing = ClientPrefs.globalAntialiasing;
 					note1.animation.addByPrefix('purpleScroll', 'purple0', 24, false);
@@ -480,7 +480,7 @@ class MainMenuState extends MusicBeatState
 							FlxTween.tween(note1, {alpha: 0}, 8.5);
 					}
 					note2 = new FlxSprite();
-					note2.frames = Paths.getSparrowAtlas(assets/*, library*/);
+					note2.frames = Paths.getSparrowAtlas(assets /*, library*/);
 					note2.scrollFactor.set();
 					note2.antialiasing = ClientPrefs.globalAntialiasing;
 					note2.animation.addByPrefix('blueScroll', 'blue0');
@@ -514,7 +514,7 @@ class MainMenuState extends MusicBeatState
 							FlxTween.tween(note2, {alpha: 0}, 8.6);
 					}
 					note3 = new FlxSprite();
-					note3.frames = Paths.getSparrowAtlas(assets/*, library*/);
+					note3.frames = Paths.getSparrowAtlas(assets /*, library*/);
 					note3.scrollFactor.set();
 					note3.antialiasing = ClientPrefs.globalAntialiasing;
 					note3.animation.addByPrefix('greenScroll', 'green0');
@@ -548,7 +548,7 @@ class MainMenuState extends MusicBeatState
 							FlxTween.tween(note3, {alpha: 0}, 8.9);
 					}
 					note4 = new FlxSprite();
-					note4.frames = Paths.getSparrowAtlas(assets/*, library*/);
+					note4.frames = Paths.getSparrowAtlas(assets /*, library*/);
 					note4.scrollFactor.set();
 					note4.antialiasing = ClientPrefs.globalAntialiasing;
 					note4.animation.addByPrefix('redScroll', 'red0');
@@ -582,7 +582,7 @@ class MainMenuState extends MusicBeatState
 							FlxTween.tween(note4, {alpha: 0}, 8.5);
 					}
 					note5 = new FlxSprite();
-					note5.frames = Paths.getSparrowAtlas(assets/*, library*/);
+					note5.frames = Paths.getSparrowAtlas(assets /*, library*/);
 					note5.scrollFactor.set();
 					note5.antialiasing = ClientPrefs.globalAntialiasing;
 					note5.animation.addByPrefix('purpleScroll', 'purple0', 24, false);
@@ -625,7 +625,7 @@ class MainMenuState extends MusicBeatState
 							note5.y - 800;
 					}
 					note6 = new FlxSprite();
-					note6.frames = Paths.getSparrowAtlas(assets/*, library*/);
+					note6.frames = Paths.getSparrowAtlas(assets /*, library*/);
 					note6.scrollFactor.set();
 					note6.antialiasing = ClientPrefs.globalAntialiasing;
 					note6.animation.addByPrefix('blueScroll', 'blue0');
@@ -668,7 +668,7 @@ class MainMenuState extends MusicBeatState
 							note6.y - 800;
 					}
 					note7 = new FlxSprite();
-					note7.frames = Paths.getSparrowAtlas(assets/*, library*/);
+					note7.frames = Paths.getSparrowAtlas(assets /*, library*/);
 					note7.scrollFactor.set();
 					note7.antialiasing = ClientPrefs.globalAntialiasing;
 					note7.animation.addByPrefix('greenScroll', 'green0');
@@ -712,7 +712,7 @@ class MainMenuState extends MusicBeatState
 					}
 
 					note8 = new FlxSprite();
-					note8.frames = Paths.getSparrowAtlas(assets/*, library*/);
+					note8.frames = Paths.getSparrowAtlas(assets /*, library*/);
 					note8.scrollFactor.set();
 					note8.antialiasing = ClientPrefs.globalAntialiasing;
 					note8.animation.addByPrefix('redScroll', 'red0');
@@ -782,14 +782,6 @@ class MainMenuState extends MusicBeatState
 					{
 						note4.y += 1 / (ClientPrefs.framerate / 100);
 					}
-					if (note1.y > 800)
-						note1go = true;
-					if (note2.y > 800)
-						note2go = true;
-					if (note3.y > 800)
-						note3go = true;
-					if (note4.y > 800)
-						note4go = true;
 					if (note5.y < 800)
 					{
 						note5.y += 1 / (ClientPrefs.framerate / 100);
@@ -806,6 +798,14 @@ class MainMenuState extends MusicBeatState
 					{
 						note8.y += 1 / (ClientPrefs.framerate / 100);
 					}
+					if (note1.y > 800)
+						note1go = true;
+					if (note2.y > 800)
+						note2go = true;
+					if (note3.y > 800)
+						note3go = true;
+					if (note4.y > 800)
+						note4go = true;
 					if (note5.y > 800)
 						note5go = true;
 					if (note6.y > 800)
