@@ -4085,7 +4085,7 @@ class PlayState extends MusicBeatState
 				if (!ClientPrefs.marvelouses)
 					totalNotesHit += 1;
 				else
-					totalNotesHit += 0.935;
+					totalNotesHit += 0.95;
 				sicks++;
 			case "marvelous": // marvelous
 				totalNotesHit += 1;
