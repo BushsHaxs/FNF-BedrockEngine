@@ -3,6 +3,11 @@ package;
 import flixel.FlxG;
 import flixel.math.FlxMath;
 import Song.SwagSong;
+import haxe.Json;
+#if sys
+import sys.io.File;
+import sys.FileSystem;
+#end
 
 /**
  * ...
@@ -36,6 +41,10 @@ class Conductor
 
 	public static var nonmultilmao_crochet:Float = ((60 / bpm) * 1000); // beats in milliseconds
 	public static var nonmultilmao_stepCrochet:Float = nonmultilmao_crochet / 4; // steps in milliseconds
+	//public static var marv:Bool;
+	public static var dir:String = "gameplaySettings/gameplaySettings.json";
+
+
 
 	public function new()
 	{
@@ -58,8 +67,22 @@ class Conductor
 		}
 	}
 
-	public static function judgeNote(note:Note, diff:Float=0) //STOLEN FROM KADE ENGINE (bbpanzu) - I had to rewrite it later anyway after i added the custom hit windows lmao (Shadow Mario)
+	public static function judgeNote(note:Note, diff:Float=0, marv:Bool, dir:String) //STOLEN FROM KADE ENGINE (bbpanzu) - I had to rewrite it later anyway after i added the custom hit windows lmao (Shadow Mario)
 	{
+	
+		if (FileSystem.exists(dir))
+			{
+				var customJson:String = File.getContent(dir);
+				if (customJson != null && customJson.length > 0)
+				{
+					var poop:Dynamic = Json.parse(dir);
+					var marv:Bool = Reflect.getProperty(poop, "marvelouses");
+				}
+			}
+		
+		else
+			var marv:Bool = true;
+
 		var timingWindows:Array<Int> = [ClientPrefs.marvelousWindow, ClientPrefs.sickWindow, ClientPrefs.goodWindow, ClientPrefs.badWindow];
 		if (ClientPrefs.keAccuracy)
 		{
@@ -89,8 +112,8 @@ class Conductor
 		{
 			//tryna do MS based judgment due to popular demand
 			var windowNames:Array<String> = ['sick', 'good', 'bad'];
-			if (ClientPrefs.marvelouses)
-				windowNames = ['marvelous', 'sick', 'good', 'bad']; //i dont think that works on haxe
+			if (marv)
+				windowNames = ['marvelous', 'sick', 'good', 'bad']; 
 
 			// var diff = Math.abs(note.strumTime - Conductor.songPosition) / (PlayState.songMultiplier >= 1 ? PlayState.songMultiplier : 1);
 			for(i in 0...timingWindows.length) // based on 4 timing windows, will break with anything else
