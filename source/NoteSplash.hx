@@ -3,6 +3,11 @@ package;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.graphics.frames.FlxAtlasFrames;
+#if sys
+import sys.FileSystem;
+import sys.io.File;
+#end
+import haxe.Json;
 
 class NoteSplash extends FlxSprite
 {
@@ -12,25 +17,30 @@ class NoteSplash extends FlxSprite
 	private var idleAnim:String;
 	private var textureLoaded:String = null;
 
+	public function dev(dir:String)
+	{
+		if(FileSystem.exists(dir))
+		{
+			var customJson:String = File.getContent(dir);
+			if (customJson != null && customJson.length > 0)
+			{
+				var shit:Dynamic = Json.parse(customJson);
+				var noteSplashSkin:String = Reflect.getProperty(shit, "noteSplashSkin");
 
-	public function new(x:Float = 0, y:Float = 0, ?note:Int = 0, dir:String) {
+				if (noteSplashSkin != null && noteSplashSkin.length > 0)
+					this.noteSplashSkin = noteSplashSkin;
+				else 
+					this.noteSplashSkin = 'noteSplashes';
+					
+			}
+		}
+	}
+
+
+	public function new(x:Float = 0, y:Float = 0, ?note:Int = 0) {
 		super(x, y);
 
-		if(FileSystem.exists(dir))
-			{
-				var customJson:String = File.getContent(dir);
-				if (customJson != null && customJson.length > 0)
-				{
-					var shit:Dynamic = Json.parse(customJson);
-					var noteSplashSkin:String = Reflect.getProperty(shit, "noteSplashSkin");
-
-					if (noteSplashSkin != null && noteSplashSkin.length > 0)
-						this.noteSplashSkin = noteSplashSkin;
-					else 
-						this.noteSplashSkin = 'noteSplashes';
-					
-				}
-			}
+		dev(dir);
 
 		var skin:String = noteSplashSkin;
 		if(PlayState.SONG.splashSkin != null && PlayState.SONG.splashSkin.length > 0) skin = PlayState.SONG.splashSkin;
@@ -44,23 +54,9 @@ class NoteSplash extends FlxSprite
 		antialiasing = ClientPrefs.globalAntialiasing;
 	}
 
-	public function setupNoteSplash(x:Float, y:Float, note:Int = 0, texture:String = null, hueColor:Float = 0, satColor:Float = 0, brtColor:Float = 0, dir:String) {
+	public function setupNoteSplash(x:Float, y:Float, note:Int = 0, texture:String = null, hueColor:Float = 0, satColor:Float = 0, brtColor:Float = 0) {
 		
-		if(FileSystem.exists(dir))
-			{
-				var customJson:String = File.getContent(dir);
-				if (customJson != null && customJson.length > 0)
-				{
-					var shit:Dynamic = Json.parse(customJson);
-					var noteSplashSkin:String = Reflect.getProperty(shit, "noteSplashSkin");
-
-					if (noteSplashSkin != null && noteSplashSkin.length > 0)
-						this.noteSplashSkin = noteSplashSkin;
-					else 
-						this.noteSplashSkin = 'noteSplashes';
-					
-				}
-			}
+		dev(dir);
 		
 		setPosition(x - Note.swagWidth * 0.95, y - Note.swagWidth);
 		alpha = 0.6;

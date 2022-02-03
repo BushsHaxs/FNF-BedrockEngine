@@ -36,8 +36,8 @@ class StrumNote extends FlxSprite
 	public var noteSkin:String;
 	public var dir:String = "settings/uiSettings.json";
 
-	public function new(x:Float, y:Float, leData:Int, player:Int, dir:String) {
-
+	public function dev(dir:String)
+	{
 		if(FileSystem.exists(dir))
 			{
 				var customJson:String = File.getContent(dir);
@@ -53,6 +53,11 @@ class StrumNote extends FlxSprite
 					
 				}
 			}
+	}
+
+	public function new(x:Float, y:Float, leData:Int, player:Int) {
+
+		dev(dir);
 
 		colorSwap = new ColorSwap();
 		shader = colorSwap.shader;
