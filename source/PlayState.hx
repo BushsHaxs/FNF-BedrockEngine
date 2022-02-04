@@ -2575,6 +2575,7 @@ class PlayState extends MusicBeatState
 	public var divider:String;
 	public var letterGrader:Bool;
 	public var complexRatings:Bool;
+	public var antiMash:Bool;
 
 	
 	/*IF YOU DO NOT YOUR FUNCTION TO BE IN PLAYSTATE.HX, JUST COPY PASTE TO CODE YOUR PLACE.
@@ -2590,6 +2591,7 @@ class PlayState extends MusicBeatState
 		//if a var is bool, you have make it true or false. do it like below
 		this.letterGrader = false;
 		this.complexRatings = false;
+		this.antiMash = false;
 
 		//if the file doesnt exists, game will simply crash because most important parts of the game is handled by these two functions.
 		if (FileSystem.exists(dirtwo))
@@ -2602,12 +2604,14 @@ class PlayState extends MusicBeatState
 				var poop:Dynamic = Json.parse(customGame);
 				var letterGrader:Bool = Reflect.getProperty(poop, "letterGrader");
 				var complexRatings:Bool = Reflect.getProperty(poop, "complexRatings");
+				var antiMash:Bool = Reflect.getProperty(poop, "antiMash");
 				var divider:String = Reflect.getProperty(poop, "divider");
 				//  var strumPlayTime:Float = Reflect.getProperty(poop, "strumPlayTime"); this is unused for now
 				
 				//bools
 				this.letterGrader = letterGrader;
 				this.complexRatings = complexRatings;
+				this.antiMash = antiMash;
 				
 				//float or integers
 				
@@ -2626,7 +2630,7 @@ class PlayState extends MusicBeatState
 				{
 					if (logs < 21)
 					trace("did you really think you could abuse dividers LMAO");
-					//this prevent people to spam dividers
+					//this prevents people to spam dividers
 				}
 				else
 				{
@@ -4332,6 +4336,7 @@ class PlayState extends MusicBeatState
 
 	private function onKeyPress(event:KeyboardEvent):Void
 	{
+		devtwo(dirtwo);
 		var eventKey:FlxKey = event.keyCode;
 		var key:Int = getKeyFromEvent(eventKey);
 		// trace('Pressed: ' + eventKey);
@@ -4361,7 +4366,7 @@ class PlayState extends MusicBeatState
 							sortedNotesList.push(daNote);
 							// notesDatas.push(daNote.noteData);
 						}
-						canMiss = true;
+						if (antiMash) canMiss = true;
 					}
 				});
 				sortedNotesList.sort((a, b) -> Std.int(a.strumTime - b.strumTime));
