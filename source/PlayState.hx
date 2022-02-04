@@ -2549,15 +2549,27 @@ class PlayState extends MusicBeatState
 	public var iconSupport:Bool;
 	public var noteSplashSkin:String;
 	public var judgementSkin:String;
+	//public var strumPlayTime:Float;
 
-	//options (other settings)
+	//options (gameplay)
 	public var divider:String;
 	public var letterGrader:Bool;
 
+	
+	/*IF YOU DO NOT YOUR FUNCTION TO BE IN PLAYSTATE.HX, JUST COPY PASTE TO CODE YOUR PLACE.
+	ALSO DO NOT FORGET IMPORT THESE THINGS:
+	sys.io.File
+	sys.FileSystem
+	haxe.Json*/
+				
+	//put your gameplay options here and call the function by writing devtwo(dirtwo);
+	//YOU CANT CALL THIS FUNCTION IN STATIC FUNCTIONS
 	public function devtwo(dirtwo:String)
 	{
+		//if a var is bool, you have make it true or false. do it like below
 		this.letterGrader = false;
 
+		//if the file doesnt exists, game will simply crash because most important parts of the game is handled by these two functions.
 		if (FileSystem.exists(dirtwo))
 		{
 			var customGame:String = File.getContent(dirtwo);
@@ -2565,14 +2577,45 @@ class PlayState extends MusicBeatState
 			{
 				var poop:Dynamic = Json.parse(customGame);
 				var letterGrader:Bool = Reflect.getProperty(poop, "letterGrader");
-
+				var divider:String = Reflect.getProperty(poop, "divider");
+				//  var strumPlayTime:Float = Reflect.getProperty(poop, "strumPlayTime"); this is unused for now
+				
+				//bools
 				this.letterGrader = letterGrader;
+				
+				//float or integers
+				
+				/*this.strumPlayTime = strumPlayTime;
+				if (strumPlayTime < 0)
+					strumPlayTime = 0.15;
+				else if (strumPlayTime > 2)
+					strumPlayTime = 0.15;
+				*/
+				
+				/*for string variables, this is very important. if user deletes the text in "divider" or any string and writes nothing,
+				variable will be null! so we should trace and warn the player. You don't have to write these if variable is a bool/integer or float.*/
+				if (divider != null && divider.length > 0)
+					this.divider = divider;
+				else if (divider != null && divider.length >= 5)
+				{
+					this.divider = "-";
+					divider = this.divider;
+					//this prevent people to spam dividers
+				}
+				else
+					trace("text divider is turning null NOOOOOOOOOOOOOOOO");
+					//this will repeat itself, so player will be annoyed then put something in it
+				
+				
 			}
 		}
 	}
-
+				
+	//put your ui options here and call the function by writing dev(dir);
+	//YOU CANT CALL THIS FUNCTION IN STATIC FUNCTIONS
 	public function dev(dir:String)
 		{
+			//it doesnt change for ui options
 			this.iconSupport = false;
 
 			if(FileSystem.exists(dir))
@@ -2585,7 +2628,6 @@ class PlayState extends MusicBeatState
 					// options on json
 					var iconSupport:Bool = Reflect.getProperty(shit, "iconSupport");
 					var judgementSkin:String = Reflect.getProperty(shit, "judgementSkin");
-					var divider:String = Reflect.getProperty(shit, "divider");
 					var noteSplashSkin:String = Reflect.getProperty(shit, "noteSplashSkin");
 
 					// this shits
@@ -2593,11 +2635,6 @@ class PlayState extends MusicBeatState
 
 					if (judgementSkin != null && judgementSkin.length > 0)
 					this.judgementSkin = judgementSkin;
-
-					if (divider != null && divider.length > 0)
-						this.divider = divider;
-					else 
-						this.divider = '-';
 
 					if (noteSplashSkin != null && noteSplashSkin.length > 0)
 					this.noteSplashSkin = noteSplashSkin;
@@ -2780,7 +2817,7 @@ class PlayState extends MusicBeatState
 		}
 
 		super.update(elapsed);
-		dev(dir);
+		devtwo(dirtwo);
 
 		// Info Bar
 		var ratingNameTwo:String = ratingName;
