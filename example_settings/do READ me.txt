@@ -53,3 +53,11 @@ For example, if it's set as
 "divider": "//", info bar will be like this:
 
 "Score: // Accuracy: // Combo Breaks: // Rank:".
+
+UPDATE SCORE IF BOTPLAY IS ENABLED
+
+If updateScoreifBotplay is true, when you open botplay game will still update score and misses.
+
+COMPLEX RATINGS
+
+complexRatings means if it's true game will follow much, much more complex system.

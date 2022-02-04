@@ -238,7 +238,6 @@ class PlayState extends MusicBeatState
 	public var songMisses:Int = 0;
 	public var totalMisses:Int = 0;
 	public var scoreTxt:FlxText;
-	//public var scoreTxtaboveicons:FlxText;
 
 	var judgementCounter:FlxText;
 	var timeTxt:FlxText;
@@ -1213,8 +1212,12 @@ class PlayState extends MusicBeatState
 		add(judgementCounter);
 
 		// or Disable them in case the option is turned off
-		if (!ClientPrefs.judgCounter)
+		if (!ClientPrefs.judgCounter || cpuControlled && !updateScoreifBotplay)
 			remove(judgementCounter);
+		
+
+		
+
 
 		// Botplay Text Stuff V
 		botplayTxt = new FlxText(400, timeBarBG.y + 55, FlxG.width - 800, "BOTPLAY", 32);
@@ -2554,6 +2557,8 @@ class PlayState extends MusicBeatState
 	//options (gameplay)
 	public var divider:String;
 	public var letterGrader:Bool;
+	public var complexRatings:Bool;
+	public var updateScoreifBotplay:Bool;
 
 	
 	/*IF YOU DO NOT YOUR FUNCTION TO BE IN PLAYSTATE.HX, JUST COPY PASTE TO CODE YOUR PLACE.
@@ -2568,6 +2573,8 @@ class PlayState extends MusicBeatState
 	{
 		//if a var is bool, you have make it true or false. do it like below
 		this.letterGrader = false;
+		this.updateScoreifBotplay = true;
+		this.complexRatings = false;
 
 		//if the file doesnt exists, game will simply crash because most important parts of the game is handled by these two functions.
 		if (FileSystem.exists(dirtwo))
@@ -2577,11 +2584,15 @@ class PlayState extends MusicBeatState
 			{
 				var poop:Dynamic = Json.parse(customGame);
 				var letterGrader:Bool = Reflect.getProperty(poop, "letterGrader");
+				var complexRatings:Bool = Reflect.getProperty(poop, "complexRatings");
+				var updateScoreifBotplay:Bool = Reflect.getProperty(poop, "updateScoreifBotplay");
 				var divider:String = Reflect.getProperty(poop, "divider");
 				//  var strumPlayTime:Float = Reflect.getProperty(poop, "strumPlayTime"); this is unused for now
 				
 				//bools
 				this.letterGrader = letterGrader;
+				this.complexRatings = complexRatings;
+				this.updateScoreifBotplay = updateScoreifBotplay;
 				
 				//float or integers
 				
@@ -2594,7 +2605,7 @@ class PlayState extends MusicBeatState
 				
 				/*for string variables, this is very important. if user deletes the text in "divider" or any string and writes nothing,
 				variable will be null! so we should trace and warn the player. You don't have to write these if variable is a bool/integer or float.*/
-				if (divider != null && divider.length > 0)
+				if (divider != null && divider.length > 0 && divider.length < 5)
 					this.divider = divider;
 				else if (divider != null && divider.length >= 5)
 				{
@@ -2603,8 +2614,6 @@ class PlayState extends MusicBeatState
 				else
 					trace("text divider is turning null NOOOOOOOOOOOOOOOO");
 					//this will repeat itself, so player will be annoyed then put something in it
-				
-				
 			}
 		}
 	}
@@ -2647,16 +2656,16 @@ class PlayState extends MusicBeatState
 			iconP1.swapOldIcon();
 	}*/
 
+		devtwo(dirtwo);
 		if (cpuControlled && !alreadyChanged)
 		{
-			scoreTxt.visible = false;
-			//scoreTxtaboveicons.visible = false;
+			if (!updateScoreifBotplay)
+				scoreTxt.visible = false;
 			alreadyChanged = true;
 		}
 		else if (!cpuControlled && alreadyChanged)
 		{
 			scoreTxt.visible = true;
-			//scoreTxtaboveicons.visible = true;
 			alreadyChanged = false;
 		}
 
@@ -4149,34 +4158,51 @@ class PlayState extends MusicBeatState
 		if (daRating == (ClientPrefs.marvelouses ? 'marvelous' : 'sick') && !note.noteSplashDisabled)
 			spawnNoteSplashOnNote(note, false);
 	
+		devtwo(dirtwo);
+
+		var cpuScore:Bool = true;
+
+		if (cpuControlled && updateScoreifBotplay)
+			cpuScore = true;
+		else if (cpuControlled && !updateScoreifBotplay)
+			cpuScore = false;
+
+		if (!cpuControlled)
+			cpuScore = true;
 
 
-		if (!practiceMode && !cpuControlled)
+
+		if (!practiceMode)
 		{
-			if (ClientPrefs.keAccuracy)
-				songScore += Math.round(score);
-			else
-				songScore += score;
-			songHits++;
-			totalPlayed++;
-			RecalculateRating();
-
-			if (ClientPrefs.scoreZoom)
+			if (cpuScore)
 			{
-				if (scoreTxtTween != null)
+				if (ClientPrefs.keAccuracy)
+					songScore += Math.round(score);
+				else
+					songScore += score;
+				songHits++;
+				totalPlayed++;
+				RecalculateRating();
+
+				if (ClientPrefs.scoreZoom)
 				{
-					scoreTxtTween.cancel();
-				}
-				scoreTxt.scale.x = 1.075;
-				scoreTxt.scale.y = 1.075;
-				scoreTxtTween = FlxTween.tween(scoreTxt.scale, {x: 1, y: 1}, 0.2, {
-					onComplete: function(twn:FlxTween)
+					if (scoreTxtTween != null)
 					{
-						scoreTxtTween = null;
+						scoreTxtTween.cancel();
 					}
-				});
+					scoreTxt.scale.x = 1.075;
+					scoreTxt.scale.y = 1.075;
+					scoreTxtTween = FlxTween.tween(scoreTxt.scale, {x: 1, y: 1}, 0.2, {
+						onComplete: function(twn:FlxTween)
+						{
+							scoreTxtTween = null;
+						}
+					});
+				}
 			}
 		}
+
+
 
 		var uiSkin:String = '';
 		var altPart:String = isPixelStage ? '-pixel' : '';
@@ -5382,14 +5408,14 @@ class PlayState extends MusicBeatState
 					ratingName = Ratings.ratingStuff[Ratings.ratingStuff.length - 1][0]; // Uses last string
 				else if (!letterGrader)
 					ratingName = Ratings.ratingSimple[Ratings.ratingSimple.length - 1][0];
-                if (letterGrader && ClientPrefs.keAccuracy)
-                    ratingName = Ratings.ratingComplex[Ratings.ratingComplex.length - 1][0];
-                else if (!letterGrader && ClientPrefs.keAccuracy)
-                    ratingName = Ratings.errorRating[Ratings.errorRating.length - 1][0];
+                if (complexRatings)
+					ratingName = Ratings.ratingComplex[Ratings.ratingComplex.length - 1][0];
+				if (complexRatings && !letterGrader)
+					ratingName = Ratings.errorRating[Ratings.errorRating.length - 1][0];
 			}
 			else
 			{
-				if (letterGrader && !ClientPrefs.keAccuracy)
+				if (letterGrader)
 				{
 					for (i in 0...Ratings.ratingStuff.length - 1)
 					{
@@ -5400,7 +5426,7 @@ class PlayState extends MusicBeatState
 						}
 					}
 				}
-		        else if (!letterGrader && !ClientPrefs.keAccuracy)
+		        else if (!letterGrader)
 				{
 					for (i in 0...Ratings.ratingSimple.length - 1)
 					{
@@ -5411,7 +5437,7 @@ class PlayState extends MusicBeatState
 						}
 					}
 				}
-                else if (letterGrader && ClientPrefs.keAccuracy)
+                if (complexRatings)
 				{
 					for (i in 0...Ratings.ratingComplex.length - 1)
 					{
@@ -5422,7 +5448,7 @@ class PlayState extends MusicBeatState
 						}
 					}
 				}
-                else if (!letterGrader && ClientPrefs.keAccuracy)
+                if (complexRatings && !letterGrader)
 				{
 					for (i in 0...Ratings.errorRating.length - 1)
 					{
