@@ -76,27 +76,7 @@ class Note extends FlxSprite
 	public var hitCausesMiss:Bool = false;
 	public var distance:Float = 2000; // plan on doing scroll directions soon -bb
 
-	public var noteSkin:String;
-	public var dir:String = "settings/uiSettings.json";
-	
-	public function dev(dir:String)
-	{
-		if(FileSystem.exists(dir))
-			{
-				var customJson:String = File.getContent(dir);
-				if (customJson != null && customJson.length > 0)
-				{
-					var shit:Dynamic = Json.parse(customJson);
-					var noteSkin = Reflect.getProperty(shit, "noteSkin");
 
-					if (noteSkin != null && noteSkin.length > 0)
-						this.noteSkin = noteSkin;
-					else 
-						this.noteSkin = 'NOTE_assets';
-					
-				}
-			}
-	}
 
 
 	private function set_texture(value:String):String
@@ -271,7 +251,7 @@ class Note extends FlxSprite
 
 	function reloadNote(?prefix:String = '', ?texture:String = '', ?suffix:String = '')
 	{
-		dev(dir);
+		JsonSettings.dev(JsonSettings.dir);
 
 		if (prefix == null)
 			prefix = '';
@@ -286,7 +266,7 @@ class Note extends FlxSprite
 			skin = PlayState.SONG.arrowSkin;
 			if (skin == null || skin.length < 1)
 			{
-				skin = 'noteskins/'+noteSkin;
+				skin = 'noteskins/'+JsonSettings.noteSkin;
 			}
 		}
 
