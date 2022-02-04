@@ -25,6 +25,7 @@ import flixel.graphics.atlas.FlxAtlas;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxMath;
+import flixel.math.FlxAngle;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
 import flixel.system.FlxAssets.FlxShader;
@@ -954,11 +955,6 @@ class PlayState extends MusicBeatState
 	
 		add(hideBGOpacity);
 
-		if(ClientPrefs.maniaMode) {
-			laneunderlayOpponent.alpha = 1;
-			laneunderlay.alpha = 1;
-		}
-
 		var showTime:Bool = (ClientPrefs.timeBarType != 'Disabled');
 		timeTxt = new FlxText(STRUM_X + (FlxG.width / 2) - 248, 19, 400, "", 32);
 		timeTxt.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
@@ -987,10 +983,6 @@ class PlayState extends MusicBeatState
 		timeBarBG.color = FlxColor.BLACK;
 		timeBarBG.xAdd = -4;
 		timeBarBG.yAdd = -4;
-
-		if(ClientPrefs.maniaMode) {
-			timeBarBG = new AttachedSprite('timeBar');
-		}
 
 		if (ClientPrefs.timeBarUi == 'Kade Engine')
 			timeBarBG.screenCenter(X);
@@ -1102,14 +1094,9 @@ class PlayState extends MusicBeatState
 		if(!ClientPrefs.maniaMode) {
 			FlxG.camera.follow(camFollowPos, LOCKON, 1);
 			// FlxG.camera.setScrollBounds(0, FlxG.width, 0, FlxG.height);
-			FlxG.camera.zoom = 1;
+			FlxG.camera.zoom = defaultCamZoom;
 			FlxG.camera.focusOn(camFollow);
 		}
-
-		FlxG.camera.follow(camFollowPos, LOCKON, 1);
-		// FlxG.camera.setScrollBounds(0, FlxG.width, 0, FlxG.height);
-		FlxG.camera.zoom = defaultCamZoom;
-		FlxG.camera.focusOn(camFollow);
 
 		FlxG.worldBounds.set(0, 0, FlxG.width, FlxG.height);
 
@@ -1125,13 +1112,9 @@ class PlayState extends MusicBeatState
 		healthBarBG.yAdd = -4;
 		add(healthBarBG);
 
-		if(ClientPrefs.maniaMode) {
-			healthBarBG.angle = 90;
-			healthBarBG.x = 600;
-		}
-
-		if (ClientPrefs.downScroll)
+		if (ClientPrefs.downScroll && !ClientPrefs.maniaMode)
 			healthBarBG.y = 0.11 * FlxG.height;
+	
 		healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, (opponentChart ? LEFT_TO_RIGHT : RIGHT_TO_LEFT), Std.int(healthBarBG.width - 8),
 			Std.int(healthBarBG.height - 8), this, 'health', 0, 2);
 		healthBar.scrollFactor.set();
@@ -1170,6 +1153,19 @@ class PlayState extends MusicBeatState
 			remove(iconP2);
 		}
 		reloadHealthBarColors();
+
+		if(ClientPrefs.maniaMode) { //da big if
+			ClientPrefs.middleScroll = true;
+			laneunderlayOpponent.visible = false;
+			laneunderlay.alpha = 0.6;
+			//underlayOutline.visible = true;
+			healthBar.color = FlxColor.WHITE;
+			healthBar.angle = 90;
+			healthBar.x = 590;
+			healthBar.y = 415;
+			iconP1.visible = false;
+			iconP2.visible = false;
+		}
 
 		// Watermarks, this is for Bedrock Engine
 		beWatermark = new FlxText(0, FlxG.height - 50, 0, "Bedrock Engine: v" + MainMenuState.bedrockEngineVersion, 16);
@@ -1472,13 +1468,9 @@ class PlayState extends MusicBeatState
 				FlxColor.fromRGB(dad.healthColorArray[0], dad.healthColorArray[1], dad.healthColorArray[2]));
 		healthBar.updateBar();
 
-		if(ClientPrefs.maniaMode) {
-			if (!opponentChart)
-				healthBar.createFilledBar(FlxColor.RED,
-					FlxColor.LIME);
-			else
-				healthBar.createFilledBar(FlxColor.LIME,
-					FlxColor.RED);
+		if(ClientPrefs.maniaMode) {	
+			healthBar.createFilledBar(FlxColor.WHITE,
+				FlxColor.BLACK);
 			healthBar.updateBar();
 		}
 	}
@@ -2337,7 +2329,7 @@ class PlayState extends MusicBeatState
 
 	private function generateManiaBGAlpha() {
 		hideBGOpacity.alpha = 0;
-		FlxTween.tween (hideBGOpacity, {alpha: 1}, 1, {ease: FlxEase.circOut, startDelay: 1});
+		FlxTween.tween (hideBGOpacity, {alpha: ClientPrefs.bgAlpha}, 1, {ease: FlxEase.circOut, startDelay: 1});
 	}
 
 	private function generateStaticArrows(player:Int):Void
@@ -3842,7 +3834,7 @@ class PlayState extends MusicBeatState
 
 	function tweenCamIn()
 	{
-		if (Paths.formatToSongPath(SONG.song) == 'tutorial' && cameraTwn == null && FlxG.camera.zoom != 1.3)
+		if (Paths.formatToSongPath(SONG.song) == 'tutorial' && cameraTwn == null && FlxG.camera.zoom != 1.3 && !ClientPrefs.maniaMode)
 		{
 			cameraTwn = FlxTween.tween(FlxG.camera, {zoom: 1.3}, (Conductor.stepCrochet * 4 / 1000), {
 				ease: FlxEase.elasticInOut,
