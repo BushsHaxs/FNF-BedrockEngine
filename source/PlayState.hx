@@ -2538,6 +2538,7 @@ class PlayState extends MusicBeatState
 		vocals.play();
 	}
 
+	public var logs:Int = 0;
 	public var paused:Bool = false;
 	var startedCountdown:Bool = false;
 	var canPause:Bool = true;
@@ -2580,6 +2581,8 @@ class PlayState extends MusicBeatState
 			var customGame:String = File.getContent(dirtwo);
 			if (customGame != null && customGame.length > 0)
 			{
+				logs++;
+
 				var poop:Dynamic = Json.parse(customGame);
 				var letterGrader:Bool = Reflect.getProperty(poop, "letterGrader");
 				var complexRatings:Bool = Reflect.getProperty(poop, "complexRatings");
@@ -2605,11 +2608,15 @@ class PlayState extends MusicBeatState
 					this.divider = divider;
 				else if (divider != null && divider.length >= 5)
 				{
+					if (logs < 21)
+					trace("did you really think you could abuse dividers LMAO");
 					//this prevent people to spam dividers
 				}
 				else
+				{
+					if (logs < 11)
 					trace("text divider is turning null NOOOOOOOOOOOOOOOO");
-					//this will repeat itself, so player will be annoyed then put something in it
+				}
 			}
 		}
 	}
