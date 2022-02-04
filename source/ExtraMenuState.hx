@@ -17,21 +17,22 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import lime.app.Application;
-import Achievements;
 import editors.MasterEditorMenu;
 import flixel.input.keyboard.FlxKey;
+#if sys
+import sys.FileSystem;
+import sys.io.File;
+#end
 
 using StringTools;
 
 class ExtraMenuState extends MusicBeatState
 {
 	public static var curSelected:Int = 0;
-
 	public static var textNotice:String = 'Press BACKSPACE or ESC to go Back to the Main Menu'; // this one too
 
 	var menuItems:FlxTypedGroup<FlxSprite>;
 	private var camGame:FlxCamera;
-	private var camAchievement:FlxCamera;
 
 	var optionShit:Array<String> = [
 		'appearance',
@@ -56,22 +57,14 @@ class ExtraMenuState extends MusicBeatState
 		#end
 
 		camGame = new FlxCamera();
-		camAchievement = new FlxCamera();
-		camAchievement.bgColor.alpha = 0;
 
 		FlxG.cameras.reset(camGame);
-		FlxG.cameras.add(camAchievement);
 		FlxCamera.defaultCameras = [camGame];
 
 		transIn = FlxTransitionableState.defaultTransIn;
 		transOut = FlxTransitionableState.defaultTransOut;
 
 		persistentUpdate = persistentDraw = true;
-
-		var versionShit:FlxText = new FlxText(12, FlxG.height - 44, 0, textNotice, 12);
-		versionShit.scrollFactor.set();
-		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		add(versionShit);
 
 		var yScroll:Float = Math.max(0.25 - (0.05 * (optionShit.length - 4)), 0.1);
 		camFollow = new FlxObject(0, 0, 1, 1);
@@ -128,31 +121,12 @@ class ExtraMenuState extends MusicBeatState
 			menuItem.updateHitbox();
 		}
 
-		if (!ClientPrefs.lowQuality)
-		{
-			logoBl = new FlxSprite(-100, -100);
-
-			logoBl.frames = Paths.getSparrowAtlas('logoBumpin');
-			logoBl.scrollFactor.set();
-			logoBl.antialiasing = ClientPrefs.globalAntialiasing;
-			logoBl.animation.addByPrefix('bump', 'logo bumpin', 24, false);
-			logoBl.setGraphicSize(Std.int(logoBl.width * 0.5));
-			logoBl.animation.play('bump');
-			logoBl.alpha = 0;
-			logoBl.angle = 0;
-			logoBl.updateHitbox();
-			// add(logoBl);
-			FlxTween.tween(logoBl, {
-				y: logoBl.y + 150,
-				x: logoBl.x + 150,
-				angle: -4,
-				alpha: 1
-			}, 1.4, {ease: FlxEase.expoInOut});
-		}
-
 		FlxG.camera.follow(camFollowPos, null, 1);
 
-		// NG.core.calls.event.logEvent('swag').send();
+		var versionShit:FlxText = new FlxText(10, FlxG.height - 44, 0, textNotice, 12);
+		versionShit.scrollFactor.set();
+		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		add(versionShit);
 
 		changeItem();
 		super.create();
@@ -194,7 +168,7 @@ class ExtraMenuState extends MusicBeatState
 			{
 				selectedSomethin = true;
 				FlxG.sound.play(Paths.sound('cancelMenu'));
-				MusicBeatState.switchState(new TitleState());
+				MusicBeatState.switchState(new MainMenuState());
 				// Menu Back Animations
 				FlxTween.tween(FlxG.camera, {zoom: 5, angle: 45, alpha: 0}, 0.8, {ease: FlxEase.expoIn});
 			}
@@ -203,7 +177,15 @@ class ExtraMenuState extends MusicBeatState
 			{
 				if (optionShit[curSelected] == 'appearance')
 				{
-					CoolUtil.browserLoad('settings/uiSettings.json');
+					#if windows
+					//open custom settings file
+					sys.command('C:/Windows/notepad.exe /A settings/uiSettings.json');
+					//open readme for information
+					sys.command('C:/Windows/notepad.exe /A settings/do READ me.txt');
+					#elseif mac
+					sys.command('open -a TextEdit settings/uiSettings.json');
+					sys.command('open -a TextEdit settings/do READ me.txt');
+					#end
 				}
 				else
 				{
@@ -236,7 +218,7 @@ class ExtraMenuState extends MusicBeatState
 								switch (daChoice)
 								{
 									case 'appearance':
-										//do fucking nothing
+										MusicBeatState.switchState(new ExtraMenuState());
 									case 'ost':
 										MusicBeatState.switchState(new FreeplayState());
 								}

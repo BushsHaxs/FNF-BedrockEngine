@@ -12,37 +12,18 @@ import haxe.Json;
 class NoteSplash extends FlxSprite
 {
 	public var colorSwap:ColorSwap = null;
-	public var dir:String = "settings/uiSettings.json";
-	public var noteSplashSkin:String;
+	
 	private var idleAnim:String;
 	private var textureLoaded:String = null;
 
-	public function dev(dir:String)
-	{
-		if(FileSystem.exists(dir))
-		{
-			var customJson:String = File.getContent(dir);
-			if (customJson != null && customJson.length > 0)
-			{
-				var shit:Dynamic = Json.parse(customJson);
-				var noteSplashSkin:String = Reflect.getProperty(shit, "noteSplashSkin");
-
-				if (noteSplashSkin != null && noteSplashSkin.length > 0)
-					this.noteSplashSkin = noteSplashSkin;
-				else 
-					this.noteSplashSkin = 'noteSplashes';
-					
-			}
-		}
-	}
 
 
 	public function new(x:Float = 0, y:Float = 0, ?note:Int = 0) {
 		super(x, y);
 
-		dev(dir);
+		JsonSettings.dev(JsonSettings.dir);
 
-		var skin:String = noteSplashSkin;
+		var skin:String = JsonSettings.noteSplashSkin;
 		if(PlayState.SONG.splashSkin != null && PlayState.SONG.splashSkin.length > 0) skin = PlayState.SONG.splashSkin;
 
 		loadAnims(skin);
@@ -56,17 +37,17 @@ class NoteSplash extends FlxSprite
 
 	public function setupNoteSplash(x:Float, y:Float, note:Int = 0, texture:String = null, hueColor:Float = 0, satColor:Float = 0, brtColor:Float = 0) {
 		
-		dev(dir);
+		JsonSettings.dev(JsonSettings.dir);
 		
 		setPosition(x - Note.swagWidth * 0.95, y - Note.swagWidth);
 		alpha = 0.6;
 
 		if(texture == null) {
-			texture = noteSplashSkin;
+			texture = JsonSettings.noteSplashSkin;
 			if(PlayState.SONG.splashSkin != null && PlayState.SONG.splashSkin.length > 0) texture = PlayState.SONG.splashSkin;
 
 			if(PlayState.isPixelStage) {
-				texture = 'pixelUI/'+noteSplashSkin;
+				texture = 'pixelUI/'+JsonSettings.noteSplashSkin;
 				if(PlayState.SONG.splashSkin != null && PlayState.SONG.splashSkin.length > 0) texture = 'pixelUI/' + PlayState.SONG.splashSkin;
 				if(animation.curAnim != null)animation.curAnim.frameRate = 12;
 			}

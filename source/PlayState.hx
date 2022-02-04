@@ -25,8 +25,8 @@ import flixel.graphics.atlas.FlxAtlas;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxMath;
-import flixel.math.FlxAngle;
 import flixel.math.FlxPoint;
+import flixel.math.FlxAngle;
 import flixel.math.FlxRect;
 import flixel.system.FlxAssets.FlxShader;
 import flixel.system.FlxSound;
@@ -80,6 +80,10 @@ class PlayState extends MusicBeatState
 	public var camGameShaders:Array<ShaderEffect> = [];
 	public var camHUDShaders:Array<ShaderEffect> = [];
 	public var camOtherShaders:Array<ShaderEffect> = [];
+
+
+
+   
 
 	// event variables
 	private var isCameraOnForcedPos:Bool = false;
@@ -953,6 +957,8 @@ class PlayState extends MusicBeatState
 	
 		add(hideBGOpacity);
 
+		
+
 		var showTime:Bool = (ClientPrefs.timeBarType != 'Disabled');
 		timeTxt = new FlxText(STRUM_X + (FlxG.width / 2) - 248, 19, 400, "", 32);
 		timeTxt.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
@@ -981,6 +987,8 @@ class PlayState extends MusicBeatState
 		timeBarBG.color = FlxColor.BLACK;
 		timeBarBG.xAdd = -4;
 		timeBarBG.yAdd = -4;
+
+		
 
 		if (ClientPrefs.timeBarUi == 'Kade Engine')
 			timeBarBG.screenCenter(X);
@@ -1096,6 +1104,7 @@ class PlayState extends MusicBeatState
 			FlxG.camera.focusOn(camFollow);
 		}
 
+
 		FlxG.worldBounds.set(0, 0, FlxG.width, FlxG.height);
 
 		FlxG.fixedTimestep = false;
@@ -1110,9 +1119,9 @@ class PlayState extends MusicBeatState
 		healthBarBG.yAdd = -4;
 		add(healthBarBG);
 
+
 		if (ClientPrefs.downScroll && !ClientPrefs.maniaMode)
 			healthBarBG.y = 0.11 * FlxG.height;
-	
 		healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, (opponentChart ? LEFT_TO_RIGHT : RIGHT_TO_LEFT), Std.int(healthBarBG.width - 8),
 			Std.int(healthBarBG.height - 8), this, 'health', 0, 2);
 		healthBar.scrollFactor.set();
@@ -1151,7 +1160,7 @@ class PlayState extends MusicBeatState
 			remove(iconP2);
 		}
 		reloadHealthBarColors();
-
+		
 		if(ClientPrefs.maniaMode) { //da big if
 			ClientPrefs.middleScroll = true;
 			laneunderlayOpponent.visible = false;
@@ -1209,7 +1218,7 @@ class PlayState extends MusicBeatState
 		judgementCounter.scrollFactor.set();
 		judgementCounter.screenCenter(Y);
 
-		devtwo(dirtwo);
+		JsonSettings.devtwo(JsonSettings.dirtwo);
 
 		// Just in case.
 		if (ClientPrefs.marvelouses)
@@ -1466,9 +1475,10 @@ class PlayState extends MusicBeatState
 				FlxColor.fromRGB(dad.healthColorArray[0], dad.healthColorArray[1], dad.healthColorArray[2]));
 		healthBar.updateBar();
 
-		if(ClientPrefs.maniaMode) {	
+		if(ClientPrefs.maniaMode) 
+		{	
 			healthBar.createFilledBar(FlxColor.WHITE,
-				FlxColor.BLACK);
+			FlxColor.BLACK);
 			healthBar.updateBar();
 		}
 	}
@@ -2544,123 +2554,12 @@ class PlayState extends MusicBeatState
 		vocals.play();
 	}
 
-	public var logs:Int = 0;
 	public var paused:Bool = false;
 	var startedCountdown:Bool = false;
 	var canPause:Bool = true;
 	var limoSpeed:Float = 0;
 	var alreadyChanged:Bool = false; // lag no more
 
-	//json paths shit
-	public var dir:String = "settings/uiSettings.json";
-	public var dirtwo:String = "settings/gameplaySettings.json";
-
-	//options (ui)
-	public var iconSupport:Bool;
-	public var noteSplashSkin:String;
-	public var judgementSkin:String;
-	//public var strumPlayTime:Float;
-
-	//options (gameplay)
-	public var divider:String;
-	public var letterGrader:Bool;
-	public var complexRatings:Bool;
-	public var antiMash:Bool;
-
-	
-	/*IF YOU DO NOT YOUR FUNCTION TO BE IN PLAYSTATE.HX, JUST COPY PASTE TO CODE YOUR PLACE.
-	ALSO DO NOT FORGET IMPORT THESE THINGS:
-	sys.io.File
-	sys.FileSystem
-	haxe.Json*/
-				
-	//put your gameplay options here and call the function by writing devtwo(dirtwo);
-	//YOU CANT CALL THIS FUNCTION IN STATIC FUNCTIONS
-	public function devtwo(dirtwo:String)
-	{
-		//if a var is bool, you have make it true or false. do it like below
-		this.letterGrader = false;
-		this.complexRatings = false;
-		this.antiMash = false;
-
-		//if the file doesnt exists, game will simply crash because most important parts of the game is handled by these two functions.
-		if (FileSystem.exists(dirtwo))
-		{
-			var customGame:String = File.getContent(dirtwo);
-			if (customGame != null && customGame.length > 0)
-			{
-				logs++;
-
-				var poop:Dynamic = Json.parse(customGame);
-				var letterGrader:Bool = Reflect.getProperty(poop, "letterGrader");
-				var complexRatings:Bool = Reflect.getProperty(poop, "complexRatings");
-				var antiMash:Bool = Reflect.getProperty(poop, "antiMash");
-				var divider:String = Reflect.getProperty(poop, "divider");
-				//  var strumPlayTime:Float = Reflect.getProperty(poop, "strumPlayTime"); this is unused for now
-				
-				//bools
-				this.letterGrader = letterGrader;
-				this.complexRatings = complexRatings;
-				this.antiMash = antiMash;
-				
-				//float or integers
-				
-				/*this.strumPlayTime = strumPlayTime;
-				if (strumPlayTime < 0)
-					strumPlayTime = 0.15;
-				else if (strumPlayTime > 2)
-					strumPlayTime = 0.15;
-				*/
-				
-				/*for string variables, this is very important. if user deletes the text in "divider" or any string and writes nothing,
-				variable will be null! so we should trace and warn the player. You don't have to write these if variable is a bool/integer or float.*/
-				if (divider != null && divider.length > 0 && divider.length < 5)
-					this.divider = divider;
-				else if (divider != null && divider.length >= 5)
-				{
-					if (logs < 21)
-					trace("did you really think you could abuse dividers LMAO");
-					//this prevents people to spam dividers
-				}
-				else
-				{
-					if (logs < 11)
-					trace("text divider is turning null NOOOOOOOOOOOOOOOO");
-				}
-			}
-		}
-	}
-				
-	//put your ui options here and call the function by writing dev(dir);
-	//YOU CANT CALL THIS FUNCTION IN STATIC FUNCTIONS
-	public function dev(dir:String)
-		{
-			//it doesnt change for ui options
-			this.iconSupport = false;
-
-			if(FileSystem.exists(dir))
-			{
-				var customJson:String = File.getContent(dir);
-				if (customJson != null && customJson.length > 0)
-				{
-					var shit:Dynamic = Json.parse(customJson);
-
-					// options on json
-					var iconSupport:Bool = Reflect.getProperty(shit, "iconSupport");
-					var judgementSkin:String = Reflect.getProperty(shit, "judgementSkin");
-					var noteSplashSkin:String = Reflect.getProperty(shit, "noteSplashSkin");
-
-					// this shits
-					this.iconSupport = iconSupport;
-
-					if (judgementSkin != null && judgementSkin.length > 0)
-					this.judgementSkin = judgementSkin;
-
-					if (noteSplashSkin != null && noteSplashSkin.length > 0)
-					this.noteSplashSkin = noteSplashSkin;
-				}
-			}
-		}
 
 	override public function update(elapsed:Float)
 	{
@@ -2669,7 +2568,7 @@ class PlayState extends MusicBeatState
 			iconP1.swapOldIcon();
 	}*/
 
-		devtwo(dirtwo);
+	JsonSettings.devtwo(JsonSettings.dirtwo);
 		if (cpuControlled && !alreadyChanged)
 		{
 			scoreTxt.visible = false;
@@ -2836,15 +2735,16 @@ class PlayState extends MusicBeatState
 		}
 
 		super.update(elapsed);
-		devtwo(dirtwo);
+		JsonSettings.devtwo(JsonSettings.dirtwo);
 
 		// Info Bar
 		var ratingNameTwo:String = ratingName;
+		var dividert:String = JsonSettings.divider;
 
 		if (ratingFC == "")
-			scoreTxt.text = 'Score: ' + songScore + divider + 'Accuracy:' + Highscore.floorDecimal(ratingPercent * 100, 2) + '%' + divider + 'Rank: ?';
+			scoreTxt.text = 'Score: ' + songScore + dividert + 'Accuracy:' + Highscore.floorDecimal(ratingPercent * 100, 2) + '%' + dividert + 'Rank: ?';
 		else
-			scoreTxt.text = 'Score: ' + songScore + divider + 'Accuracy:' + Highscore.floorDecimal(ratingPercent * 100, 2) + '%' + divider + 'Rank: ' + ratingName + divider + ratingFC;
+			scoreTxt.text = 'Score: ' + songScore + dividert + 'Accuracy:' + Highscore.floorDecimal(ratingPercent * 100, 2) + '%' + dividert + 'Rank: ' + ratingName + dividert + ratingFC;
 
 		if (botplayTxt.visible)
 		{
@@ -2917,13 +2817,13 @@ class PlayState extends MusicBeatState
 		if (health > 2)
 			health = 2;
 
-		dev(dir);
+		JsonSettings.dev(JsonSettings.dir);
 
 		if (healthBar.percent < 20)
 		{
 			(opponentChart ? iconP2 : iconP1).animation.curAnim.curFrame = 1;
 			(opponentChart ? iconP1 : iconP2).animation.curAnim.curFrame = 2;
-			if (iconSupport)
+			if (JsonSettings.iconSupport)
 			{
 				(opponentChart ? iconP2 : iconP1).animation.curAnim.curFrame = 1;
 				(opponentChart ? iconP1 : iconP2).animation.curAnim.curFrame = 0;
@@ -2931,7 +2831,7 @@ class PlayState extends MusicBeatState
 		}
 		else if (healthBar.percent > 85)
 		{
-			if (!iconSupport)
+			if (!JsonSettings.iconSupport)
 			{
 				(opponentChart ? iconP2 : iconP1).animation.curAnim.curFrame = 2;
 				(opponentChart ? iconP1 : iconP2).animation.curAnim.curFrame = 1;
@@ -4168,7 +4068,7 @@ class PlayState extends MusicBeatState
 		if (daRating == (ClientPrefs.marvelouses ? 'marvelous' : 'sick') && !note.noteSplashDisabled)
 			spawnNoteSplashOnNote(note, false);
 	
-		devtwo(dirtwo);
+		JsonSettings.devtwo(JsonSettings.dirtwo);
 
 		if (!practiceMode && !cpuControlled)
 		{
@@ -4202,9 +4102,9 @@ class PlayState extends MusicBeatState
 		var uiSkin:String = '';
 		var altPart:String = isPixelStage ? '-pixel' : '';
 
-		dev(dir);
+		JsonSettings.dev(JsonSettings.dir);
 
-		uiSkin = judgementSkin;
+		uiSkin = JsonSettings.judgementSkin;
 
 		rating.loadGraphic(Paths.image(getUiSkin(uiSkin, daRating, altPart)));
 		rating.cameras = [camHUD];
@@ -4324,7 +4224,7 @@ class PlayState extends MusicBeatState
 
 	private function onKeyPress(event:KeyboardEvent):Void
 	{
-		devtwo(dirtwo);
+		JsonSettings.devtwo(JsonSettings.dirtwo);
 		var eventKey:FlxKey = event.keyCode;
 		var key:Int = getKeyFromEvent(eventKey);
 		// trace('Pressed: ' + eventKey);
@@ -4354,7 +4254,7 @@ class PlayState extends MusicBeatState
 							sortedNotesList.push(daNote);
 							// notesDatas.push(daNote.noteData);
 						}
-						if (antiMash) canMiss = true;
+						if (JsonSettings.antiMash) canMiss = true;
 					}
 				});
 				sortedNotesList.sort((a, b) -> Std.int(a.strumTime - b.strumTime));
@@ -4903,8 +4803,8 @@ class PlayState extends MusicBeatState
 
 	public function spawnNoteSplash(x:Float, y:Float, data:Int, ?note:Note = null)
 	{
-		dev(dir);
-		var skin:String = noteSplashSkin;
+		JsonSettings.dev(JsonSettings.dir);
+		var skin:String = JsonSettings.noteSplashSkin;
 		if (PlayState.SONG.splashSkin != null && PlayState.SONG.splashSkin.length > 0)
 			skin = PlayState.SONG.splashSkin;
 
@@ -5386,7 +5286,7 @@ class PlayState extends MusicBeatState
 		setOnLuas('misses', songMisses);
 		setOnLuas('hits', songHits);
 
-		devtwo(dirtwo);
+		JsonSettings.devtwo(JsonSettings.dirtwo);
 
 		var ret:Dynamic = callOnLuas('onRecalculateRating', []);
 		if (ret != FunkinLua.Function_Stop)
@@ -5400,18 +5300,14 @@ class PlayState extends MusicBeatState
 			// Rating Name
 			if (ratingPercent >= 1)
 			{
-				if (letterGrader)
+				if (JsonSettings.letterGrader)
 					ratingName = Ratings.ratingStuff[Ratings.ratingStuff.length - 1][0]; // Uses last string
-				else if (!letterGrader)
+				else
 					ratingName = Ratings.ratingSimple[Ratings.ratingSimple.length - 1][0];
-                if (complexRatings)
-					ratingName = Ratings.ratingComplex[Ratings.ratingComplex.length - 1][0];
-				if (complexRatings && !letterGrader)
-					ratingName = Ratings.errorRating[Ratings.errorRating.length - 1][0];
 			}
 			else
 			{
-				if (letterGrader)
+				if (JsonSettings.letterGrader)
 				{
 					for (i in 0...Ratings.ratingStuff.length - 1)
 					{
@@ -5422,7 +5318,7 @@ class PlayState extends MusicBeatState
 						}
 					}
 				}
-		        else if (!letterGrader)
+		        else
 				{
 					for (i in 0...Ratings.ratingSimple.length - 1)
 					{
@@ -5433,29 +5329,6 @@ class PlayState extends MusicBeatState
 						}
 					}
 				}
-                if (complexRatings)
-				{
-					for (i in 0...Ratings.ratingComplex.length - 1)
-					{
-						if (ratingPercent < Ratings.ratingComplex[i][1])
-						{
-							ratingName = Ratings.ratingComplex[i][0];
-							break;
-						}
-					}
-				}
-                if (complexRatings && !letterGrader)
-				{
-					for (i in 0...Ratings.errorRating.length - 1)
-					{
-						if (ratingPercent < Ratings.errorRating[i][1])
-						{
-							ratingName = Ratings.errorRating[i][0];
-							break;
-						}
-					}
-				}
-
 			}
 
 			// Rating FC
@@ -5480,7 +5353,7 @@ class PlayState extends MusicBeatState
 			else if (totalMisses >= 10)
 				ratingFC = "Clear";
 		}
-		devtwo(dirtwo);
+		JsonSettings.devtwo(JsonSettings.dirtwo);
 
 		setOnLuas('rating', ratingPercent);
 		setOnLuas('ratingName', ratingName);
