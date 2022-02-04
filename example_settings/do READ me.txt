@@ -35,6 +35,13 @@ at the moment, botplay crashes no matter which noteskins or judgement skin you a
 
 -------UI SETINGS-------
 letterGrader on true means that the game will use Letter Ratings.
-Example, if accuracy is below %20 rank will be 'D'.
+Example, if accuracy is below 20% rank will be 'D'.
 letterGrader on false means game will use original ratings.
-Example, if accuracy is below %20 rank will be 'You suck!'.
+Example, if accuracy is below 20% rank will be 'You suck!'.
+
+textseparator means that the info bar will show the specific separator you set yourself
+for example, if it's set as
+"textseparator": "//"
+
+info bar will be like this
+"Score: // Accuracy: // Combo Breaks: // Rank:"

@@ -2541,7 +2541,7 @@ class PlayState extends MusicBeatState
 	public var iconSupport:Bool;
 	public var dir:String = "settings/uiSettings.json";
 	public var judgementSkin:String;
-	public var scoretext:String;
+	public var divider:String;
 	public var noteSplashSkin:String;
 
 	public var letterGrader:Bool;
@@ -2564,8 +2564,6 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-
-
 	public function dev(dir:String)
 		{
 			this.iconSupport = false;
@@ -2578,16 +2576,17 @@ class PlayState extends MusicBeatState
 					var shit:Dynamic = Json.parse(customJson);
 					var iconSupport:Bool = Reflect.getProperty(shit, "iconSupport");
 					var judgementSkin:String = Reflect.getProperty(shit, "judgementSkin");
-					var scoretext:String = Reflect.getProperty(shit, "scoretext");
+					var divider:String = Reflect.getProperty(shit, "divider");
 					var noteSplashSkin:String = Reflect.getProperty(shit, "noteSplashSkin");
-					
 
 					this.iconSupport = iconSupport;
 
 					if (judgementSkin != null && judgementSkin.length > 0)
 					this.judgementSkin = judgementSkin;
-					if (scoretext != null && judgementSkin.length > 0)
-					this.scoretext = scoretext;
+
+					if (divider != null && divider.length > 0)
+					this.divider = divider;
+
 					if (noteSplashSkin != null && noteSplashSkin.length > 0)
 					this.noteSplashSkin = noteSplashSkin;
 				}
@@ -2769,16 +2768,15 @@ class PlayState extends MusicBeatState
 		}
 
 		super.update(elapsed);
-		 
 		dev(dir);
 
 		// Info Bar
 		var ratingNameTwo:String = ratingName;
 
 		if (ratingFC == "")
-			scoreTxt.text = 'Score: ' + songScore + ' '+scoretext+' Accuracy: ' + Highscore.floorDecimal(ratingPercent * 100, 2) + '% ' + ' '+scoretext+' Combo Breaks: ' + songMisses + ' '+scoretext+' Rank: ?';
+			scoreTxt.text = 'Score: ' + songScore + ' '+ divider +' Accuracy: ' + Highscore.floorDecimal(ratingPercent * 100, 2) + '% ' + ' '+ divider +' Combo Breaks: ' + songMisses + ' '+ divider +' Rank: ?';
 		else
-			scoreTxt.text = 'Score: ' + songScore + ' '+scoretext+' Accuracy: ' + Highscore.floorDecimal(ratingPercent * 100, 2) + '% ' + '[' + ratingFC + '] ' + ' '+scoretext+' Combo Breaks: ' + songMisses + ' '+scoretext+' Rank: ' + ratingName;
+			scoreTxt.text = 'Score: ' + songScore + ' '+ divider +' Accuracy: ' + Highscore.floorDecimal(ratingPercent * 100, 2) + '% ' + '[' + ratingFC + '] ' + ' '+ divider +' Combo Breaks: ' + songMisses + ' '+ divider +' Rank: ' + ratingName;
 
 		if (botplayTxt.visible)
 		{
@@ -4066,9 +4064,7 @@ class PlayState extends MusicBeatState
 		var score:Int = 350;
 
 		// tryna do MS based judgment due to popular demand
-		var daRating:String = Conductor.instance.judgeNote(note, noteDiff);
-
-		devtwo(dirtwo);
+		var daRating:String = Conductor.judgeNote(note, noteDiff);
 
 		switch (daRating)
 		{
