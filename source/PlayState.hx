@@ -238,7 +238,7 @@ class PlayState extends MusicBeatState
 	public var songMisses:Int = 0;
 	public var totalMisses:Int = 0;
 	public var scoreTxt:FlxText;
-	public var scoreTxtaboveicons:FlxText;
+	//public var scoreTxtaboveicons:FlxText;
 
 	var judgementCounter:FlxText;
 	var timeTxt:FlxText;
@@ -2650,13 +2650,13 @@ class PlayState extends MusicBeatState
 		if (cpuControlled && !alreadyChanged)
 		{
 			scoreTxt.visible = false;
-			scoreTxtaboveicons.visible = false;
+			//scoreTxtaboveicons.visible = false;
 			alreadyChanged = true;
 		}
 		else if (!cpuControlled && alreadyChanged)
 		{
 			scoreTxt.visible = true;
-			scoreTxtaboveicons.visible = true;
+			//scoreTxtaboveicons.visible = true;
 			alreadyChanged = false;
 		}
 
