@@ -310,6 +310,7 @@ class Paths
 		return path.toLowerCase().replace(' ', '-');
 	}
 
+	public static var logs:Int = 0;
 	// completely rewritten asset loading? fuck!
 	public static var currentTrackedAssets:Map<String, FlxGraphic> = [];
 	public static function returnGraphic(key:String, ?library:String) {
@@ -334,7 +335,14 @@ class Paths
 			localTrackedAssets.push(key);
 			return currentTrackedAssets.get(key);
 		}
-		trace('oh no its returning null NOOOO');
+		
+		logs++;
+		if (logs < 11)
+			trace('oh no its returning null NOOOO');
+		else
+		{
+			//do absolutely nothing lmfao
+		}
 		return null;
 	}
 
