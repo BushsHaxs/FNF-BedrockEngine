@@ -2538,14 +2538,18 @@ class PlayState extends MusicBeatState
 	var limoSpeed:Float = 0;
 	var alreadyChanged:Bool = false; // lag no more
 
-	public var iconSupport:Bool;
+	//json paths shit
 	public var dir:String = "settings/uiSettings.json";
-	public var judgementSkin:String;
-	public var divider:String;
-	public var noteSplashSkin:String;
-
-	public var letterGrader:Bool;
 	public var dirtwo:String = "settings/gameplaySettings.json";
+
+	//options (ui)
+	public var iconSupport:Bool;
+	public var noteSplashSkin:String;
+	public var judgementSkin:String;
+
+	//options (other settings)
+	public var divider:String = '-';
+	public var letterGrader:Bool;
 
 	public function devtwo(dirtwo:String)
 	{
@@ -2574,11 +2578,14 @@ class PlayState extends MusicBeatState
 				if (customJson != null && customJson.length > 0)
 				{
 					var shit:Dynamic = Json.parse(customJson);
+
+					// options on json
 					var iconSupport:Bool = Reflect.getProperty(shit, "iconSupport");
 					var judgementSkin:String = Reflect.getProperty(shit, "judgementSkin");
 					var divider:String = Reflect.getProperty(shit, "divider");
 					var noteSplashSkin:String = Reflect.getProperty(shit, "noteSplashSkin");
 
+					// this shits
 					this.iconSupport = iconSupport;
 
 					if (judgementSkin != null && judgementSkin.length > 0)
