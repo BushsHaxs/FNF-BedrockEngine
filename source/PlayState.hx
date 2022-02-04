@@ -2598,8 +2598,6 @@ class PlayState extends MusicBeatState
 					this.divider = divider;
 				else if (divider != null && divider.length >= 5)
 				{
-					this.divider = "-";
-					divider = this.divider;
 					//this prevent people to spam dividers
 				}
 				else
