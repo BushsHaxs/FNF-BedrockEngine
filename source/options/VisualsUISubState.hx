@@ -156,7 +156,7 @@ class VisualsUISubState extends BaseOptionsMenu
 		option.maxValue = 1;
 		option.changeValue = 0.1;
 		option.decimals = 1;
-		addOption(option); // god I need to actually code this stupid thing in. - Gui iago
+		//addOption(option);
 
 			var option:Option = new Option('Time Bar:',
 			"What should the Time Bar display?",

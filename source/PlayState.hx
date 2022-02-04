@@ -2548,7 +2548,7 @@ class PlayState extends MusicBeatState
 	public var judgementSkin:String;
 
 	//options (other settings)
-	public var divider:String = '-';
+	public var divider:String;
 	public var letterGrader:Bool;
 
 	public function devtwo(dirtwo:String)
@@ -2592,7 +2592,9 @@ class PlayState extends MusicBeatState
 					this.judgementSkin = judgementSkin;
 
 					if (divider != null && divider.length > 0)
-					this.divider = divider;
+						this.divider = divider;
+					else 
+						this.divider = '-';
 
 					if (noteSplashSkin != null && noteSplashSkin.length > 0)
 					this.noteSplashSkin = noteSplashSkin;
