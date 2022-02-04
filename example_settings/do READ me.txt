@@ -52,7 +52,7 @@ divider means that the info bar will show the specific separator you set yoursel
 For example, if it's set as
 "divider": " // ", info bar will be like this:
 
-"Score: // Accuracy: // Combo Breaks: // Rank:".
+"Score: // Accuracy: // Rank:".
 
 spaces before and after your divider are recommended.
 
