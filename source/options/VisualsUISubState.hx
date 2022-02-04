@@ -101,8 +101,15 @@ class VisualsUISubState extends BaseOptionsMenu
 	addOption(option);     
 
 		var option:Option = new Option('Show Watermarks',
-		"If unchecked, hides engine watermarks from the bottom left corner of the screen",
+		"If unchecked, hides engine watermarks from the bottom right corner of the screen",
 		'showWatermarks',
+		'bool',
+		true);
+	addOption(option);
+
+		var option:Option = new Option('Show Song Display',
+		"If unchecked, hides song name and difficulty from the bottom left corner of the screen",
+		'showSongDisplay',
 		'bool',
 		true);
 	addOption(option);

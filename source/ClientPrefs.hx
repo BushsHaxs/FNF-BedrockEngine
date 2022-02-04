@@ -72,6 +72,7 @@ class ClientPrefs {
 	public static var disableChars:Bool = false;
 	public static var maniaMode:Bool = false;
 	public static var bgAlpha:Float = 0;
+	public static var showSongDisplay:Bool = true;
 
 	// Added by Bedrock Engine (via Pull Requests)
 	public static var marvelouses:Bool = true;
@@ -157,6 +158,7 @@ class ClientPrefs {
 		FlxG.save.data.disableChars = disableChars;
 		FlxG.save.data.maniaMode = maniaMode;
 		FlxG.save.data.bgAlpha = bgAlpha;
+		FlxG.save.data.showSongDisplay = showSongDisplay;
 
 		// Added by Bedrock Engine (via Pull Requests)
 		FlxG.save.data.marvelousWindow = marvelousWindow;
@@ -312,6 +314,9 @@ class ClientPrefs {
 		}
 		if(FlxG.save.data.bgAlpha != null) {
 			bgAlpha = FlxG.save.data.bgAlpha;
+		}
+		if(FlxG.save.data.showSongDisplay != null) {
+			showSongDisplay = FlxG.save.data.showSongDisplay;
 		}
 		
 		// Added by Bedrock Engine (via Pull Requests)

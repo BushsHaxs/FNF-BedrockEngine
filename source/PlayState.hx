@@ -244,6 +244,7 @@ class PlayState extends MusicBeatState
 	var scoreTxtTween:FlxTween;
 	var beWatermark:FlxText;
 	var peWatermark:FlxText;
+	var songDisplay:FlxText;
 	var songNameTxt:FlxText;
 
 	public static var campaignScore:Int = 0;
@@ -1171,24 +1172,38 @@ class PlayState extends MusicBeatState
 		reloadHealthBarColors();
 
 		// Watermarks, this is for Bedrock Engine
-		beWatermark = new FlxText(0, FlxG.height - 44, 0, "Bedrock Engine: v" + MainMenuState.bedrockEngineVersion, 16);
+		beWatermark = new FlxText(0, FlxG.height - 50, 0, "Bedrock Engine: v" + MainMenuState.bedrockEngineVersion, 16);
 		beWatermark.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		beWatermark.scrollFactor.set();
+		beWatermark.updateHitbox();
+		beWatermark.x = FlxG.width - beWatermark.width - 5;
 		beWatermark.visible = false;
 
 		// And this is for Psych Engine
-		peWatermark = new FlxText(0, FlxG.height - 24, 0, "Psych Engine: v" + MainMenuState.psychEngineVersion, 16);
+		peWatermark = new FlxText(0, FlxG.height - 30, 0, "Psych Engine: v" + MainMenuState.psychEngineVersion, 16);
 		peWatermark.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		peWatermark.scrollFactor.set();
+		peWatermark.updateHitbox();
+		peWatermark.x = FlxG.width - peWatermark.width - 5;
 		peWatermark.visible = false;
+
+		//Song Display thingy
+		songDisplay = new FlxText(0, FlxG.height - 30, 0, SONG.song + " - " + CoolUtil.difficultyString(), 16);
+		songDisplay.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		songDisplay.scrollFactor.set();
+		songDisplay.visible = false;
 
 		if (ClientPrefs.showWatermarks)
 			beWatermark.visible = true;
 			peWatermark.visible = true;
 
+		if (ClientPrefs.showSongDisplay)
+			songDisplay.visible = true;
+
 		// add them
 		add(beWatermark);
 		add(peWatermark);
+		add(songDisplay);
 
 		// left and right judgement counters
 		judgementCounter = new FlxText(20, 0, 0, "", 20);
@@ -1243,6 +1258,7 @@ class PlayState extends MusicBeatState
 		judgementCounter.cameras = [camHUD];
 		beWatermark.cameras = [camHUD];
 		peWatermark.cameras = [camHUD];
+		songDisplay.cameras = [camHUD];
 		hideBGOpacity.cameras = [camHUD];
 		laneunderlay.cameras = [camHUD];
 		laneunderlayOpponent.cameras = [camHUD];
