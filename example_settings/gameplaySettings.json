@@ -1,5 +1,6 @@
 {
 	"letterGrader":true,
 	"complexRatings": false,
+	"antiMash":false,
 	"divider": " - "
 }
