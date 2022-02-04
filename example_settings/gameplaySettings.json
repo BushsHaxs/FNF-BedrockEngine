@@ -1,6 +1,5 @@
 {
 	"letterGrader":true,
 	"complexRatings": false,
-	"updateScoreifBotplay":true,
 	"divider": "-"
 }

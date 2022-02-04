@@ -1212,7 +1212,7 @@ class PlayState extends MusicBeatState
 		add(judgementCounter);
 
 		// or Disable them in case the option is turned off
-		if (!ClientPrefs.judgCounter || cpuControlled && !updateScoreifBotplay)
+		if (!ClientPrefs.judgCounter || cpuControlled)
 			remove(judgementCounter);
 		
 
@@ -2558,7 +2558,6 @@ class PlayState extends MusicBeatState
 	public var divider:String;
 	public var letterGrader:Bool;
 	public var complexRatings:Bool;
-	public var updateScoreifBotplay:Bool;
 
 	
 	/*IF YOU DO NOT YOUR FUNCTION TO BE IN PLAYSTATE.HX, JUST COPY PASTE TO CODE YOUR PLACE.
@@ -2573,7 +2572,6 @@ class PlayState extends MusicBeatState
 	{
 		//if a var is bool, you have make it true or false. do it like below
 		this.letterGrader = false;
-		this.updateScoreifBotplay = true;
 		this.complexRatings = false;
 
 		//if the file doesnt exists, game will simply crash because most important parts of the game is handled by these two functions.
@@ -2585,14 +2583,12 @@ class PlayState extends MusicBeatState
 				var poop:Dynamic = Json.parse(customGame);
 				var letterGrader:Bool = Reflect.getProperty(poop, "letterGrader");
 				var complexRatings:Bool = Reflect.getProperty(poop, "complexRatings");
-				var updateScoreifBotplay:Bool = Reflect.getProperty(poop, "updateScoreifBotplay");
 				var divider:String = Reflect.getProperty(poop, "divider");
 				//  var strumPlayTime:Float = Reflect.getProperty(poop, "strumPlayTime"); this is unused for now
 				
 				//bools
 				this.letterGrader = letterGrader;
 				this.complexRatings = complexRatings;
-				this.updateScoreifBotplay = updateScoreifBotplay;
 				
 				//float or integers
 				
@@ -2659,8 +2655,7 @@ class PlayState extends MusicBeatState
 		devtwo(dirtwo);
 		if (cpuControlled && !alreadyChanged)
 		{
-			if (!updateScoreifBotplay)
-				scoreTxt.visible = false;
+			scoreTxt.visible = false;
 			alreadyChanged = true;
 		}
 		else if (!cpuControlled && alreadyChanged)
@@ -4160,45 +4155,30 @@ class PlayState extends MusicBeatState
 	
 		devtwo(dirtwo);
 
-		var cpuScore:Bool = true;
-
-		if (cpuControlled && updateScoreifBotplay)
-			cpuScore = true;
-		else if (cpuControlled && !updateScoreifBotplay)
-			cpuScore = false;
-
-		if (!cpuControlled)
-			cpuScore = true;
-
-
-
-		if (!practiceMode)
+		if (!practiceMode && !cpuControlled)
 		{
-			if (cpuScore)
-			{
-				if (ClientPrefs.keAccuracy)
-					songScore += Math.round(score);
-				else
-					songScore += score;
-				songHits++;
-				totalPlayed++;
-				RecalculateRating();
+			if (ClientPrefs.keAccuracy)
+				songScore += Math.round(score);
+			else
+				songScore += score;
+			songHits++;
+			totalPlayed++;
+			RecalculateRating();
 
-				if (ClientPrefs.scoreZoom)
+			if (ClientPrefs.scoreZoom)
+			{
+				if (scoreTxtTween != null)
 				{
-					if (scoreTxtTween != null)
-					{
-						scoreTxtTween.cancel();
-					}
-					scoreTxt.scale.x = 1.075;
-					scoreTxt.scale.y = 1.075;
-					scoreTxtTween = FlxTween.tween(scoreTxt.scale, {x: 1, y: 1}, 0.2, {
-						onComplete: function(twn:FlxTween)
-						{
-							scoreTxtTween = null;
-						}
-					});
+					scoreTxtTween.cancel();
 				}
+				scoreTxt.scale.x = 1.075;
+				scoreTxt.scale.y = 1.075;
+				scoreTxtTween = FlxTween.tween(scoreTxt.scale, {x: 1, y: 1}, 0.2, {
+					onComplete: function(twn:FlxTween)
+					{
+						scoreTxtTween = null;
+					}
+				});
 			}
 		}
 
