@@ -2734,7 +2734,7 @@ class PlayState extends MusicBeatState
 
 		// Info Bar
 		var ratingNameTwo:String = ratingName;
-		var dividert:String = JsonSettings.divider;
+		var divider:String = JsonSettings.divider;
 
 		if (ratingFC == "")
 			scoreTxt.text = 'Score: ' + songScore + dividert + 'Accuracy:' + Highscore.floorDecimal(ratingPercent * 100, 2) + '%' + dividert + 'Rank: ?';
