@@ -177,7 +177,18 @@ class ExtraMenuState extends MusicBeatState
 			{
 				if (optionShit[curSelected] == 'appearance')
 				{
-					CoolUtil.browserLoad('settings/uiSettings.json');
+					#if windows
+					//open custom settings file
+					Sys.command('C:/Windows/notepad.exe /A settings/uiSettings.json');
+					//open readme for information
+					Sys.command('C:/Windows/notepad.exe /A settings/do-READ-me.txt');
+					#elseif mac
+					Sys.command('open -a TextEdit settings/uiSettings.json');
+					Sys.command('open -a TextEdit settings/do-READ-me.txt');
+					#elseif linux
+					Sys.command('nano settings/uiSettings.json');
+					Sys.command('nano settings/do-READ-me.txt');
+					#end
 				}
 				else
 				{
