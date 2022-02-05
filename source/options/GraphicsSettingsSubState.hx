@@ -57,7 +57,7 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 
 		#if !mobile
 		var option:Option = new Option('FPS Counter',
-		"If unchecked, hides FPS Counter.",
+		"Whether to display the FPS Counter.",
 		'showFPS',
 		'bool',
 		true);
@@ -67,7 +67,7 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 
 		#if !html5 //Apparently other framerates isn't correctly supported on Browser? Probably it has some V-Sync shit enabled by default, idk
 		var option:Option = new Option('FPS Cap',
-		"Pretty self explanatory, isn't it?",
+		"Define your maximum FPS.",
 		'framerate',
 		'int',
 		60);
@@ -102,7 +102,7 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 		addOption(option);
 
 		var option:Option = new Option('Memory Counter',
-		"If checked, shows Memory Counter.",
+		"Whether to display approximately how much memory is being used, and the Peak of that Memory.",
 		'memCounter',
 		'bool',
 		false);
