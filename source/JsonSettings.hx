@@ -14,6 +14,12 @@ class JsonSettings
     public static var logs:Int = 0; 
     //this is used for log counts
 
+    //offsets, will be used by conductor
+    public static var marvOffsets:Float;
+    public static var sickOffsets:Float;
+    public static var goodOffsets:Float;
+    public static var badOffsets:Float;
+
     //ui settings 
     public static var iconSupport:Bool;
     public static var noteSkin:String;
@@ -28,8 +34,10 @@ class JsonSettings
     //json directories
     public static var dirtwo:String = "settings/gameplaySettings.json";
     public static var dir:String = "settings/uiSettings.json";
+    public static var diroffset:String = "settings/offsets.json";
     #if MODS_ALLOWED
     public static var dirmod:String = "mods/settings/settings.json";
+    public static var modoffset:String;
     #end
 
     public static function devtwo(dirtwo:String)
@@ -50,7 +58,7 @@ class JsonSettings
                 antiMash = antiMashTEMPLATE;
                 divider = dividerTEMPLATE;
 
-                //trace(antiMash + divider + letterGrader);
+               // trace(antiMash + divider + letterGrader);
 
                 if (dividerTEMPLATE != null && dividerTEMPLATE.length > 6)
                 {
@@ -102,6 +110,45 @@ class JsonSettings
                      trace("note splash skins are null, making them noteSplashes again.");
                     noteSplashSkin = 'noteSplashes';
                 }
+            }
+        }
+    }
+
+    public static function devoffset(diroffset:String)
+    {
+        if (FileSystem.exists(diroffset))
+        {
+            var customOffsets:String = File.getContent(diroffset);
+            if (customOffsets != null && customOffsets.length > 0)
+            {
+
+                //fuck you haxe i couldnt use =< or >= in here
+
+                var offset:Dynamic = Json.parse(diroffset);
+                var marvOffsetsTEMPLATE:Float = Reflect.getProperty(offset, "marvOffset");
+                var sickOffsetsTEMPLATE:Float = Reflect.getProperty(offset, "sickOffset");
+                var goodOffsetsTEMPLATE:Float = Reflect.getProperty(offset, "goodOffset");
+                var badOffsetsTEMPLATE:Float = Reflect.getProperty(offset, "badOffset");
+
+                if (marvOffsetsTEMPLATE > 2.49 && marvOffsetsTEMPLATE < 30.01)
+                    marvOffsets = marvOffsetsTEMPLATE;
+                else
+                    marvOffsets = 25;
+
+                if (sickOffsetsTEMPLATE > 14.99 && sickOffsetsTEMPLATE < 60.01)
+                    sickOffsets = sickOffsetsTEMPLATE;
+                else
+                    marvOffsets = 45;
+
+                if (goodOffsetsTEMPLATE > 29.99 && goodOffsetsTEMPLATE < 90.01)
+                   goodOffsets = goodOffsetsTEMPLATE;
+                else
+                    marvOffsets = 90;
+
+                if (badOffsetsTEMPLATE > 44.99 && badOffsetsTEMPLATE < 135.01)
+                    badOffsets = badOffsetsTEMPLATE;
+                else
+                    marvOffsets = 135;
             }
         }
     }
