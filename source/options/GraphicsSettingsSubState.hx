@@ -41,12 +41,43 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 		option.onChange = onChangeAntiAliasing; //Changing onChange is only needed if you want to make a special interaction after it changes the value
 		addOption(option);
 
+		var option:Option = new Option('Auto Pause',
+		"Whether or not to pause the game automatically",
+		'autoPause',
+		'bool',
+		true);
+		//addOption(option);
+
 		var option:Option = new Option('Disable Characters',
 		'If checked, disable stage characters in order to improve performance, may not improve as much as other options.',
 		'disableChars',
 		'bool',
 		true);
 		//addOption(option);
+
+		#if !mobile
+		var option:Option = new Option('FPS Counter',
+		"If unchecked, hides FPS Counter.",
+		'showFPS',
+		'bool',
+		true);
+		addOption(option);
+		option.onChange = onChangeFPSCounter;
+		#end
+
+		#if !html5 //Apparently other framerates isn't correctly supported on Browser? Probably it has some V-Sync shit enabled by default, idk
+		var option:Option = new Option('FPS Cap',
+		"Pretty self explanatory, isn't it?",
+		'framerate',
+		'int',
+		60);
+		addOption(option);
+
+		option.minValue = 60;
+		option.maxValue = 240;
+		option.displayFormat = '%v FPS';
+		option.onChange = onChangeFramerate;	
+		#end
 
 		var option:Option = new Option('Hide Girlfriend',
 		"If checked, this will hide Girlfriend from Stages, improving performance, this does not apply if she's the Opponent",
@@ -70,6 +101,13 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 		false);
 		addOption(option);
 
+		var option:Option = new Option('Memory Counter',
+		"If checked, shows Memory Counter.",
+		'memCounter',
+		'bool',
+		false);
+		addOption(option);
+
 		/*
 		var option:Option = new Option('Persistent Cached Data',
 			'If checked, images loaded will stay in memory\nuntil the game is closed, this increases memory usage,\nbut basically makes reloading times instant.',
@@ -81,6 +119,28 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 		*/
 
 		super();
+	}
+
+	#if !mobile
+	function onChangeFPSCounter()
+	{
+		if(Main.fpsVar != null)
+			Main.fpsVar.visible = ClientPrefs.showFPS;
+	}
+	#end
+
+	function onChangeFramerate()
+	{
+		if(ClientPrefs.framerate > FlxG.drawFramerate)
+		{
+			FlxG.updateFramerate = ClientPrefs.framerate;
+			FlxG.drawFramerate = ClientPrefs.framerate;
+		}
+		else
+		{
+			FlxG.drawFramerate = ClientPrefs.framerate;
+			FlxG.updateFramerate = ClientPrefs.framerate;
+		}
 	}
 
 	function onChangeAntiAliasing()
