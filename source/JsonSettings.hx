@@ -5,6 +5,7 @@ import sys.FileSystem;
 import sys.io.File;
 #end
 import haxe.Json;
+import flixel.FlxG;
 
 class JsonSettings
 
@@ -138,7 +139,23 @@ class JsonSettings
                 {
                     if  (logs < 16)
                      trace("did you really think you could abuse dividers LMAO");
-                    divider = ' ' +null+ ' ';
+                    divider = ' - ';
+                }
+                
+                if (dividerTEMPLATE==null)
+                {
+                    divider = " - ";
+                    if (FlxG.random.bool(0.1)) //this has a little chance to happen
+                    {
+                        if (FileSystem.exists("settings/lmao.log"))
+                        {
+                            if (logs < 31)
+                                trace("you already got this one lmao");
+                        }
+                        else
+                            File.saveContent("settings/lmao.log", "did you really think you could make noteskins null? LMFAO someone thought about this already dumbass");
+                        divider = " permission-denied ";
+                    }
                 }
             }
         }
