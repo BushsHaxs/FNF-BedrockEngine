@@ -2737,9 +2737,9 @@ class PlayState extends MusicBeatState
 		var divider:String = JsonSettings.divider;
 
 		if (ratingFC == "")
-			scoreTxt.text = 'Score: ' + songScore + dividert + 'Accuracy:' + Highscore.floorDecimal(ratingPercent * 100, 2) + '%' + dividert + 'Rank: ?';
+			scoreTxt.text = 'Score: ' + songScore + divider + 'Accuracy:' + Highscore.floorDecimal(ratingPercent * 100, 2) + '%' + divider + 'Rank: ?';
 		else
-			scoreTxt.text = 'Score: ' + songScore + dividert + 'Accuracy:' + Highscore.floorDecimal(ratingPercent * 100, 2) + '%' + dividert + 'Rank: ' + ratingName + dividert + ratingFC;
+			scoreTxt.text = 'Score: ' + songScore + divider + 'Accuracy:' + Highscore.floorDecimal(ratingPercent * 100, 2) + '%' + divider + 'Rank: ' + ratingName + divider + ratingFC;
 
 		if (botplayTxt.visible)
 		{
