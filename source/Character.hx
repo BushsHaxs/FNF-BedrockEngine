@@ -302,14 +302,17 @@ class Character extends FlxSprite
 				}
 			}
 			else if (PlayState.opponentChart)
+			{
+				if (animation.curAnim.name.startsWith('sing'))
 				{
-					if (animation.curAnim.name.startsWith('sing'))
-					{
-						holdTimer += elapsed;
-					}
-					else
-						holdTimer = 0;
+					holdTimer += elapsed;
 				}
+				else
+					holdTimer = 0;
+
+				if (animation.curAnim.name.endsWith('miss') && animation.curAnim.finished && !debugMode)
+					dance();
+			}
 
 			if(animation.curAnim.finished && animation.getByName(animation.curAnim.name + '-loop') != null)
 			{

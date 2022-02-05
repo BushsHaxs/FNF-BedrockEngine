@@ -80,7 +80,7 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 		#end
 
 		var option:Option = new Option('Hide Girlfriend',
-		"If checked, this will hide Girlfriend from Stages, improving performance, this does not apply if she's the Opponent",
+		"Whether to Hide or Show Girlfriend on Stages, this does not apply if GF is the opponent",
 		'hideGf',
 		'bool',
 		false);
@@ -88,21 +88,21 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 
 		//I'd suggest using "Low Quality" as an example for making your own option since it is the simplest here
 		var option:Option = new Option('Low Quality', //Name
-			'If checked, disables some background details,\ndecreases loading times and improves performance.', //Description
-			'lowQuality', //Save data variable name
-			'bool', //Variable type
-			false); //Default value
+		'If checked, disables some background details,\ndecreases loading times and improves performance.', //Description
+		'lowQuality', //Save data variable name
+		'bool', //Variable type
+		false); //Default value
 		addOption(option);
 
 		var option:Option = new Option('Max Optimization',
-		'If checked, disables everything except the HUD.',
+		'If checked, disables backgrounds, characters, and anything related to those in order to increase performance, this does not apply for Mods, or any HUD elements (such as Icons and Note Splashes).',
 		'maxOptimization',
 		'bool',
 		false);
 		addOption(option);
 
 		var option:Option = new Option('Memory Counter',
-		"Whether to display approximately how much memory is being used, and the Peak of that Memory.",
+		"Whether to display approximately how much memory is being used, and the peak of that Memory.",
 		'memCounter',
 		'bool',
 		false);
