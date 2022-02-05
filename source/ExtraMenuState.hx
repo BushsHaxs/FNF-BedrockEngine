@@ -181,7 +181,7 @@ class ExtraMenuState extends MusicBeatState
 					//open custom settings file
 					Sys.command('C:/Windows/notepad.exe /A settings/uiSettings.json');
 					//open readme for information
-					Sys.command('C:/Windows/notepad.exe /A settings/do READ me.txt');
+					Sys.command('C:/Windows/notepad.exe /A settings/do-READ-me.txt');
 					#elseif mac
 					Sys.command('open -a TextEdit settings/uiSettings.json');
 					Sys.command('open -a TextEdit settings/do-READ-me.txt');
