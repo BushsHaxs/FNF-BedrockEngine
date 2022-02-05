@@ -48,19 +48,6 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 		true);
 		//addOption(option);
 
-		#if !html5 //Apparently other framerates isn't correctly supported on Browser? Probably it has some V-Sync shit enabled by default, idk
-		var option:Option = new Option('Framerate',
-			"Pretty self explanatory, isn't it?",
-			'framerate',
-			'int',
-			60);
-		addOption(option);
-
-		option.minValue = 60;
-		option.maxValue = 240;
-		option.displayFormat = '%v FPS';
-		option.onChange = onChangeFramerate;
-
 		var option:Option = new Option('Hide Girlfriend',
 		"If checked, this will hide Girlfriend from Stages, improving performance, this does not apply if she's the Opponent",
 		'hideGf',
@@ -82,8 +69,6 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 		'bool',
 		false);
 		addOption(option);
-		
-		#end
 
 		/*
 		var option:Option = new Option('Persistent Cached Data',
@@ -107,20 +92,6 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 			if(sprite != null && (sprite is FlxSprite) && !(sprite is FlxText)) {
 				sprite.antialiasing = ClientPrefs.globalAntialiasing;
 			}
-		}
-	}
-
-	function onChangeFramerate()
-	{
-		if(ClientPrefs.framerate > FlxG.drawFramerate)
-		{
-			FlxG.updateFramerate = ClientPrefs.framerate;
-			FlxG.drawFramerate = ClientPrefs.framerate;
-		}
-		else
-		{
-			FlxG.drawFramerate = ClientPrefs.framerate;
-			FlxG.updateFramerate = ClientPrefs.framerate;
 		}
 	}
 }
