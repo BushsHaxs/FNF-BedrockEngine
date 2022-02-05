@@ -4785,7 +4785,7 @@ class PlayState extends MusicBeatState
 				var strum:StrumNote = opponentStrums.members[note.noteData];
 				if (strum != null)
 				{
-					spawnNoteSplash(strum.x, strum.y, note.noteData, note);
+					spawnNoteSplash(strum.x, strum.y, note.noteData, note, true);
 				}
 			}
 			else
@@ -4793,13 +4793,13 @@ class PlayState extends MusicBeatState
 				var strum:StrumNote = playerStrums.members[note.noteData];
 				if (strum != null)
 				{
-					spawnNoteSplash(strum.x, strum.y, note.noteData, note);
+					spawnNoteSplash(strum.x, strum.y, note.noteData, note, false);
 				}
 			}
 		}
 	}
 
-	public function spawnNoteSplash(x:Float, y:Float, data:Int, ?note:Note = null)
+	public function spawnNoteSplash(x:Float, y:Float, data:Int, ?note:Note = null, opponent:Bool = true)
 	{
 		JsonSettings.dev(JsonSettings.dir);
 		var skin:String = JsonSettings.noteSplashSkin;
@@ -4820,6 +4820,9 @@ class PlayState extends MusicBeatState
 		var splash:NoteSplash = grpNoteSplashes.recycle(NoteSplash);
 		splash.setupNoteSplash(x, y, data, skin, hue, sat, brt);
 		grpNoteSplashes.add(splash);
+
+		if (opponent && ClientPrefs.middleScroll)
+			splash.alpha *= 0.5;
 	}
 
 	var fastCarCanDrive:Bool = true;
