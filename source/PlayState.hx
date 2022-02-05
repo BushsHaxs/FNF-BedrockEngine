@@ -1477,8 +1477,8 @@ class PlayState extends MusicBeatState
 
 		if(ClientPrefs.maniaMode) 
 		{	
-			healthBar.createFilledBar(FlxColor.WHITE,
-			FlxColor.BLACK);
+			healthBar.createFilledBar(FlxColor.BLACK,
+			FlxColor.WHITE);
 			healthBar.updateBar();
 		}
 	}
