@@ -4379,46 +4379,37 @@ class PlayState extends MusicBeatState
 			notes.forEachAlive(function(daNote:Note)
 			{
 				// hold note functions
-				if (daNote.isSustainNote && controlHoldArray[daNote.noteData] && daNote.canBeHit && daNote.mustPress && !daNote.tooLate && !daNote.wasGoodHit)
-				{
+				if (daNote.isSustainNote && controlHoldArray[daNote.noteData] && daNote.canBeHit 
+				&& daNote.mustPress && !daNote.tooLate && !daNote.wasGoodHit) {
 					goodNoteHit(daNote);
 				}
 			});
 
-			if (controlHoldArray.contains(true) && !endingSong && !opponentChart)
-			{
+			if (controlHoldArray.contains(true) && !endingSong && !opponentChart) {
 				#if ACHIEVEMENTS_ALLOWED
 				var achieve:String = checkForAchievement(['oversinging']);
-				if (achieve != null)
-				{
+				if (achieve != null) {
 					startAchievement(achieve);
 				}
 				#end
-			}
-			else if (boyfriend.holdTimer > Conductor.stepCrochet * 0.001 * boyfriend.singDuration
-				&& boyfriend.animation.curAnim.name.startsWith('sing')
-				&& !boyfriend.animation.curAnim.name.endsWith('miss'))
+			} else if (boyfriend.holdTimer > Conductor.stepCrochet * 0.001 * boyfriend.singDuration && boyfriend.animation.curAnim.name.startsWith('sing')
+			&& !boyfriend.animation.curAnim.name.endsWith('miss'))
 				boyfriend.dance();
-				
+
 			if (controlHoldArray.contains(true) && !endingSong && opponentChart) {/*bruh*/} else if (dad.holdTimer > Conductor.stepCrochet * 0.001 * dad.singDuration && dad.animation.curAnim.name.startsWith('sing')
 			&& !dad.animation.curAnim.name.endsWith('miss'))
 				dad.dance();
 		}
 
 		// TO DO: Find a better way to handle controller inputs, this should work for now
-		if (ClientPrefs.controllerMode)
+		if(ClientPrefs.controllerMode)
 		{
-			var controlArray:Array<Bool> = [
-				controls.NOTE_LEFT_R,
-				controls.NOTE_DOWN_R,
-				controls.NOTE_UP_R,
-				controls.NOTE_RIGHT_R
-			];
-			if (controlArray.contains(true))
+			var controlArray:Array<Bool> = [controls.NOTE_LEFT_R, controls.NOTE_DOWN_R, controls.NOTE_UP_R, controls.NOTE_RIGHT_R];
+			if(controlArray.contains(true))
 			{
 				for (i in 0...controlArray.length)
 				{
-					if (controlArray[i])
+					if(controlArray[i])
 						onKeyRelease(new KeyboardEvent(KeyboardEvent.KEY_UP, true, true, -1, keysArray[i][0]));
 				}
 			}
