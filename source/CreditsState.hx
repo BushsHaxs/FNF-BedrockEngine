@@ -407,6 +407,8 @@ class CreditsState extends MusicBeatState
 		super.create();
 	}
 
+	var holdTime:Float = 0;
+
 	override function update(elapsed:Float)
 	{
 		warningDialogue.setText("YOU ARE ABOUT TO GO TO: \n"
@@ -420,13 +422,31 @@ class CreditsState extends MusicBeatState
 		var upP = controls.UI_UP_P;
 		var downP = controls.UI_DOWN_P;
 
+		var shiftMult:Int = 1;
+		if (FlxG.keys.pressed.SHIFT)
+			shiftMult = 3;
+
 		if (upP)
 		{
-			changeSelection(-1);
+			changeSelection(-shiftMult);
+			holdTime = 0;
 		}
 		if (downP)
 		{
-			changeSelection(1);
+			changeSelection(shiftMult);
+			holdTime = 0;
+		}
+
+		if (controls.UI_DOWN || controls.UI_UP)
+		{
+			var checkLastHold:Int = Math.floor((holdTime - 0.5) * 10);
+			holdTime += elapsed;
+			var checkNewHold:Int = Math.floor((holdTime - 0.5) * 10);
+
+			if (holdTime > 0.5 && checkNewHold - checkLastHold > 0)
+			{
+				changeSelection((checkNewHold - checkLastHold) * (controls.UI_UP ? -shiftMult : shiftMult));
+			}
 		}
 
 		if (controls.BACK)
@@ -445,9 +465,9 @@ class CreditsState extends MusicBeatState
 		super.update(elapsed);
 	}
 
-	function changeSelection(change:Int = 0)
-	{
-		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+	function changeSelection(change:Int = 0, playSound:Bool = true)
+	{	if (playSound)
+			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 		do
 		{
 			curSelected += change;
