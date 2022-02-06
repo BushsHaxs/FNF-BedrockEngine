@@ -37,23 +37,18 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 		rpcTitle = 'Tweaking the Graphics'; //for Discord Rich Presence
 
 		var option:Option = new Option('Anti-Aliasing', 'If unchecked, disables anti-aliasing, increases performance\nat the cost of sharper visuals.', 'globalAntialiasing', 'bool', true);
-		option.showBoyfriend = false; // this crashes for whatever reason
+		//option.showBoyfriend = true;
 		option.onChange = onChangeAntiAliasing; //Changing onChange is only needed if you want to make a special interaction after it changes the value
 		addOption(option);
+		//need to rewrite showBoyfriend to avoid crash maybe
 
 		var option:Option = new Option('Auto Pause',
-		"Whether or not to pause the game automatically",
+		"Whether or not to pause the game automatically when the window is unfocused",
 		'autoPause',
 		'bool',
 		true);
-		//addOption(option);
-
-		var option:Option = new Option('Disable Characters',
-		'If checked, disable stage characters in order to improve performance, may not improve as much as other options.',
-		'disableChars',
-		'bool',
-		true);
-		//addOption(option);
+		option.onChange = onChangeAutoPause;
+		addOption(option);
 
 		#if !mobile
 		var option:Option = new Option('FPS Counter',
@@ -119,6 +114,11 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 		*/
 
 		super();
+	}
+
+	function onChangeAutoPause()
+	{
+		FlxG.autoPause = ClientPrefs.autoPause;
 	}
 
 	#if !mobile
