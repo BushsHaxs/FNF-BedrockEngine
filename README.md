@@ -176,26 +176,25 @@ this disables everything related to backgrounds and characters, leaving only the
 
 ![image](https://user-images.githubusercontent.com/45212377/151047810-9bb0c459-8714-41bd-b861-3d90e001ef9e.png)
 
-* S+  100% Accuracy.
-* S   99.9% Accuracy.
-* AAAA 99.1% Accuracy
-* AAA 99% Accuracy.
-* AA 	98.6% Accuracy.
-* B   80% Accuracy.
-* C   70% Accuracy.
-* D   40% Accuracy or below.
+* SS   100% Accuracy.
+* S+   99% Accuracy.
+* A+   95% Accuracy
+* A    89% Accuracy.
+* B    79% Accuracy.
+* C    69% Accuracy.
+* D    40% Accuracy or below.
 
 If you do not want engine to use letters, toggle them in Visuals and UI menu.
 
 
 Extra Grades
-* MFC - Full Combo with Only Marvelouses
+* MFC - Full Combo with Only Marvelouses *(can be disabled)*
 * SFC - Full Combo with at least 1 Sick/Only Sicks
 * GFC - Full Combo with at least 1 Good/Only Goods
-* FC - Full Combo with at least 1 Bad/Only Bads (only works on Simple Accuracy)
-* SDB - Single Digit Bad (at least 1 Bad/Only Bads, only works on Complex Accuracy)
-* SDS - Single Digit Shit (at least 1 Shit/Only Shits)
-* SDCB - Single Digit Combo Break (you missed at least once)
+* FC - Full Combo with at least 1 Bad/Only Bads *(only works on Simple Accuracy)*
+* SDB - Single Digit Bad *(at least 1 Bad/Only Bads, only works on Complex Accuracy)*
+* SDS - Single Digit Shit *(at least 1 Shit/Only Shits)*
+* SDCB - Single Digit Combo Break *(you missed at least once)*
 * Clear - You missed at least 10 times
 
 ## Opponent Mode
