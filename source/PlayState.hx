@@ -987,8 +987,6 @@ class PlayState extends MusicBeatState
 		timeBarBG.xAdd = -4;
 		timeBarBG.yAdd = -4;
 
-		
-
 		if (ClientPrefs.timeBarUi == 'Kade Engine')
 			timeBarBG.screenCenter(X);
 
@@ -1232,10 +1230,6 @@ class PlayState extends MusicBeatState
 		if (!ClientPrefs.judgCounter || cpuControlled)
 			remove(judgementCounter);
 		
-
-		
-
-
 		// Botplay Text Stuff V
 		botplayTxt = new FlxText(400, timeBarBG.y + 55, FlxG.width - 800, "BOTPLAY", 32);
 		botplayTxt.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);

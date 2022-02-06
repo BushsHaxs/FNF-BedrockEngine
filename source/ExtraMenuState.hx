@@ -17,26 +17,27 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import lime.app.Application;
-import editors.MasterEditorMenu;
 import flixel.input.keyboard.FlxKey;
 #if sys
 import sys.FileSystem;
 import sys.io.File;
 #end
 
+//this is mostly just MainMenuState
+
 using StringTools;
 
 class ExtraMenuState extends MusicBeatState
 {
 	public static var curSelected:Int = 0;
-	public static var textNotice:String = 'Press BACKSPACE or ESC to go Back to the Main Menu'; // this one too
+	public static var textNotice:String = 'Press BACKSPACE or ESC to go Back to the Main Menu';
 
 	var menuItems:FlxTypedGroup<FlxSprite>;
 	private var camGame:FlxCamera;
 
 	var optionShit:Array<String> = [
-		'appearance',
-		'ost'
+		'ost',
+		'appearance'
 	];
 
 	var magenta:FlxSprite;
@@ -45,7 +46,6 @@ class ExtraMenuState extends MusicBeatState
 	var logoBl:FlxSprite;
 	var camFollow:FlxObject;
 	var camFollowPos:FlxObject;
-	var debugKeys:Array<FlxKey>;
 	var coolTween:FlxTween;
 	var coolSprite:FlxSprite;
 
@@ -123,7 +123,7 @@ class ExtraMenuState extends MusicBeatState
 
 		FlxG.camera.follow(camFollowPos, null, 1);
 
-		var versionShit:FlxText = new FlxText(10, FlxG.height - 44, 0, textNotice, 12);
+		var versionShit:FlxText = new FlxText(10, FlxG.height - 24, 0, textNotice, 12);
 		versionShit.scrollFactor.set();
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
@@ -220,23 +220,16 @@ class ExtraMenuState extends MusicBeatState
 
 								switch (daChoice)
 								{
+									case 'ost':
+										MusicBeatState.switchState(new MusicPlayerState());
 									case 'appearance':
 										MusicBeatState.switchState(new ExtraMenuState());
-									case 'ost':
-										MusicBeatState.switchState(new FreeplayState());
 								}
 							});
 						}
 					});
 				}
 			}
-			#if desktop
-			else if (FlxG.keys.anyJustPressed(debugKeys))
-			{
-				selectedSomethin = true;
-				MusicBeatState.switchState(new MasterEditorMenu());
-			}
-			#end
 		}
 
 		super.update(elapsed);
