@@ -3194,11 +3194,10 @@ class PlayState extends MusicBeatState
 				{
 					timer.active = true;
 				}
-				if (!ClientPrefs.instantRespawn)
-					openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x - boyfriend.positionArray[0],
-						boyfriend.getScreenPosition().y - boyfriend.positionArray[1], camFollowPos.x, camFollowPos.y));
-				else
+				if (ClientPrefs.instantRespawn || opponentChart)
 					MusicBeatState.resetState();
+				else openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x - boyfriend.positionArray[0],
+						boyfriend.getScreenPosition().y - boyfriend.positionArray[1], camFollowPos.x, camFollowPos.y));
 
 				// MusicBeatState.switchState(new GameOverState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 
