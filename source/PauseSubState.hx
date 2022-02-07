@@ -66,8 +66,8 @@ class PauseSubState extends MusicBeatSubstate
 		bg.scrollFactor.set();
 		add(bg);
 
-		/*if (!ClientPrefs.lowQuality)
-		{*/
+		if (!ClientPrefs.lowQuality)
+		{
 			var dadcolor = FlxColor.fromRGB(PlayState.instance.dad.healthColorArray[0], PlayState.instance.dad.healthColorArray[1],
 				PlayState.instance.dad.healthColorArray[2]);
 
@@ -139,7 +139,7 @@ class PauseSubState extends MusicBeatSubstate
 			diskfg = new FlxSprite(FlxG.width - 200, FlxG.height - 380).loadGraphic(Paths.image('PauseMenuSprites/idk'));
 			diskfg.antialiasing = ClientPrefs.globalAntialiasing;
 			add(diskfg);
-		/*}*/
+		}
 
 		var levelInfo:FlxText = new FlxText(20, 15, 0, "", 32);
 		levelInfo.text += PlayState.SONG.song;
@@ -236,7 +236,8 @@ class PauseSubState extends MusicBeatSubstate
 		if (pauseMusic.volume < 0.5)
 			pauseMusic.volume += 0.01 * elapsed;
 
-		disk.angle -= 0.45 / (ClientPrefs.framerate / 60);
+		if (!ClientPrefs.lowQuality)
+			disk.angle -= 0.45 / (ClientPrefs.framerate / 60);
 
 		super.update(elapsed);
 
