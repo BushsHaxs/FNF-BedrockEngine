@@ -15,6 +15,7 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxMath;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
+import flixel.util.FlxStringUtil;
 import flixel.ui.FlxBar;
 import flixel.util.FlxTimer;
 import flixel.tweens.FlxTween;
@@ -47,6 +48,7 @@ class MusicPlayerState extends MusicBeatState
 
 	//timebar
 	public var timeBar:FlxBar;
+	public var playdist:Float = 0;
 	private var timeBarBG:AttachedSprite;
 	private var updateTime:Bool = true;
 	var timeTxt:FlxText;
@@ -344,9 +346,9 @@ class MusicPlayerState extends MusicBeatState
 			{
 				#if desktop
 				DiscordClient.changePresence('in the Music Player', '\nListening To: ' +
-					CoolUtil.formatString(songs[curSelected].songName), null);
+                CoolUtil.formatString(songs[curSelected].songName), null);
 				#end
-
+				
 				#if PRELOAD_ALL
 				destroyFreeplayVocals();
 				FlxG.sound.music.volume = 0;
@@ -388,7 +390,7 @@ class MusicPlayerState extends MusicBeatState
 				{
 					#if desktop
 					DiscordClient.changePresence('in the Music Player', '\nListening To: ' +
-					CoolUtil.formatString(songs[curSelected].songName), null);
+                	CoolUtil.formatString(songs[curSelected].songName), null);
 					#end
 
 					destroyFreeplayVocals();
