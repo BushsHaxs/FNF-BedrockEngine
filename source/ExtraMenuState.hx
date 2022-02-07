@@ -37,7 +37,7 @@ class ExtraMenuState extends MusicBeatState
 
 	var optionShit:Array<String> = [
 		'ost',
-		'appearance'
+		'settings'
 	];
 
 	var magenta:FlxSprite;
@@ -222,7 +222,7 @@ class ExtraMenuState extends MusicBeatState
 								{
 									case 'ost':
 										MusicBeatState.switchState(new MusicPlayerState());
-									case 'appearance':
+									case 'settings':
 										MusicBeatState.switchState(new ExtraMenuState());
 								}
 							});
