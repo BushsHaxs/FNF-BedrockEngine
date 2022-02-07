@@ -153,7 +153,7 @@ class MusicPlayerState extends MusicBeatState
 		add(textBG);
 
 		var leText:String = "Press ACCEPT to Listen to the Song / Press CTRL to Disable Song Vocals.";
-		var size:Int = 25;
+		var size:Int = 20;
 		var text:FlxText = new FlxText(textBG.x, textBG.y + 4, FlxG.width, leText, size);
 		text.setFormat(Paths.font("vcr.ttf"), size, FlxColor.WHITE, RIGHT);
 		text.scrollFactor.set();
@@ -242,7 +242,9 @@ class MusicPlayerState extends MusicBeatState
 				colorTween.cancel();
 			}
 			FlxG.sound.play(Paths.sound('cancelMenu'));
+			destroyFreeplayVocals();
 				MusicBeatState.switchState(new ExtraMenuState());
+
 		}
 
 		else if (accepted)
@@ -284,10 +286,10 @@ class MusicPlayerState extends MusicBeatState
 			{
 				colorTween.cancel();
 			}
-			
+
 			curPlaying = false;
 			destroyFreeplayVocals();
-			iconArray[instPlaying].canBounce = true;
+			iconArray[instPlaying].canBounce = false;
 		}
 		super.update(elapsed);
 	}
