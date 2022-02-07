@@ -15,7 +15,6 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxMath;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
-import flixel.util.FlxStringUtil;
 import flixel.ui.FlxBar;
 import flixel.util.FlxTimer;
 import flixel.tweens.FlxTween;
@@ -48,7 +47,6 @@ class MusicPlayerState extends MusicBeatState
 
 	//timebar
 	public var timeBar:FlxBar;
-	public var playdist:Float = 0;
 	private var timeBarBG:AttachedSprite;
 	private var updateTime:Bool = true;
 	var timeTxt:FlxText;
@@ -345,7 +343,7 @@ class MusicPlayerState extends MusicBeatState
 			if (instPlaying != curSelected)
 			{
 				#if desktop
-				DiscordClient.changePresence('In the Music Player', '\nListening To: ' +
+				DiscordClient.changePresence('in the Music Player', '\nListening To: ' +
 					CoolUtil.formatString(songs[curSelected].songName), null);
 				#end
 
@@ -363,7 +361,7 @@ class MusicPlayerState extends MusicBeatState
 				FlxG.sound.list.add(vocals);
 				FlxG.sound.playMusic(Paths.inst(PlayState.SONG.song), 0.7);
 				vocals.play();
-				showBar();
+				//showBar();
 				vocals.persist = true;
 				vocals.looped = true;
 				vocals.volume = 0.7;
@@ -389,7 +387,7 @@ class MusicPlayerState extends MusicBeatState
 				}
 				{
 					#if desktop
-					DiscordClient.changePresence('In the Music Player', '\nListening To: ' +
+					DiscordClient.changePresence('in the Music Player', '\nListening To: ' +
 					CoolUtil.formatString(songs[curSelected].songName), null);
 					#end
 
