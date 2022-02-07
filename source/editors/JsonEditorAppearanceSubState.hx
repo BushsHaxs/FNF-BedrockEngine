@@ -25,13 +25,20 @@ class JsonEditorAppearanceSubState
       {
            JsonSettings.dev(JsonSettings.dir);
            appearance = JsonSettings.customGame;
-
-           //360s here are x and y positions, will have to adjust them later     
-           nae = new FlxUIInputText(360, 360, 200, appearance, 10); 
-           //And save button i think
-           var buton: FlxButton = new FlxButton(360, nae.y - 10, "Save", function()
+           if (appearance != null && appearance.length > 0)
            {
-                 File.saveContent(nae.text, appearance);
-           });
+                    //360s here are x and y positions, will have to adjust them later     
+                    nae = new FlxUIInputText(360, 360, 200, appearance, 10); 
+                    //And save button i think
+                    var buton: FlxButton = new FlxButton(360, nae.y - 10, "Save", function()
+                    {
+                          File.saveContent(nae.text, appearance);
+                    });
+           }
+           if (appearance == null || appearance.length < 0)
+           {
+                   appearance = '{}'; //create a dummy json and warn the player
+                   var error:FlxText = new FlxText();
+           }
       }
 }
