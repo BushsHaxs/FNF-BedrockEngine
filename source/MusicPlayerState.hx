@@ -15,7 +15,9 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxMath;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
+import flixel.util.FlxStringUtil;
 import flixel.ui.FlxBar;
+import flixel.util.FlxTimer;
 import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
 import lime.utils.Assets;
@@ -27,6 +29,7 @@ import sys.FileSystem;
 #end
 
 //this is literally just a copy of freeplay, feel free to use it
+//a few things here were taken from Dave & Bambi, so shoutots to that mod too
 
 using StringTools;
 
@@ -42,6 +45,14 @@ class MusicPlayerState extends MusicBeatState
 	var curSpeed:Float = 1;
 	var lerpRating:Float = 0;
 	var intendedRating:Float = 0;
+
+	//timebar
+	public var timeBar:FlxBar;
+	public var playdist:Float = 0;
+	private var timeBarBG:AttachedSprite;
+	private var updateTime:Bool = true;
+	var timeTxt:FlxText;
+	var songLength:Float = 0;
 
 	// variable Int
 	var curDifficulty:Int = -1;
@@ -73,11 +84,6 @@ class MusicPlayerState extends MusicBeatState
 		PlayState.isStoryMode = false;
 		WeekData.reloadWeekFiles(false);
 
-		#if desktop
-		// Updating Discord Rich Presence
-		DiscordClient.changePresence("In the Music Player", null);
-		#end
-
 		for (i in 0...WeekData.weeksList.length)
 		{
 			var leWeek:WeekData = WeekData.weeksLoaded.get(WeekData.weeksList[i]);
@@ -106,6 +112,48 @@ class MusicPlayerState extends MusicBeatState
 		bg.antialiasing = ClientPrefs.globalAntialiasing;
 		add(bg);
 		bg.screenCenter();
+
+		songLength = FlxG.sound.music.length;
+		//create time bar
+		var showTime:Bool = (ClientPrefs.timeBarType != 'Disabled');
+		timeTxt = new FlxText((FlxG.width / 2) - 248, 19, 400, "", 32);
+		timeTxt.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		timeTxt.scrollFactor.set();
+		timeTxt.alpha = 0;
+		timeTxt.borderSize = 2;
+		timeTxt.visible = showTime;
+		updateTime = showTime;
+
+		timeBarBG = new AttachedSprite('timeBar');
+		timeBarBG.x = timeTxt.x;
+		timeBarBG.y = timeTxt.y + (timeTxt.height / 4);
+		timeBarBG.scrollFactor.set();
+		timeBarBG.alpha = 0;
+		timeBarBG.visible = showTime;
+		timeBarBG.color = FlxColor.BLACK;
+		timeBarBG.sprTracker = timeBar;
+		timeBarBG.xAdd = -4;
+		timeBarBG.yAdd = -4;
+
+		if (ClientPrefs.timeBarUi == 'Kade Engine')
+			timeBarBG.screenCenter(X);
+
+		timeBar = new FlxBar(timeBarBG.x + 4, timeBarBG.y + 4, LEFT_TO_RIGHT, Std.int(timeBarBG.width - 8), Std.int(timeBarBG.height - 8), this,
+			'songPercent', 0, 1);
+		timeBar.scrollFactor.set();
+		if (ClientPrefs.timeBarUi == 'Kade Engine')
+			timeBar.createFilledBar(FlxColor.GRAY, FlxColor.LIME);
+		else
+			timeBar.createFilledBar(0xFF000000, 0xFFFFFFFF);
+		timeBar.numDivisions = 800; // How much lag this causes?? Should i tone it down to idk, 400 or 200?
+		timeBar.alpha = 0;
+		timeBar.visible = showTime;
+
+		add(timeBar);
+		add(timeBarBG);
+		add(timeTxt);
+
+        hideBar();
 
 		grpSongs = new FlxTypedGroup<Alphabet>();
 		add(grpSongs);
@@ -193,9 +241,16 @@ class MusicPlayerState extends MusicBeatState
 		// Keybind Vars
 		var upP = controls.UI_UP_P;
 		var downP = controls.UI_DOWN_P;
+		var leftP = controls.UI_LEFT_P;
+		var rightP = controls.UI_RIGHT_P;
 		var accepted = controls.ACCEPT;
 		var ctrl = FlxG.keys.justPressed.CONTROL;
 		var alt = FlxG.keys.justPressed.ALT;
+
+		playdist = 1 - (FlxG.sound.music.time / FlxG.sound.music.length);
+
+        var currentTime = FlxStringUtil.formatTime(FlxG.sound.music.time / 1000);
+        var maximumTime = FlxStringUtil.formatTime(FlxG.sound.music.length / 1000);
 
 		var shiftMult:Int = 1;
 		if (FlxG.keys.pressed.SHIFT)
@@ -213,6 +268,23 @@ class MusicPlayerState extends MusicBeatState
 				changeSelection(shiftMult);
 				holdTime = 0;
 			}
+
+            if (leftP)
+            {
+                if (vocals != null)
+                {
+                    vocals.time -= 5000;
+                }
+                FlxG.sound.music.time -= 5000;
+            }
+            if (rightP)
+            {
+                if (vocals != null)
+                {
+                    vocals.time += 5000;
+                }
+                FlxG.sound.music.time += 5000;
+            }
 
 			if (controls.UI_DOWN || controls.UI_UP)
 			{
@@ -234,23 +306,49 @@ class MusicPlayerState extends MusicBeatState
 		else if (upP || downP)
 			changeDiff();
 
-		if (controls.BACK)
-		{
-			persistentUpdate = false;
-			if (colorTween != null)
+			if (controls.BACK)
 			{
-				colorTween.cancel();
-			}
-			FlxG.sound.play(Paths.sound('cancelMenu'));
-			destroyFreeplayVocals();
-				MusicBeatState.switchState(new ExtraMenuState());
+				if (curPlaying)
+				{
+					persistentUpdate = false;
+					if (colorTween != null)
+					{
+						colorTween.cancel();
+					}
+					FlxG.sound.play(Paths.sound('cancelMenu'));
+					{
+						#if desktop
+						DiscordClient.changePresence('in the Music Player', null);
+						#end
+						persistentUpdate = false;
 
-		}
+						if (colorTween != null)
+						{
+							colorTween.cancel();
+						}
+						
+						destroyFreeplayVocals();
+						hideBar();
+						FlxG.sound.music.stop();
+						curPlaying = false;
+						FlxG.sound.playMusic(Paths.music('freakyMenu'));
+						}
+					}
+					else
+					{
+						FlxG.switchState(new ExtraMenuState());
+					}
+				}
 
-		else if (accepted)
+		if (accepted)
 		{
 			if (instPlaying != curSelected)
 			{
+				#if desktop
+				DiscordClient.changePresence('In the Music Player', '\nListening To: ' +
+					CoolUtil.formatString(songs[curSelected].songName), null);
+				#end
+
 				#if PRELOAD_ALL
 				destroyFreeplayVocals();
 				FlxG.sound.music.volume = 0;
@@ -265,6 +363,7 @@ class MusicPlayerState extends MusicBeatState
 				FlxG.sound.list.add(vocals);
 				FlxG.sound.playMusic(Paths.inst(PlayState.SONG.song), 0.7);
 				vocals.play();
+				showBar();
 				vocals.persist = true;
 				vocals.looped = true;
 				vocals.volume = 0.7;
@@ -275,22 +374,30 @@ class MusicPlayerState extends MusicBeatState
 					iconArray[i].canBounce = false;
 					iconArray[i].animation.curAnim.curFrame = 0;
 				}
-				iconArray[instPlaying].canBounce = true;
 				curPlaying = true;
 				#end
 			}
 		}
-		else if (ctrl)
+		else if (ctrl) //I kinda copied BACK a little bit for this one
 		{
-			if (colorTween != null)
+			if (curPlaying)
 			{
-				colorTween.cancel();
-			}
+				persistentUpdate = false;
+				if (colorTween != null)
+				{
+					colorTween.cancel();
+				}
+				{
+					#if desktop
+					DiscordClient.changePresence('In the Music Player', '\nListening To: ' +
+					CoolUtil.formatString(songs[curSelected].songName), null);
+					#end
 
-			curPlaying = false;
-			destroyFreeplayVocals();
-			iconArray[instPlaying].canBounce = false;
-		}
+					destroyFreeplayVocals();
+					curPlaying = true;
+					}
+				}
+			}
 		super.update(elapsed);
 	}
 
@@ -314,6 +421,32 @@ class MusicPlayerState extends MusicBeatState
 		}
 		vocals = null;
 	}
+
+	function hideBar()
+		{
+			FlxTween.tween(timeBar, {alpha: 0}, 0.15);
+			FlxTween.tween(timeBarBG, {alpha: 0}, 0.15);
+			FlxTween.tween(timeTxt, {alpha: 0}, 0.15);
+			new FlxTimer().start(0.15, function(bitchFuckAssDickCockBalls:FlxTimer)
+			{
+				timeBar.visible = false;
+				timeBarBG.visible = false;
+				timeTxt.visible = false;
+			});
+		}
+
+	function showBar()
+		{
+			timeBar.alpha = 0;
+			timeBarBG.alpha = 0;
+			timeTxt.alpha = 0;
+			timeBar.visible = true;
+			timeBarBG.visible = true;
+			timeTxt.visible = true;
+			FlxTween.tween(timeBar, {alpha: 1}, 0.15);
+			FlxTween.tween(timeBarBG, {alpha: 1}, 0.15);
+			FlxTween.tween(timeTxt, {alpha: 1}, 0.15);
+		}
 
 	function changeDiff(change:Int = 0)
 	{
@@ -361,8 +494,6 @@ class MusicPlayerState extends MusicBeatState
 				}
 			});
 		}
-
-		// selector.y = (70 * curSelected) + 30;
 
 		#if !switch
 		intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
