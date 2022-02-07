@@ -39,7 +39,7 @@ class MusicPlayerState extends MusicBeatState
 	var bg:FlxSprite;
 	var colorTween:FlxTween;
 	var scoreBG:FlxSprite;
-	var songs:Array<PlayerMeta> = [];
+	var songs:Array<MPlayerMeta> = [];
 
 	// variable floats
 	var curSpeed:Float = 1;
@@ -218,7 +218,7 @@ class MusicPlayerState extends MusicBeatState
 
 	public function addSong(songName:String, weekNum:Int, songCharacter:String, color:Int)
 	{
-		songs.push(new PlayerMeta(songName, weekNum, songCharacter, color));
+		songs.push(new MPlayerMeta(songName, weekNum, songCharacter, color));
 	}
 
 	public static var instPlaying:Int = -1;
@@ -246,11 +246,6 @@ class MusicPlayerState extends MusicBeatState
 		var accepted = controls.ACCEPT;
 		var ctrl = FlxG.keys.justPressed.CONTROL;
 		var alt = FlxG.keys.justPressed.ALT;
-
-		playdist = 1 - (FlxG.sound.music.time / FlxG.sound.music.length);
-
-        var currentTime = FlxStringUtil.formatTime(FlxG.sound.music.time / 1000);
-        var maximumTime = FlxStringUtil.formatTime(FlxG.sound.music.length / 1000);
 
 		var shiftMult:Int = 1;
 		if (FlxG.keys.pressed.SHIFT)
@@ -345,8 +340,7 @@ class MusicPlayerState extends MusicBeatState
 			if (instPlaying != curSelected)
 			{
 				#if desktop
-				DiscordClient.changePresence('in the Music Player', '\nListening To: ' +
-                CoolUtil.formatString(songs[curSelected].songName), null);
+				DiscordClient.changePresence('In the Music Player', '\nListening To: ' + CoolUtil.formatString(songs[curSelected].songName), null);
 				#end
 				
 				#if PRELOAD_ALL
@@ -389,8 +383,7 @@ class MusicPlayerState extends MusicBeatState
 				}
 				{
 					#if desktop
-					DiscordClient.changePresence('in the Music Player', '\nListening To: ' +
-                	CoolUtil.formatString(songs[curSelected].songName), null);
+					DiscordClient.changePresence('In the Music Player', '\nListening To: ' + CoolUtil.formatString(songs[curSelected].songName), null);
 					#end
 
 					destroyFreeplayVocals();
@@ -563,7 +556,7 @@ class MusicPlayerState extends MusicBeatState
 	}
 }
 
-class PlayerMeta
+class MPlayerMeta
 {
 	public var songName:String = "";
 	public var week:Int = 0;

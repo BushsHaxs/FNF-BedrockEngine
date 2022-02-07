@@ -251,7 +251,6 @@ class PlayState extends MusicBeatState
 	var beWatermark:FlxText;
 	var peWatermark:FlxText;
 	var songDisplay:FlxText;
-	var songNameTxt:FlxText;
 
 	public static var campaignScore:Int = 0;
 	public static var campaignMisses:Int = 0;
