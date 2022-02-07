@@ -42,7 +42,6 @@ class MusicPlayerState extends MusicBeatState
 	var songs:Array<MPlayerMeta> = [];
 
 	// variable floats
-	var curSpeed:Float = 1;
 	var lerpRating:Float = 0;
 	var intendedRating:Float = 0;
 
@@ -62,7 +61,6 @@ class MusicPlayerState extends MusicBeatState
 
 	// variable texts
 	var scoreText:FlxText;
-	var speedText:FlxText;
 	var diffText:FlxText;
 	var selector:FlxText;
 
@@ -200,8 +198,8 @@ class MusicPlayerState extends MusicBeatState
 		textBG.alpha = 0.6;
 		add(textBG);
 
-		var leText:String = "Press ACCEPT to Listen to the Song / Press CTRL to Disable Song Vocals.";
-		var size:Int = 20;
+		var leText:String = "Press ACCEPT to Listen to the Song / Press CTRL to Disable Song Vocals. / Press ALT to go to Freeplay.";
+		var size:Int = 16;
 		var text:FlxText = new FlxText(textBG.x, textBG.y + 4, FlxG.width, leText, size);
 		text.setFormat(Paths.font("vcr.ttf"), size, FlxColor.WHITE, RIGHT);
 		text.scrollFactor.set();
@@ -313,7 +311,7 @@ class MusicPlayerState extends MusicBeatState
 					FlxG.sound.play(Paths.sound('cancelMenu'));
 					{
 						#if desktop
-						DiscordClient.changePresence('in the Music Player', null);
+						DiscordClient.changePresence('In the Music Player', null);
 						#end
 						persistentUpdate = false;
 
@@ -391,6 +389,12 @@ class MusicPlayerState extends MusicBeatState
 					}
 				}
 			}
+		else if (alt)
+		{
+			MusicBeatState.switchState(new FreeplayState());
+			destroyFreeplayVocals();
+			curPlaying = true;
+		}
 		super.update(elapsed);
 	}
 

@@ -2553,7 +2553,6 @@ class PlayState extends MusicBeatState
 	var limoSpeed:Float = 0;
 	var alreadyChanged:Bool = false; // lag no more
 
-
 	override public function update(elapsed:Float)
 	{
 		/*if (FlxG.keys.justPressed.NINE)
@@ -3156,7 +3155,7 @@ class PlayState extends MusicBeatState
 		chartingMode = true;
 
 		#if desktop
-		DiscordClient.changePresence("Chart Editor", null, null, true);
+		DiscordClient.changePresence("In the Chart Editor", null, null, true);
 		#end
 	}
 
