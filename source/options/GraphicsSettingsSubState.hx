@@ -103,6 +103,13 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 		false);
 		addOption(option);
 
+		var option:Option = new Option('Show Current State',
+		"Whether to display the current state of the game (example: GraphicsSettingsSubState).",
+		'showState',
+		'bool',
+		false);
+		//addOption(option);
+
 		super();
 	}
 
