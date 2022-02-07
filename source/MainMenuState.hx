@@ -302,12 +302,6 @@ class MainMenuState extends MusicBeatState
 				changeItem(1);
 			}
 
-			if (controls.UI_LEFT_P)
-			{
-				FlxG.sound.play(Paths.sound('scrollMenu'));
-				MusicBeatState.resetState();
-			}
-
 			if (controls.BACK)
 			{
 				selectedSomethin = true;

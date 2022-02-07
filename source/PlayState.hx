@@ -251,7 +251,6 @@ class PlayState extends MusicBeatState
 	var beWatermark:FlxText;
 	var peWatermark:FlxText;
 	var songDisplay:FlxText;
-	var songNameTxt:FlxText;
 
 	public static var campaignScore:Int = 0;
 	public static var campaignMisses:Int = 0;
@@ -987,8 +986,6 @@ class PlayState extends MusicBeatState
 		timeBarBG.xAdd = -4;
 		timeBarBG.yAdd = -4;
 
-		
-
 		if (ClientPrefs.timeBarUi == 'Kade Engine')
 			timeBarBG.screenCenter(X);
 
@@ -1130,13 +1127,6 @@ class PlayState extends MusicBeatState
 		add(healthBar);
 		healthBarBG.sprTracker = healthBar;
 
-		scoreTxt = new FlxText(0, healthBarBG.y + 40, FlxG.width, "", 20);
-		scoreTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		scoreTxt.scrollFactor.set();
-		scoreTxt.borderSize = 1.25;
-		scoreTxt.visible = !ClientPrefs.hideHud;
-		add(scoreTxt);
-
 		iconP1 = new HealthIcon(boyfriend.healthIcon, true);
 		iconP1.y = healthBar.y - 75;
 		iconP1.visible = !ClientPrefs.hideHud || !ClientPrefs.maniaMode;
@@ -1159,6 +1149,13 @@ class PlayState extends MusicBeatState
 			remove(iconP2);
 		}
 		reloadHealthBarColors();
+
+		scoreTxt = new FlxText(0, healthBarBG.y + 40, FlxG.width, "", 20);
+		scoreTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		scoreTxt.scrollFactor.set();
+		scoreTxt.borderSize = 1.25;
+		scoreTxt.visible = !ClientPrefs.hideHud;
+		add(scoreTxt);
 		
 		if(ClientPrefs.maniaMode) { //da big if
 			ClientPrefs.middleScroll = true;
@@ -1232,10 +1229,6 @@ class PlayState extends MusicBeatState
 		if (!ClientPrefs.judgCounter || cpuControlled)
 			remove(judgementCounter);
 		
-
-		
-
-
 		// Botplay Text Stuff V
 		botplayTxt = new FlxText(400, timeBarBG.y + 55, FlxG.width - 800, "BOTPLAY", 32);
 		botplayTxt.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
@@ -2560,7 +2553,6 @@ class PlayState extends MusicBeatState
 	var limoSpeed:Float = 0;
 	var alreadyChanged:Bool = false; // lag no more
 
-
 	override public function update(elapsed:Float)
 	{
 		/*if (FlxG.keys.justPressed.NINE)
@@ -3163,7 +3155,7 @@ class PlayState extends MusicBeatState
 		chartingMode = true;
 
 		#if desktop
-		DiscordClient.changePresence("Chart Editor", null, null, true);
+		DiscordClient.changePresence("In the Chart Editor", null, null, true);
 		#end
 	}
 

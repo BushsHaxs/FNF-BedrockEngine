@@ -14,6 +14,11 @@ class JsonSettings
     public static var logs:Int = 0; 
     //this is used for log counts
 
+    //jsons content
+    public static var customGame:String = null;
+    public static var customJson:String = null;
+    public static var offset:String = null;
+
     //ui settings 
     public static var iconSupport:Bool;
     public static var noteSkin:String;
@@ -46,7 +51,7 @@ class JsonSettings
     {
         if (FileSystem.exists(offdir))
         {
-            var offset:String = File.getContent(offdir);
+            offset = File.getContent(offdir);
             if (offset != null && offset.length > 0)
             {
                 logs++;
@@ -119,7 +124,7 @@ class JsonSettings
     {
         if (FileSystem.exists(dirtwo))
         {
-            var customJson:String = File.getContent(dirtwo);
+            customJson = File.getContent(dirtwo);
             if (customJson != null && customJson.length > 0)
             {
                 logs++;
@@ -165,7 +170,7 @@ class JsonSettings
     {
         if (FileSystem.exists(dir))
         {
-            var customGame:String = File.getContent(dir);
+            customGame = File.getContent(dir);
             if (customGame != null && customGame.length > 0)
             {
                 logs++;
