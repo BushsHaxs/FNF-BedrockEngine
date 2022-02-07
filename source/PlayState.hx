@@ -192,7 +192,7 @@ class PlayState extends MusicBeatState
 	public var healthLoss:Float = 1;
 	public var instakillOnMiss:Bool = false;
 	public var cpuControlled:Bool = false;
-	public static var opponentChart:Bool = false;
+	public var opponentChart:Bool = false;
 	public var practiceMode:Bool = false;
 
 	public var botplaySine:Float = 0;
@@ -851,13 +851,26 @@ class PlayState extends MusicBeatState
 			{
 				case 'limo':
 					gfVersion = 'gf-car';
+				if(ClientPrefs.lowQuality)
+					gfVersion = 'gfLow-car';
 				case 'mall' | 'mallEvil':
 					gfVersion = 'gf-christmas';
+				if(ClientPrefs.lowQuality)
+					gfVersion = 'gfLow-christmas';
 				case 'school' | 'schoolEvil':
 					gfVersion = 'gf-pixel';
 				default:
 					gfVersion = 'gf';
+				if(ClientPrefs.lowQuality)
+					gfVersion = 'gfLow';
 			}
+		switch (songName)
+		{
+			case 'tutorial':
+				gfVersion = 'gf';
+					if(ClientPrefs.lowQuality)
+						gfVersion = 'gf';
+		}
 			SONG.gfVersion = gfVersion; // Fix for the Chart Editor
 		}
 

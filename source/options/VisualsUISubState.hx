@@ -69,12 +69,12 @@ class VisualsUISubState extends BaseOptionsMenu
 		true);
 	addOption(option);
 
-		var option:Option = new Option ('Mania Mode', 
+		/*var option:Option = new Option ('Mania Mode', 
 			'If checked, it will turn FNF visual into osu!mania (or StepMania) visual.', 
 			'maniaMode', 
 			'bool', 
 			false);
-		addOption(option);
+		addOption(option);*/
 
 		var option:Option = new Option('Note Splashes',
 		"If unchecked, hitting \"Marvelous!\" or \"Sick!\" notes won't show particles.",

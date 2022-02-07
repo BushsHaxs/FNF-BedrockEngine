@@ -48,8 +48,7 @@ class MainMenuState extends MusicBeatState
 		'awards',
 		#end
 		'extras',
-		#if !switch
-		'donate',
+		#if !switch 'donate',
 		#end
 		'credits',
 		'options'
