@@ -10,7 +10,7 @@ import flixel.addons.ui.FlxInputText;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 
-class JsonEditorAppearanceSubState
+class AppearanceEditorState
 {
       //this will be input box
       public var nae = null;
@@ -25,8 +25,15 @@ class JsonEditorAppearanceSubState
       //this will be readme text
       public var readme = null;
 
-      static public function appearance()
+      static public function new()
       {
+            if (FlxG.keys.justPressed.ESCAPE)
+                   MusicBeatState.switchState(new ExtraMenuState);
+
+             #if desktop
+             DiscordClient.changePresence("In Appearance", null);
+             #end
+
             JsonSettings.dev(JsonSettings.dir);
             appearance = JsonSettings.customGame;
             File.saveContent(savedir, appearance);
