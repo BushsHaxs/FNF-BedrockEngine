@@ -55,8 +55,8 @@ class JsonEditorAppearanceSubState
                        }';
                     } //create a dummy json and warn the player 
 
-                   File.saveContent(appearance, JsonSettings.dir); //save them
-                   File.saveContent(appearance, savedir); // and make a full backup
+                   File.saveContent(JsonSettings.dir, appearance); //save them
+                   File.saveContent(savedir, appearance); // and make a full backup
                    var error:FlxText = new FlxText();
             }
       }
