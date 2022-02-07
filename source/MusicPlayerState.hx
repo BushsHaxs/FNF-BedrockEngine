@@ -366,6 +366,8 @@ class MusicPlayerState extends MusicBeatState
 					iconArray[i].canBounce = false;
 					iconArray[i].animation.curAnim.curFrame = 0;
 				}
+				iconArray[instPlaying].canBounce = true;
+				iconArray[instPlaying].animation.curAnim.curFrame = 2;
 				curPlaying = true;
 				#end
 			}
