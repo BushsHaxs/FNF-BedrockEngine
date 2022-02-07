@@ -120,6 +120,8 @@ class TitleState extends MusicBeatState
 		{
 			path = "assets/images/gfDanceTitle.json";
 		}
+		else if(ClientPrefs.lowQuality)
+				path = "assets/images/lowQuality/gfDanceTitleLow.json";
 		// trace(path, FileSystem.exists(path));
 		titleJSON = Json.parse(File.getContent(path));
 		#else
@@ -313,11 +315,15 @@ class TitleState extends MusicBeatState
 		if (!FileSystem.exists(path))
 		{
 			path = "assets/images/gfDanceTitle.png";
+			if(ClientPrefs.lowQuality)
+				path = "assets/images/lowQuality/gfDanceTitleLow.png";
 			// trace(path, FileSystem.exists(path));
 		}
 		gfDance.frames = FlxAtlasFrames.fromSparrow(BitmapData.fromFile(path), File.getContent(StringTools.replace(path, ".png", ".xml")));
 		#else
 		gfDance.frames = Paths.getSparrowAtlas('gfDanceTitle.png');
+		if(ClientPrefs.lowQuality)
+			gfDance.frames = Paths.getSparrowAtlas('lowQuality/gfDanceTitleLow.png');
 		#end
 		gfDance.animation.addByIndices('danceLeft', 'GF Dancing Beat', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
 		gfDance.animation.addByIndices('danceRight', 'GF Dancing Beat', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);

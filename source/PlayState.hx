@@ -851,13 +851,26 @@ class PlayState extends MusicBeatState
 			{
 				case 'limo':
 					gfVersion = 'gf-car';
+				if(ClientPrefs.lowQuality)
+					gfVersion = 'gfLow-car';
 				case 'mall' | 'mallEvil':
 					gfVersion = 'gf-christmas';
+				if(ClientPrefs.lowQuality)
+					gfVersion = 'gfLow-christmas';
 				case 'school' | 'schoolEvil':
 					gfVersion = 'gf-pixel';
 				default:
 					gfVersion = 'gf';
+				if(ClientPrefs.lowQuality)
+					gfVersion = 'gfLow';
 			}
+		switch (songName)
+		{
+			case 'tutorial':
+				gfVersion = 'gf';
+					if(ClientPrefs.lowQuality)
+						gfVersion = 'gf';
+		}
 			SONG.gfVersion = gfVersion; // Fix for the Chart Editor
 		}
 
