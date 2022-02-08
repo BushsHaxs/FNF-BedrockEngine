@@ -147,12 +147,12 @@ class JsonEditor extends MusicBeatState
                   mash = !mash;
 		};
 
-            var coolButton = new FlxButton(FlxG.width - 855, 25, "Save UI Prefs", function()
+            var coolButton = new FlxButton(FlxG.width - 855, 25, "Save Prefs", function()
             {
                   saveUISetting();
             });
 
-            var coolButon = new FlxButton(FlxG.width - 855, 25, "Save Gameplay Prefs", function()
+            var coolButon = new FlxButton(FlxG.width - 855, 25, "Save Prefs", function()
             {
                   saveGameplaySetting();
             });
