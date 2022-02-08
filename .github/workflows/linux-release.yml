@@ -47,7 +47,15 @@ jobs:
           haxelib git hscript-ex https://github.com/ianharrigan/hscript-ex
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
           haxelib install hxcpp-debug-server
+          haxelib git extension-webm https://github.com/KadeDev/extension-webm
+          haxelib run lime rebuild extension-webm linux
+          haxelib git faxe https://github.com/uhrobots/faxe
+          haxelib git linc_luajit https://github.com/ThatDisabledKid/linc_luajit
+          haxelib install actuate                                                                                             
           haxelib list
+      - name: sudo files
+        run: |
+          sudo apt-get install libgl1-mesa-dev libglu1-mesa-dev g++ g++-multilib gcc-multilib libasound2-dev libx11-dev libxext-dev libxi-dev libxrandr-dev libxinerama-dev
       - name: Create Version Tag
         run: echo "${{github.run_id}}" > VERSION
       - name: Compile
