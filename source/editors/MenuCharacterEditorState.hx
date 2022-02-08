@@ -38,6 +38,7 @@ class MenuCharacterEditorState extends MusicBeatState
 	var characterFile:MenuCharacterFile = null;
 	var txtOffsets:FlxText;
 	var defaultCharacters:Array<String> = ['dad', 'bf', 'gf'];
+	public static var curStateS:String = 'MenuCharacterEditorState';
 
 	override function create() {
 		characterFile = {

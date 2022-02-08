@@ -24,6 +24,7 @@ class PauseSubState extends MusicBeatSubstate
 	var difficultyChoices = [];
 	var pauseOptions = [];
 	var curSelected:Int = 0;
+	public static var curStateS:String = 'PauseSubState';
 
 	var pausebg1:FlxSprite;
 	var pausebg2:FlxSprite;

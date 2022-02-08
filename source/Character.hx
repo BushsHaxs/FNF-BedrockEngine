@@ -92,8 +92,12 @@ class Character extends FlxSprite
 		curCharacter = character;
 		this.isPlayer = isPlayer;
 		antialiasing = ClientPrefs.globalAntialiasing;
+
+		//im so sorry for this.
 		if (ClientPrefs.maxOptimization)
 			kill();
+		//do nothing
+
 		var library:String = null;
 		switch (curCharacter)
 		{

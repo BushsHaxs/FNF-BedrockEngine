@@ -23,6 +23,7 @@ class GameOverSubstate extends MusicBeatSubstate
 	public static var deathSoundName:String = 'fnf_loss_sfx';
 	public static var loopSoundName:String = 'gameOver';
 	public static var endSoundName:String = 'gameOverEnd';
+	public static var curStateS:String = 'GameOverSubstate';
 
 	public static var instance:GameOverSubstate;
 

@@ -32,6 +32,7 @@ class JsonEditor extends MusicBeatState
       public var ney:FlxUIInputText;
       public var neya:FlxUIInputText;
       public var coolInput:FlxUIInputText;
+      public static var curStateS:String = 'JsonEditor';
 
       //ui shit
       public var nae:FlxUIInputText;

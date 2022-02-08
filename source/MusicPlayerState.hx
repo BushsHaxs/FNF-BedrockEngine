@@ -24,6 +24,7 @@ import lime.utils.Assets;
 import flixel.system.FlxSound;
 import openfl.utils.Assets as OpenFlAssets;
 import WeekData;
+import JsonSettings;
 #if MODS_ALLOWED
 import sys.FileSystem;
 #end
@@ -68,6 +69,7 @@ class MusicPlayerState extends MusicBeatState
 	private static var curSelected:Int = 0;
 	private static var lastDifficultyName:String = '';
 	public static var curPlaying:Bool = false;
+	public static var curStateS:String = 'MusicPlayerState';
 
 	// private variables
 	private var grpSongs:FlxTypedGroup<Alphabet>;
@@ -184,7 +186,11 @@ class MusicPlayerState extends MusicBeatState
 		}
 		curDifficulty = Math.round(Math.max(0, CoolUtil.defaultDifficulties.indexOf(lastDifficultyName)));
 
-		if (curPlaying)
+		if (curPlaying && !JsonSettings.iconSupport)
+		{
+			iconArray[instPlaying].canBounce = true;
+		}
+		else
 		{
 			iconArray[instPlaying].canBounce = true;
 			iconArray[instPlaying].animation.curAnim.curFrame = 2;

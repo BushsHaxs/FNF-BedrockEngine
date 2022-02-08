@@ -44,6 +44,7 @@ class WeekEditorState extends MusicBeatState
 	var grpWeekCharacters:FlxTypedGroup<MenuCharacter>;
 	var weekThing:MenuItem;
 	var missingFileText:FlxText;
+	public static var curStateS:String = 'WeekEditorState';
 
 	var weekFile:WeekFile = null;
 	public function new(weekFile:WeekFile = null)
