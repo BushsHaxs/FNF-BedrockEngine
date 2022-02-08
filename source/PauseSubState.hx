@@ -236,7 +236,8 @@ class PauseSubState extends MusicBeatSubstate
 		if (pauseMusic.volume < 0.5)
 			pauseMusic.volume += 0.01 * elapsed;
 
-		disk.angle -= 0.45 / (ClientPrefs.framerate / 60);
+		if (!ClientPrefs.lowQuality)
+			disk.angle -= 0.45 / (ClientPrefs.framerate / 60);
 
 		super.update(elapsed);
 

@@ -14,6 +14,9 @@ class JsonSettings
     public static var logs:Int = 0; 
     //this is used for log counts
 
+    //readme stuff
+    public static var read:String = "settings/do-READ-me.txt";
+
     //jsons content
     public static var customGame:String = null;
     public static var customJson:String = null;
@@ -29,8 +32,8 @@ class JsonSettings
 
     public static var marvWindow:Int = 25;
     public static var sickWindow:Int = 45;
-    public static var goodWindow:Int = 60;
-    public static var badWindow:Int = 90;
+    public static var goodWindow:Int = 90;
+    public static var badWindow:Int = 135;
     //public static var shitWindow:Int = 135;
 
     //gameplay settings 
@@ -58,10 +61,10 @@ class JsonSettings
 
                 var piss:Dynamic = Json.parse(offset);
 
-                var marv:Int = Reflect.getProperty(piss, "marvOffset");
-                var sick:Int = Reflect.getProperty(piss, "sickOffset");
-                var good:Int = Reflect.getProperty(piss, "goodOffset");
-                var bad:Int =  Reflect.getProperty(piss, "badOffset");
+                var marv = Reflect.getProperty(piss, "marvOffset");
+                var sick = Reflect.getProperty(piss, "sickOffset");
+                var good = Reflect.getProperty(piss, "goodOffset");
+                var bad =  Reflect.getProperty(piss, "badOffset");
 
                 marvWindow = marv;
                 sickWindow = sick;
@@ -94,7 +97,7 @@ class JsonSettings
                     goodWindow = sick;
 
                     if (good < 10 || good > 135)
-                        goodWindow = 60;
+                        goodWindow = 90;
 
                 }
 
@@ -104,7 +107,7 @@ class JsonSettings
                     badWindow = bad;
 
                     if (bad < 15 || bad > 180)
-                        badWindow = 90;
+                        badWindow = 135;
                 }
 
                 //prevent people to abuse it
@@ -113,9 +116,9 @@ class JsonSettings
                 if (sick < 5 || sick > 75)
                     sickWindow = 45;
                 if (good < 10 || good > 135)
-                    goodWindow = 60;
+                    goodWindow = 90;
                 if (bad < 15 || bad > 180)
-                    badWindow = 90;
+                    badWindow = 135;
             }
         }
     }

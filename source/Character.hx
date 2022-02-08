@@ -286,7 +286,7 @@ class Character extends FlxSprite
 				dance();
 			}
 
-			if (!isPlayer && !PlayState.instance.opponentChart)
+			if (!isPlayer && !PlayState.instance.opponentChart || PlayState.instance.cpuControlled)
 			{
 				if (animation.curAnim.name.startsWith('sing'))
 				{

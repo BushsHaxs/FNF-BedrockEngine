@@ -22,6 +22,11 @@ class Main extends Sprite
 	var gameHeight:Int = 720; // Height of the game in pixels (might be less / more in actual pixels depending on your zoom).
 
 	public static var mainClassState:Class<FlxState>; // Determine the main class state of the game
+
+	public static var fuckyou:String = 'TitleState'; // Determine the main class state of the game but is lazier
+
+	public static var instance:Main;
+
 	var initialState:Class<FlxState> = TitleState; // The FlxState the game starts with.
 	var zoom:Float = -1; // If -1, zoom is automatically calculated to fit the window dimensions.
 	var framerate:Int = 60; // How many frames per second the game should run at.
@@ -40,6 +45,8 @@ class Main extends Sprite
 	public function new()
 	{
 		super();
+
+		instance = this;
 
 		if (stage != null)
 		{
@@ -78,6 +85,8 @@ class Main extends Sprite
 		#if !debug
 		initialState = TitleState;
 		#end
+
+		instance = this;
 
 		ClientPrefs.loadDefaultKeys();
 		// fuck you, persistent caching stays ON during sex
