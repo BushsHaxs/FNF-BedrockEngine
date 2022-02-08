@@ -29,11 +29,11 @@ using StringTools;
 
 class GameplaySettingsSubState extends BaseOptionsMenu
 {
-	public static var curStateS:String = 'GameplaySettingsSubState';
 	public function new()
 	{
 		title = 'Gameplay Settings';
 		rpcTitle = 'Adjusting the Gameplay Settings'; //for Discord Rich Presence
+		Main.curStateS = 'GameplaySettingsSubState';
 
 		var Option = new Option('Complex Accuracy',
 		"If checked, the accuracy will follow a harsher system, Based on Etterna and Kade Engine.",

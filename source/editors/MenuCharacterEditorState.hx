@@ -38,7 +38,6 @@ class MenuCharacterEditorState extends MusicBeatState
 	var characterFile:MenuCharacterFile = null;
 	var txtOffsets:FlxText;
 	var defaultCharacters:Array<String> = ['dad', 'bf', 'gf'];
-	public static var curStateS:String = 'MenuCharacterEditorState';
 
 	override function create() {
 		characterFile = {
@@ -52,6 +51,7 @@ class MenuCharacterEditorState extends MusicBeatState
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("Menu Character Editor", "Editting: " + characterFile.image);
 		#end
+		Main.curStateS = 'MenuCharacterEditorState';
 
 		grpWeekCharacters = new FlxTypedGroup<MenuCharacter>();
 		for (char in 0...3)
@@ -283,6 +283,10 @@ class MenuCharacterEditorState extends MusicBeatState
 			if(FlxG.keys.justPressed.ESCAPE) {
 				MusicBeatState.switchState(new editors.MasterEditorMenu());
 				FlxG.sound.playMusic(Paths.music('freakyMenu'));
+				if (ClientPrefs.useClassicSongs)
+				{
+					FlxG.sound.playMusic(Paths.music('freakyMenuC'));
+				}
 			}
 
 			var shiftMult:Int = 1;

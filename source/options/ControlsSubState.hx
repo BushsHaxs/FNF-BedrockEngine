@@ -30,7 +30,6 @@ using StringTools;
 class ControlsSubState extends MusicBeatSubstate {
 	private static var curSelected:Int = -1;
 	private static var curAlt:Bool = false;
-	public static var curStateS:String = 'ControlsSubState';
 
 	private static var defaultKey:String = 'Reset to Default Keys';
 	private var bindLength:Int = 0;

@@ -82,10 +82,6 @@ class PlayState extends MusicBeatState
 	public var camHUDShaders:Array<ShaderEffect> = [];
 	public var camOtherShaders:Array<ShaderEffect> = [];
 
-
-
-   
-
 	// event variables
 	private var isCameraOnForcedPos:Bool = false;
 
@@ -123,7 +119,6 @@ class PlayState extends MusicBeatState
 	public static var storyWeek:Int = 0;
 	public static var storyPlaylist:Array<String> = [];
 	public static var storyDifficulty:Int = 1;
-	public static var curStateS:String = 'PlayState';
 
 	public var vocals:FlxSound;
 
@@ -306,6 +301,7 @@ class PlayState extends MusicBeatState
 	override public function create()
 	{
 		Paths.clearStoredMemory();
+		Main.curStateS = 'PlayState';
 
 		// for lua
 		instance = this;
@@ -3871,6 +3867,10 @@ class PlayState extends MusicBeatState
 				if (storyPlaylist.length <= 0)
 				{
 					FlxG.sound.playMusic(Paths.music('freakyMenu'));
+					if (ClientPrefs.useClassicSongs)
+					{
+						FlxG.sound.playMusic(Paths.music('freakyMenuC'));
+					}
 
 					cancelMusicFadeTween();
 					if (FlxTransitionableState.skipNextTransIn)
@@ -3947,6 +3947,10 @@ class PlayState extends MusicBeatState
 				}
 				MusicBeatState.switchState(new FreeplayState());
 				FlxG.sound.playMusic(Paths.music('freakyMenu'));
+				if (ClientPrefs.useClassicSongs)
+				{
+					FlxG.sound.playMusic(Paths.music('freakyMenuC'));
+				}
 				changedDifficulty = false;
 			}
 			transitioning = true;

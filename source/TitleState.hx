@@ -48,7 +48,8 @@ typedef TitleData =
 	gfx:Float,
 	gfy:Float,
 	backgroundSprite:String,
-	bpm:Int
+	bpm:Int,
+	cbpm:Int
 }
 
 class TitleState extends MusicBeatState
@@ -56,7 +57,6 @@ class TitleState extends MusicBeatState
 	public static var muteKeys:Array<FlxKey> = [FlxKey.ZERO];
 	public static var volumeDownKeys:Array<FlxKey> = [FlxKey.NUMPADMINUS, FlxKey.MINUS];
 	public static var volumeUpKeys:Array<FlxKey> = [FlxKey.NUMPADPLUS, FlxKey.PLUS];
-	public static var curStateS:String = 'TitleState';
 
 	public static var initialized:Bool = false;
 
@@ -90,6 +90,7 @@ class TitleState extends MusicBeatState
 	{
 		Paths.clearStoredMemory();
 		Paths.clearUnusedMemory();
+		Main.curStateS = 'TitleState';
 
 		#if MODS_ALLOWED
 		// Just to load a mod on start up if ya got one. For mods that change the menu music and bg
@@ -121,8 +122,7 @@ class TitleState extends MusicBeatState
 		{
 			path = "assets/images/gfDanceTitle.json";
 		}
-		else if(ClientPrefs.lowQuality)
-				path = "assets/images/lowQuality/gfDanceTitleLow.json";
+
 		// trace(path, FileSystem.exists(path));
 		titleJSON = Json.parse(File.getContent(path));
 		#else
@@ -253,6 +253,13 @@ class TitleState extends MusicBeatState
 			if (FlxG.sound.music == null)
 			{
 				FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
+			}
+		}
+		else if (!initialized && ClientPrefs.useClassicSongs)
+		{
+			if (FlxG.sound.music == null)
+			{
+				FlxG.sound.playMusic(Paths.music('freakyMenuC'), 0);
 			}
 		}
 
@@ -638,6 +645,9 @@ class TitleState extends MusicBeatState
 						FlxG.sound.music.stop();
 						FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
 
+						if(ClientPrefs.useClassicSongs)
+							FlxG.sound.playMusic(Paths.music('freakyMenuC'), 0);
+
 						FlxG.sound.music.fadeIn(5, 0, 0.7);
 					}
 				case 2:
@@ -696,6 +706,13 @@ class TitleState extends MusicBeatState
 			remove(ngSpr);
 
 			FlxG.camera.flash(FlxColor.WHITE, 1);
+
+			if(ClientPrefs.useClassicSongs)
+			{
+				FlxG.camera.flash(FlxColor.WHITE, 4);
+				Conductor.changeBPM(titleJSON.cbpm);
+			}
+
 			remove(credGroup);
 			skippedIntro = true;
 		}

@@ -32,7 +32,6 @@ class OptionsState extends MusicBeatState
 	var options:Array<String> = ['Adjust Delay and Combo', 'Controls', 'Graphics', 'Gameplay Settings', 'Note Colors', 'Visuals and UI'];
 	private var grpOptions:FlxTypedGroup<Alphabet>;
 	private static var curSelected:Int = 0;
-	public static var curStateS:String = 'OptionsState';
 	public static var menuBG:FlxSprite;
 
 	var holdTime:Float = 0;
@@ -61,6 +60,7 @@ class OptionsState extends MusicBeatState
 		#if desktop
 		DiscordClient.changePresence("In the Options Menu", null);
 		#end
+		Main.curStateS = 'OptionsState';
 
 		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		bg.color = 0xFFea71fd;

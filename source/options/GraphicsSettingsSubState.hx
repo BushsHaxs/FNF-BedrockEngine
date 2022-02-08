@@ -31,11 +31,11 @@ using StringTools;
 
 class GraphicsSettingsSubState extends BaseOptionsMenu
 {
-	public static var curStateS:String = 'GraphicsSettingsSubState';
 	public function new()
 	{
 		title = 'Graphics';
 		rpcTitle = 'Tweaking the Graphics'; //for Discord Rich Presence
+		Main.curStateS = 'GraphicsSettingsSubState';
 
 		var option:Option = new Option('Anti-Aliasing', 'If unchecked, disables anti-aliasing, increases performance\nat the cost of sharper visuals.', 'globalAntialiasing', 'bool', true);
 		//option.showBoyfriend = true;

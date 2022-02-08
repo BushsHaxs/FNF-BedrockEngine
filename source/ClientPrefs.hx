@@ -76,6 +76,7 @@ class ClientPrefs {
 	public static var autoPause:Bool = true;
 	public static var memCounter:Bool = false;
 	public static var showState:Bool = false;
+	public static var useClassicSongs:Bool = false;
 
 	// Added by Bedrock Engine (via Pull Requests)
 	public static var marvelouses:Bool = true;
@@ -165,6 +166,7 @@ class ClientPrefs {
 		FlxG.save.data.autoPause = autoPause;
 		FlxG.save.data.memCounter = memCounter;
 		FlxG.save.data.showState = showState;
+		FlxG.save.data.useClassicSongs = useClassicSongs;
 
 		// Added by Bedrock Engine (via Pull Requests)
 		FlxG.save.data.marvelousWindow = marvelousWindow;
@@ -333,6 +335,9 @@ class ClientPrefs {
 		}
 		if(FlxG.save.data.showState != null) {
 			showState = FlxG.save.data.showState;
+		}
+		if(FlxG.save.data.useClassicSongs != null) {
+			useClassicSongs = FlxG.save.data.useClassicSongs;
 		}
 		
 		// Added by Bedrock Engine (via Pull Requests)

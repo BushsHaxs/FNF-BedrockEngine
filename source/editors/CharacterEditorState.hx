@@ -56,7 +56,6 @@ class CharacterEditorState extends MusicBeatState
 	var daAnim:String = 'spooky';
 	var goToPlayState:Bool = true;
 	var camFollow:FlxObject;
-	public static var curStateS:String = 'CharacterEditorState';
 
 	public function new(daAnim:String = 'spooky', goToPlayState:Bool = true)
 	{
@@ -81,6 +80,7 @@ class CharacterEditorState extends MusicBeatState
 
 	override function create()
 	{
+		Main.curStateS = 'CharacterEditorState';
 		//FlxG.sound.playMusic(Paths.music('breakfast'), 0.5);
 
 		camEditor = new FlxCamera();
@@ -1123,6 +1123,10 @@ class CharacterEditorState extends MusicBeatState
 				} else {
 					MusicBeatState.switchState(new editors.MasterEditorMenu());
 					FlxG.sound.playMusic(Paths.music('freakyMenu'));
+					if (ClientPrefs.useClassicSongs)
+					{
+						FlxG.sound.playMusic(Paths.music('freakyMenuC'));
+					}
 				}
 				FlxG.mouse.visible = false;
 				return;

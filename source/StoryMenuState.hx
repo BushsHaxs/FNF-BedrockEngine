@@ -28,7 +28,6 @@ class StoryMenuState extends MusicBeatState
 	// playing just the modded week then delete it.
 	// defaults to True
 	public static var weekCompleted:Map<String, Bool> = new Map<String, Bool>();
-	public static var curStateS:String = 'TitleState';
 
 	var scoreText:FlxText;
 
@@ -56,6 +55,7 @@ class StoryMenuState extends MusicBeatState
 	{
 		Paths.clearStoredMemory();
 		Paths.clearUnusedMemory();
+		Main.curStateS = 'StoryMenuState';
 
 		PlayState.isStoryMode = true;
 		WeekData.reloadWeekFiles(true);

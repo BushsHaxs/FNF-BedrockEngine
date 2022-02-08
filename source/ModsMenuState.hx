@@ -48,7 +48,6 @@ class ModsMenuState extends MusicBeatState
 	var needaReset = false;
 	private static var curSelected:Int = 0;
 	public static var defaultColor:FlxColor = 0xFF665AFF;
-	public static var curStateS:String = 'ModsMenuState';
 
 	var buttonDown:FlxButton;
 	var buttonTop:FlxButton;
@@ -71,6 +70,7 @@ class ModsMenuState extends MusicBeatState
 		Paths.clearStoredMemory();
 		Paths.clearUnusedMemory();
 		WeekData.setDirectoryFromWeek();
+		Main.curStateS = 'ModsMenuState';
 
 		#if desktop
 		// Updating Discord Rich Presence
