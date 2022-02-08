@@ -199,7 +199,7 @@ class MusicPlayerState extends MusicBeatState
 		add(textBG);
 
 		var leText:String = "Press ACCEPT to Listen to the Song / Press CTRL to Disable Song Vocals. / Press ALT to go to Freeplay / LEFT or RIGHT to Skip/Go Back on the Song.";
-		var size:Int = 16;
+		var size:Int = 14;
 		var text:FlxText = new FlxText(textBG.x, textBG.y + 4, FlxG.width, leText, size);
 		text.setFormat(Paths.font("vcr.ttf"), size, FlxColor.WHITE, RIGHT);
 		text.scrollFactor.set();

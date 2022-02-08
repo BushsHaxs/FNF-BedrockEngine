@@ -29,8 +29,8 @@ class JsonSettings
 
     public static var marvWindow:Int = 25;
     public static var sickWindow:Int = 45;
-    public static var goodWindow:Int = 60;
-    public static var badWindow:Int = 90;
+    public static var goodWindow:Int = 90;
+    public static var badWindow:Int = 135;
     //public static var shitWindow:Int = 135;
 
     //gameplay settings 
@@ -94,7 +94,7 @@ class JsonSettings
                     goodWindow = sick;
 
                     if (good < 10 || good > 135)
-                        goodWindow = 60;
+                        goodWindow = 90;
 
                 }
 
@@ -104,7 +104,7 @@ class JsonSettings
                     badWindow = bad;
 
                     if (bad < 15 || bad > 180)
-                        badWindow = 90;
+                        badWindow = 135;
                 }
 
                 //prevent people to abuse it
@@ -113,9 +113,9 @@ class JsonSettings
                 if (sick < 5 || sick > 75)
                     sickWindow = 45;
                 if (good < 10 || good > 135)
-                    goodWindow = 60;
+                    goodWindow = 90;
                 if (bad < 15 || bad > 180)
-                    badWindow = 90;
+                    badWindow = 135;
             }
         }
     }
