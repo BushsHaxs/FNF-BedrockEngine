@@ -329,6 +329,10 @@ class MusicPlayerState extends MusicBeatState
 						iconArray[instPlaying].canBounce = false;
 						iconArray[instPlaying].animation.curAnim.curFrame = 0;
 						FlxG.sound.playMusic(Paths.music('freakyMenu'));
+						if (ClientPrefs.useClassicSongs)
+						{
+							FlxG.sound.playMusic(Paths.music('freakyMenuC'));
+						}
 						}
 					}
 					else
