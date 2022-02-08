@@ -223,7 +223,7 @@ class ExtraMenuState extends MusicBeatState
 									case 'ost':
 										MusicBeatState.switchState(new MusicPlayerState());
 									case 'settings':
-										MusicBeatState.switchState(new ExtraMenuState());
+										MusicBeatState.switchState(new editors.JsonEditor());
 								}
 							});
 						}

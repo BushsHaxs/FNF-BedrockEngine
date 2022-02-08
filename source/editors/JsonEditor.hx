@@ -31,6 +31,7 @@ class JsonEditor extends MusicBeatState
       public var na:FlxUIInputText;
       public var ney:FlxUIInputText;
       public var neya:FlxUIInputText;
+      public var neyae:FlxUIInputText;
       public var coolInput:FlxUIInputText;
 
       //ui shit
@@ -147,12 +148,12 @@ class JsonEditor extends MusicBeatState
                   mash = !mash;
 		};
 
-            var coolButton = new FlxButton(FlxG.width - 855, 25, "Save UI", function()
+            var coolButton = new FlxButton(FlxG.width - 855, 25, "Save UI Prefs", function()
             {
                   saveUISetting();
             });
 
-            var coolButon = new FlxButton(FlxG.width - 855, 25, "Save Gameplay", function()
+            var coolButon = new FlxButton(FlxG.width - 855, 25, "Save Gameplay Prefs", function()
             {
                   saveGameplaySetting();
             });
@@ -167,6 +168,9 @@ class JsonEditor extends MusicBeatState
             var textthree = new FlxText(15, 120);
             textthree.text = "Judgement Skin:";
 
+            var textfour = new FlxText(10, 140);
+            textfour.text = "Check the README file on the\nsettings folder for more information\nand default skin names";
+
             na = new FlxUIInputText(100, 80, 90, note, 8);
             ney = new FlxUIInputText(100, 100, 90, splash, 8);
             neya = new FlxUIInputText(100, 120, 90, judgement, 8);
@@ -176,6 +180,7 @@ class JsonEditor extends MusicBeatState
 		tab_group.add(text);
             tab_group.add(texttwo);
             tab_group.add(textthree);
+            tab_group.add(textfour);
             tab_group.add(nae);
             tab_group.add(na);
             tab_group.add(ney);
@@ -197,19 +202,21 @@ class JsonEditor extends MusicBeatState
       {
             JsonSettings.dev(JsonSettings.dir);
 
-            if (FlxG.keys.justPressed.ESCAPE)
+            if (FlxG.keys.justPressed.ESCAPE) {
                   MusicBeatState.switchState(new ExtraMenuState());
+                  FlxG.mouse.visible = false;
+            }
 
             #if desktop
-            DiscordClient.changePresence("In Json Editor", null);
+            DiscordClient.changePresence("Editing JSON Preferences", null);
             #end
 
             JsonSettings.dev(JsonSettings.dir);
            
             if (appearance == null || gameplay == null)
             {
-                  var error:FlxText = new FlxText(240, 150, 25, "Something was wrong\nwith Json settings.\n
-                  Created a json temporarily\nso you can fix them.", 10);
+                  var error:FlxText = new FlxText(240, 150, 25, "Something went wrong\nwith Json settings.\n
+                  Created a json temporarily\nso you can fix it.", 10);
                   error.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
                   error.scrollFactor.set();
 		      error.borderSize = 1.25;
