@@ -264,6 +264,10 @@ class TitleState extends MusicBeatState
 		}
 
 		Conductor.changeBPM(titleJSON.bpm);
+		if(ClientPrefs.useClassicSongs)
+		{
+			Conductor.changeBPM(titleJSON.cbpm);
+		}
 		persistentUpdate = true;
 
 		bgGrad = FlxGradient.createGradientFlxSprite(1460, 821, [FlxColor.TRANSPARENT, FlxColor.fromInt(0xFFDF52A7)]);
@@ -706,12 +710,6 @@ class TitleState extends MusicBeatState
 			remove(ngSpr);
 
 			FlxG.camera.flash(FlxColor.WHITE, 1);
-
-			if(ClientPrefs.useClassicSongs)
-			{
-				FlxG.camera.flash(FlxColor.WHITE, 4);
-				Conductor.changeBPM(titleJSON.cbpm);
-			}
 
 			remove(credGroup);
 			skippedIntro = true;
