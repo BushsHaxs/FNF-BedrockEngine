@@ -24,7 +24,6 @@ class PauseSubState extends MusicBeatSubstate
 	var difficultyChoices = [];
 	var pauseOptions = [];
 	var curSelected:Int = 0;
-	public static var curStateS:String = 'PauseSubState';
 
 	var pausebg1:FlxSprite;
 	var pausebg2:FlxSprite;
@@ -302,6 +301,10 @@ class PauseSubState extends MusicBeatSubstate
 						MusicBeatState.switchState(new FreeplayState());
 					}
 					FlxG.sound.playMusic(Paths.music('freakyMenu'));
+					if (ClientPrefs.useClassicSongs)
+					{
+						FlxG.sound.playMusic(Paths.music('freakyMenuC'));
+					}
 					PlayState.changedDifficulty = false;
 					PlayState.chartingMode = false;
 

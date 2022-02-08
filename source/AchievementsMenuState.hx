@@ -26,12 +26,12 @@ class AchievementsMenuState extends MusicBeatState
 	private var achievementArray:Array<AttachedAchievement> = [];
 	private var achievementIndex:Array<Int> = [];
 	private var descText:FlxText;
-	public static var curStateS:String = 'AchievementsMenuState';
 
 	override function create() {
 		#if desktop
 		DiscordClient.changePresence("in the Achievements Menu", null);
 		#end
+		Main.curStateS = 'AchievementsMenuState';
 
 		var menuBG:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuBGBlue'));
 		menuBG.setGraphicSize(Std.int(menuBG.width * 1.1));

@@ -31,7 +31,6 @@ using StringTools;
 
 class MainMenuState extends MusicBeatState
 {
-	public static var curStateS:String = 'MainMenuState';
 	public static var bedrockEngineVersion:String = '0.4b'; // This is also used for Discord RPC
 	public static var psychEngineVersion:String = '0.5.1'; // this one too
 	public static var curSelected:Int = 0;
@@ -99,6 +98,7 @@ class MainMenuState extends MusicBeatState
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Main Menu", null);
 		#end
+		Main.curStateS = 'MainMenuState';
 		debugKeys = ClientPrefs.copyKey(ClientPrefs.keyBinds.get('debug_1'));
 
 		camGame = new FlxCamera();

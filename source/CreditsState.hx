@@ -29,7 +29,6 @@ class CreditsState extends MusicBeatState
 
 	private var grpOptions:FlxTypedGroup<Alphabet>;
 	private var iconArray:Array<AttachedSprite> = [];
-	public static var curStateS:String = 'CreditsState';
 
 	public var creditsStuff:Array<Array<String>> = [];
 
@@ -45,6 +44,7 @@ class CreditsState extends MusicBeatState
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("Reading the Credits", null);
 		#end
+		Main.curStateS = 'CreditsState';
 
 		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		add(bg);

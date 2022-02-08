@@ -23,7 +23,7 @@ class Main extends Sprite
 
 	public static var mainClassState:Class<FlxState>; // Determine the main class state of the game
 
-	public static var curStateS:String = ''; // Determine the main class state of the game but is lazier
+	public static var curStateS:String = ''; // Determine the current state of the game, text for the counter
 
 	public static var instance:Main;
 
