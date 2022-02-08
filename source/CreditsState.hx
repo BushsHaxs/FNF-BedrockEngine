@@ -227,6 +227,13 @@ class CreditsState extends MusicBeatState
 				'https://github.com/ShadowMario/FNF-PsychEngine/pull/3192',
 				'91CBFF'
 			],
+			[
+				'tposejank',
+				'tposejank',
+				'Discord Client ID editable through lua',
+				'https://github.com/ShadowMario/FNF-PsychEngine/pull/3845',
+				'013220'
+			],
 			[''],
 			['Engine Shoutouts'],
 			[
