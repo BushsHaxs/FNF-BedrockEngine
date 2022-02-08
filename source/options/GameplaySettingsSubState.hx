@@ -83,7 +83,7 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		'If unchecked, marvelous ratings will disappear.',
 		'marvelouses',
 		'bool',
-		true);
+		false);
 	addOption(option);
 
 	var option:Option = new Option('Middlescroll',
