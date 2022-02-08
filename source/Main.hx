@@ -93,6 +93,27 @@ class Main extends Sprite
 		FlxGraphic.defaultPersist = true;
 		// the reason for this is we're going to be handling our own cache smartly
 		addChild(new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen));
+		
+		var ourSource:String = "assets/videos/DO NOT DELETE OR GAME WILL CRASH/dontDelete.webm";
+
+                #if web
+                var str1:String = "HTML CRAP";
+                var vHandler = new VideoHandler();
+                vHandler.init1();
+                vHandler.video.name = str1;
+                addChild(vHandler.video);
+                vHandler.init2();
+                GlobalVideo.setVid(vHandler);
+                vHandler.source(ourSource);
+                #elseif desktop
+                var str1:String = "WEBM SHIT"; 
+                var webmHandle = new WebmHandler();
+                webmHandle.source(ourSource);
+                webmHandle.makePlayer();
+                webmHandle.webm.name = str1;
+                addChild(webmHandle.webm);
+                GlobalVideo.setWebm(webmHandle);
+                #end
 
 		#if !mobile
 		var fps_mem:FPS_Mem = new FPS_Mem(10, 3, 0xFFFFFF);
