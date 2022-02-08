@@ -194,6 +194,7 @@ class PlayState extends MusicBeatState
 	public var cpuControlled:Bool = false;
 	public var opponentChart:Bool = false;
 	public var practiceMode:Bool = false;
+	public var noteHitFix:Bool = true;
 
 	public var botplaySine:Float = 0;
 	public var botplayTxt:FlxText;
@@ -335,6 +336,7 @@ class PlayState extends MusicBeatState
 		opponentChart = ClientPrefs.getGameplaySetting('opponentplay', false);
 		practiceMode = ClientPrefs.getGameplaySetting('practice', false);
 		cpuControlled = ClientPrefs.getGameplaySetting('botplay', false);
+		noteHitFix = opponentChart;
 
 		shader_chromatic_abberation = new ChromaticAberrationEffect();
 
@@ -4625,12 +4627,7 @@ class PlayState extends MusicBeatState
 			spawnNoteSplashOnNote(note, true);
 		}
 
-		callOnLuas('opponentNoteHit', [
-			notes.members.indexOf(note),
-			Math.abs(note.noteData),
-			note.noteType,
-			note.isSustainNote
-		]);
+		callOnLuas((noteHitFix ? 'goodNoteHit' : 'opponentNoteHit'), [notes.members.indexOf(note), Math.abs(note.noteData), note.noteType, note.isSustainNote]);
 
 		if (!note.isSustainNote)
 		{
@@ -4769,7 +4766,7 @@ class PlayState extends MusicBeatState
 			var leType:String = note.noteType;
 			if (camFocus == 'bf' && ClientPrefs.dynamicCam)
 				triggerCamMovement(Math.abs(note.noteData % 4));
-			callOnLuas('goodNoteHit', [notes.members.indexOf(note), leData, leType, isSus]);
+			callOnLuas((noteHitFix ? 'opponentNoteHit' : 'goodNoteHit'), [notes.members.indexOf(note), leData, leType, isSus]);
 
 			if (!note.isSustainNote)
 			{
