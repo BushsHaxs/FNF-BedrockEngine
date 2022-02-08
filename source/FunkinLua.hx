@@ -110,6 +110,9 @@ class FunkinLua {
 		set('require', false);
 		set('os', true);
 
+        // Block require, should probably have a proper function but this should be good enough.
+        set('require', false);
+
 		// Camera poo
 		set('cameraX', 0);
 		set('cameraY', 0);
