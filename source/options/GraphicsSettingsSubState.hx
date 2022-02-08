@@ -108,7 +108,7 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 		'showState',
 		'bool',
 		false);
-		//addOption(option);
+		addOption(option);
 
 		super();
 	}
