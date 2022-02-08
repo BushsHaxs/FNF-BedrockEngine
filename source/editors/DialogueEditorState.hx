@@ -44,6 +44,7 @@ class DialogueEditorState extends MusicBeatState
 
 	var defaultLine:DialogueLine;
 	var dialogueFile:DialogueFile = null;
+	public static var curStateS:String = 'DialogueEditorState';
 
 	override function create() {
 		persistentUpdate = persistentDraw = true;

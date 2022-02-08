@@ -29,6 +29,7 @@ class CreditsState extends MusicBeatState
 
 	private var grpOptions:FlxTypedGroup<Alphabet>;
 	private var iconArray:Array<AttachedSprite> = [];
+	public static var curStateS:String = 'CreditsState';
 
 	public var creditsStuff:Array<Array<String>> = [];
 

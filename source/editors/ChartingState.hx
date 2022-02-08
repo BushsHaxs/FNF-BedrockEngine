@@ -66,6 +66,7 @@ class ChartingState extends MusicBeatState
 	];
 	private var noteTypeIntMap:Map<Int, String> = new Map<Int, String>();
 	private var noteTypeMap:Map<String, Null<Int>> = new Map<String, Null<Int>>();
+	public static var curStateS:String = 'ChartingState';
 	var undos = [];
 	var redos = [];
 	var eventStuff:Array<Dynamic> =

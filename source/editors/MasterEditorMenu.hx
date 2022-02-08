@@ -34,6 +34,7 @@ class MasterEditorMenu extends MusicBeatState
 	private var curSelected = 0;
 	private var curDirectory = 0;
 	private var directoryTxt:FlxText;
+	public static var curStateS:String = 'MasterEditorMenu';
 
 	override function create()
 	{

@@ -36,6 +36,7 @@ class GameplayChangersSubstate extends MusicBeatSubstate
 	private var grpOptions:FlxTypedGroup<Alphabet>;
 	private var checkboxGroup:FlxTypedGroup<CheckboxThingie>;
 	private var grpTexts:FlxTypedGroup<AttachedText>;
+	public static var curStateS:String = 'GameplayChangersSubstate';
 
 	function getOptions()
 	{

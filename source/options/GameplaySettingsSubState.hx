@@ -29,6 +29,7 @@ using StringTools;
 
 class GameplaySettingsSubState extends BaseOptionsMenu
 {
+	public static var curStateS:String = 'GameplaySettingsSubState';
 	public function new()
 	{
 		title = 'Gameplay Settings';

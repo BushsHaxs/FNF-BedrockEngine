@@ -31,6 +31,7 @@ using StringTools;
 
 class GraphicsSettingsSubState extends BaseOptionsMenu
 {
+	public static var curStateS:String = 'GraphicsSettingsSubState';
 	public function new()
 	{
 		title = 'Graphics';

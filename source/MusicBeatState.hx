@@ -21,6 +21,7 @@ class MusicBeatState extends FlxUIState
 
 	private var curStep:Int = 0;
 	private var curBeat:Int = 0;
+	public static var curStateS:String = 'MusicBeatState';
 
 	private var controls(get, never):Controls;
 

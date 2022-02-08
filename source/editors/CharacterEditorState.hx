@@ -56,6 +56,7 @@ class CharacterEditorState extends MusicBeatState
 	var daAnim:String = 'spooky';
 	var goToPlayState:Bool = true;
 	var camFollow:FlxObject;
+	public static var curStateS:String = 'CharacterEditorState';
 
 	public function new(daAnim:String = 'spooky', goToPlayState:Bool = true)
 	{
@@ -219,7 +220,7 @@ class CharacterEditorState extends MusicBeatState
 		var playerXDifference = 0;
 		if(char.isPlayer) playerXDifference = 670;
 
-		if(onPixelBG) {
+		if(onPixelBG && !ClientPrefs.maxOptimization) {
 			var playerYDifference:Float = 0;
 			if(char.isPlayer) {
 				playerXDifference += 200;
@@ -1076,7 +1077,7 @@ class CharacterEditorState extends MusicBeatState
 	function updatePresence() {
 		#if desktop
 		// Updating Discord Rich Presence
-		DiscordClient.changePresence("Character Editor", "Character: " + daAnim, leHealthIcon.getCharacter());
+		DiscordClient.changePresence("in the Character Editor", "Character: " + daAnim, leHealthIcon.getCharacter());
 		#end
 	}
 

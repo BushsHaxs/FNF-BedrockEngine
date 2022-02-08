@@ -26,6 +26,7 @@ class AchievementsMenuState extends MusicBeatState
 	private var achievementArray:Array<AttachedAchievement> = [];
 	private var achievementIndex:Array<Int> = [];
 	private var descText:FlxText;
+	public static var curStateS:String = 'AchievementsMenuState';
 
 	override function create() {
 		#if desktop

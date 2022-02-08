@@ -31,6 +31,7 @@ class ExtraMenuState extends MusicBeatState
 {
 	public static var curSelected:Int = 0;
 	public static var textNotice:String = 'Press BACKSPACE or ESC to go Back to the Main Menu';
+	public static var curStateS:String = 'ExtraMenuState';
 
 	var menuItems:FlxTypedGroup<FlxSprite>;
 	private var camGame:FlxCamera;

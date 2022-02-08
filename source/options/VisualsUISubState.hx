@@ -29,6 +29,7 @@ using StringTools;
 
 class VisualsUISubState extends BaseOptionsMenu
 {
+	public static var curStateS:String = 'VisualsUISubState';
 	public function new()
 	{
 		title = 'Visuals and UI';

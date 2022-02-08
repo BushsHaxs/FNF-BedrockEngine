@@ -69,6 +69,7 @@ class DialogueCharacterEditorState extends MusicBeatState
 	var character:DialogueCharacter;
 	var ghostLoop:DialogueCharacter;
 	var ghostIdle:DialogueCharacter;
+	public static var curStateS:String = 'DialogueCharacterEditorState';
 
 	override function create() {
 		persistentUpdate = persistentDraw = true;
