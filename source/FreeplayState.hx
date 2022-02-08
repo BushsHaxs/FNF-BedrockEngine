@@ -162,12 +162,6 @@ class FreeplayState extends MusicBeatState
 		}
 		curDifficulty = Math.round(Math.max(0, CoolUtil.defaultDifficulties.indexOf(lastDifficultyName)));
 
-		if (curPlaying)
-		{
-			iconArray[instPlaying].canBounce = true;
-			iconArray[instPlaying].animation.curAnim.curFrame = 2;
-		}
-
 		changeSelection();
 		changeDiff();
 
