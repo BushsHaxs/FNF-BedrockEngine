@@ -80,7 +80,7 @@ class ClientPrefs {
 	public static var useClassicSongs:Bool = false;
 
 	// Added by Bedrock Engine (via Pull Requests)
-	public static var marvelouses:Bool = true;
+	public static var marvelouses:Bool = false;
 	public static var showWatermarks:Bool = true;
 
 	//Every key has two binds, add your key bind down here and then add your control on options/ControlsSubState.hx and Controls.hx
