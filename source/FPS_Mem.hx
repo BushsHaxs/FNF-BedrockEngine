@@ -56,14 +56,14 @@ class FPS_Mem extends TextField
 			if(!ClientPrefs.showFPS && !ClientPrefs.memCounter)
 				text = "";
 
-            /*if(ClientPrefs.showState && ClientPrefs.showFPS && !ClientPrefs.memCounter)
+            if(ClientPrefs.showState && ClientPrefs.showFPS && !ClientPrefs.memCounter)
                 text = "FPS: " + times.length + "\nState: " + Main.mainClassState;
 
             if(ClientPrefs.showState && ClientPrefs.showFPS && ClientPrefs.memCounter)
             text = "FPS: " + times.length + "\nMEM: " + mem + " MB\nMEM peak: " + memPeak + " MB" + "\nState: " + Main.mainClassState;
 
             if(ClientPrefs.showState && !ClientPrefs.showFPS && !ClientPrefs.memCounter)
-                text = "State: " + Main.mainClassState;*/
+                text = "State: " + Main.mainClassState;
 
             /* I will make it so states can be also shown later*/
 		}
