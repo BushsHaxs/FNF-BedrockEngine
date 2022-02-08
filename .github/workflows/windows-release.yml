@@ -41,10 +41,15 @@ jobs:
           haxelib install tjson
           haxelib install hxjsonast
           haxelib git linc_luajit https://github.com/AndreiRudenko/linc_luajit
-          haxelib install hscript 
+          haxelib install hscript
           haxelib git hscript-ex https://github.com/ianharrigan/hscript-ex
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
           haxelib install hxcpp-debug-server
+          haxelib git extension-webm https://github.com/KadeDev/extension-webm
+          haxelib run lime rebuild extension-webm linux
+          haxelib git faxe https://github.com/uhrobots/faxe
+          haxelib git linc_luajit https://github.com/ThatDisabledKid/linc_luajit
+          haxelib install actuate                                                                                             
           haxelib list
         shell: cmd
       - name: Create Version Tag
