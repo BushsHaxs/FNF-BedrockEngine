@@ -38,7 +38,6 @@ class NotesSubState extends MusicBeatSubstate
 	private var grpNumbers:FlxTypedGroup<Alphabet>;
 	private var grpNotes:FlxTypedGroup<FlxSprite>;
 	private var shaderArray:Array<ColorSwap> = [];
-	public static var curStateS:String = 'NotesSubState';
 	var curValue:Float = 0;
 	var holdTime:Float = 0;
 	var nextAccept:Int = 5;
@@ -82,6 +81,8 @@ class NotesSubState extends MusicBeatSubstate
 		blackBG = new FlxSprite(posX - 25).makeGraphic(870, 200, FlxColor.BLACK);
 		blackBG.alpha = 0.4;
 		add(blackBG);
+		
+		Main.curStateS = 'NotesSubState';
 
 		grpNotes = new FlxTypedGroup<FlxSprite>();
 		add(grpNotes);

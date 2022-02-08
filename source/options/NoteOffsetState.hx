@@ -1,5 +1,7 @@
 package options;
 
+import flixel.util.FlxStringUtil;
+import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
 import flixel.text.FlxText;
@@ -22,7 +24,6 @@ class NoteOffsetState extends MusicBeatState
 	public var camHUD:FlxCamera;
 	public var camGame:FlxCamera;
 	public var camOther:FlxCamera;
-	public static var curStateS:String = 'NoteOffsetState';
 
 	var coolText:FlxText;
 	var rating:FlxSprite;
@@ -194,6 +195,7 @@ class NoteOffsetState extends MusicBeatState
 
 		Conductor.changeBPM(128.0);
 		FlxG.sound.playMusic(Paths.music('offsetSong'), 1, true);
+		Main.curStateS = 'NoteOffsetState';
 
 		super.create();
 	}

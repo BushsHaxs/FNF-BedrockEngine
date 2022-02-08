@@ -34,7 +34,6 @@ class FreeplayState extends MusicBeatState
 	var colorTween:FlxTween;
 	var scoreBG:FlxSprite;
 	var songs:Array<SongMetadata> = [];
-	public static var curStateS:String = 'FreeplayState';
 
 	// variable floats
 	var lerpRating:Float = 0;
@@ -64,6 +63,7 @@ class FreeplayState extends MusicBeatState
 	{
 		Paths.clearStoredMemory();
 		Paths.clearUnusedMemory();
+		Main.curStateS = 'FreeplayState';
 
 		persistentUpdate = true;
 		PlayState.isStoryMode = false;

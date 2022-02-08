@@ -31,11 +31,11 @@ using StringTools;
 
 class GraphicsSettingsSubState extends BaseOptionsMenu
 {
-	public static var curStateS:String = 'GraphicsSettingsSubState';
 	public function new()
 	{
 		title = 'Graphics';
 		rpcTitle = 'Tweaking the Graphics'; //for Discord Rich Presence
+		Main.curStateS = 'GraphicsSettingsSubState';
 
 		var option:Option = new Option('Anti-Aliasing', 'If unchecked, disables anti-aliasing, increases performance\nat the cost of sharper visuals.', 'globalAntialiasing', 'bool', true);
 		//option.showBoyfriend = true;
@@ -98,14 +98,21 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 		addOption(option);
 
 		var option:Option = new Option('Memory Counter',
-		"Whether to display approximately how much memory is being used, and the peak of that Memory.",
+		"Whether to display approximately how much memory is being used.",
 		'memCounter',
 		'bool',
 		false);
 		addOption(option);
 
+		var option:Option = new Option('Memory Peak Counter',
+		"Whether to display the highest memory value used.",
+		'memPeak',
+		'bool',
+		false);
+		addOption(option);
+
 		var option:Option = new Option('Show Current State',
-		"Whether to display the current state of the game (example: GraphicsSettingsSubState).",
+		"Whether to display the current state/substate of the game (example: GraphicsSettingsSubState).",
 		'showState',
 		'bool',
 		false);

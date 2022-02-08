@@ -69,7 +69,6 @@ class MusicPlayerState extends MusicBeatState
 	private static var curSelected:Int = 0;
 	private static var lastDifficultyName:String = '';
 	public static var curPlaying:Bool = false;
-	public static var curStateS:String = 'MusicPlayerState';
 
 	// private variables
 	private var grpSongs:FlxTypedGroup<Alphabet>;
@@ -79,6 +78,7 @@ class MusicPlayerState extends MusicBeatState
 	{
 		Paths.clearStoredMemory();
 		Paths.clearUnusedMemory();
+		Main.curStateS = 'MusicPlayerState';
 
 		persistentUpdate = true;
 		PlayState.isStoryMode = false;
@@ -187,10 +187,6 @@ class MusicPlayerState extends MusicBeatState
 		curDifficulty = Math.round(Math.max(0, CoolUtil.defaultDifficulties.indexOf(lastDifficultyName)));
 
 		if (curPlaying && !JsonSettings.iconSupport)
-		{
-			iconArray[instPlaying].canBounce = true;
-		}
-		else
 		{
 			iconArray[instPlaying].canBounce = true;
 			iconArray[instPlaying].animation.curAnim.curFrame = 2;
@@ -333,6 +329,10 @@ class MusicPlayerState extends MusicBeatState
 						iconArray[instPlaying].canBounce = false;
 						iconArray[instPlaying].animation.curAnim.curFrame = 0;
 						FlxG.sound.playMusic(Paths.music('freakyMenu'));
+						if (ClientPrefs.useClassicSongs)
+						{
+							FlxG.sound.playMusic(Paths.music('freakyMenuC'));
+						}
 						}
 					}
 					else
