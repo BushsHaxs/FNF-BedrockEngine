@@ -75,6 +75,7 @@ class ClientPrefs {
 	public static var showSongDisplay:Bool = true;
 	public static var autoPause:Bool = true;
 	public static var memCounter:Bool = false;
+	public static var memPeak:Bool = false;
 	public static var showState:Bool = false;
 	public static var useClassicSongs:Bool = false;
 
@@ -165,6 +166,7 @@ class ClientPrefs {
 		FlxG.save.data.showSongDisplay = showSongDisplay;
 		FlxG.save.data.autoPause = autoPause;
 		FlxG.save.data.memCounter = memCounter;
+		FlxG.save.data.memPeak = memPeak;
 		FlxG.save.data.showState = showState;
 		FlxG.save.data.useClassicSongs = useClassicSongs;
 
@@ -332,6 +334,9 @@ class ClientPrefs {
 		}
 		if(FlxG.save.data.memCounter != null) {
 			memCounter = FlxG.save.data.memCounter;
+		}
+		if(FlxG.save.data.memPeak != null) {
+			memPeak = FlxG.save.data.memPeak;
 		}
 		if(FlxG.save.data.showState != null) {
 			showState = FlxG.save.data.showState;

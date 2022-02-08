@@ -41,31 +41,57 @@ class FPS_Mem extends TextField
 		var mem:Float = Math.round(System.totalMemory / 1024 / 1024 * 100) / 100;
 		if (mem > memPeak)
 			memPeak = mem;
+
+		//will make this crap better in the future, rn it sucks.
 		if (visible)
 		{
-			//TODO: make this thing actually better
+			//1 counter
+			text = "FPS: " + times.length; //FPS Only
 
-			text = "FPS: " + times.length; //FPS Text
+			if(ClientPrefs.memCounter && !ClientPrefs.memPeak && !ClientPrefs.showFPS) //Mem Only
+				text = "MEM: " + mem + " MB";
 
-			if(ClientPrefs.memCounter)
-				text = "FPS: " + times.length + "\nMEM: " + mem + " MB\nMEM peak: " + memPeak + " MB";
+			if(ClientPrefs.memPeak && !ClientPrefs.memCounter && !ClientPrefs.showState && !ClientPrefs.showFPS) //Peak Only
+                text = "MEM peak: " + memPeak;
 
-			if(ClientPrefs.memCounter && !ClientPrefs.showFPS)
-				text = "MEM: " + mem + " MB\nMEM peak: " + memPeak + " MB";
-
-			if(!ClientPrefs.showFPS && !ClientPrefs.memCounter)
-				text = "";
-
-            if(ClientPrefs.showState && ClientPrefs.showFPS && !ClientPrefs.memCounter)
-                text = "FPS: " + times.length + "\nState: " + Main.curStateS;
-
-            if(ClientPrefs.showState && ClientPrefs.showFPS && ClientPrefs.memCounter)
-            text = "FPS: " + times.length + "\nMEM: " + mem + " MB\nMEM peak: " + memPeak + " MB" + "\nState: " + Main.curStateS;
-
-            if(ClientPrefs.showState && !ClientPrefs.showFPS && !ClientPrefs.memCounter)
+			if(ClientPrefs.showState && !ClientPrefs.showFPS && !ClientPrefs.memCounter && !ClientPrefs.memPeak) //State Only
                 text = "State: " + Main.curStateS;
 
-            /* I will make it so states can be also shown later*/
+			
+			//2 counters
+			if(ClientPrefs.showFPS && ClientPrefs.memCounter && !ClientPrefs.memPeak && !ClientPrefs.showState) //FPS and Mem
+				text = "FPS: " + times.length + "\nMEM: " + mem + " MB";
+
+			if(ClientPrefs.showFPS && !ClientPrefs.memCounter && ClientPrefs.memPeak && !ClientPrefs.showState) //FPS and Mem
+				text = "FPS: " + times.length + "\nMEM peak: " + memPeak + " MB";
+
+			if(ClientPrefs.memCounter && ClientPrefs.memPeak && !ClientPrefs.showFPS) //Mem and Peak
+				text = "MEM: " + mem + " MB\nMEM peak: " + memPeak + " MB";
+
+            if(ClientPrefs.showState && ClientPrefs.showFPS && !ClientPrefs.memCounter && !ClientPrefs.memPeak) //FPS and State
+                text = "FPS: " + times.length + "\nState: " + Main.curStateS;
+
+			if(ClientPrefs.showState && !ClientPrefs.showFPS && ClientPrefs.memCounter && !ClientPrefs.memPeak) //Mem and State
+                text = "MEM: " + mem + " MB " + "\nState: " + Main.curStateS;
+
+			if(ClientPrefs.showState && !ClientPrefs.showFPS && !ClientPrefs.memCounter && ClientPrefs.memPeak) //Peak and State
+                text = "MEM peak: " + memPeak + "\nState: " + Main.curStateS;
+
+			//3 counters
+			if(ClientPrefs.showState && ClientPrefs.showFPS && ClientPrefs.memCounter && !ClientPrefs.memPeak) //FPS, Mem, and State
+				text = "FPS: " + times.length + "\nMEM: " + mem + " MB" + "\nState: " + Main.curStateS;
+
+			if(ClientPrefs.showState && ClientPrefs.showFPS && !ClientPrefs.memCounter && ClientPrefs.memPeak) //FPS, Peak, and State
+				text = "FPS: " + times.length + "\nMEM peak: " + memPeak + " MB" + "\nState: " + Main.curStateS;
+
+			//all
+            if(ClientPrefs.showState && ClientPrefs.showFPS && ClientPrefs.memCounter && ClientPrefs.memPeak) //FPS, Mem, Peak, and State
+            text = "FPS: " + times.length + "\nMEM: " + mem + " MB\nMEM peak: " + memPeak + " MB" + "\nState: " + Main.curStateS;
+
+
+			//all disabled
+			if(!ClientPrefs.showFPS && !ClientPrefs.memCounter && !ClientPrefs.memPeak && !ClientPrefs.showState)
+				text = "";
 		}
 	}
 }
