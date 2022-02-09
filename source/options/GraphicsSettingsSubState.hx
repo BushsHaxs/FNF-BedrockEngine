@@ -102,14 +102,14 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 		'memCounter',
 		'bool',
 		false);
-		addOption(option);
+		//addOption(option);
 
 		var option:Option = new Option('Memory Peak Counter',
 		"Whether to display the highest memory value used.",
 		'memPeak',
 		'bool',
 		false);
-		addOption(option);
+		//addOption(option);
 
 		var option:Option = new Option('Show Current State',
 		"Whether to display the current state/substate of the game (example: GraphicsSettingsSubState).",
