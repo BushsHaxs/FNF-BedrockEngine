@@ -1,7 +1,5 @@
 package editors;
 
-
-import js.html.Int8Array;
 #if desktop
 import Discord.DiscordClient;
 #end
