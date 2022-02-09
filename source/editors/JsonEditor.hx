@@ -58,7 +58,6 @@ class JsonEditor extends MusicBeatState
       public var icon:Bool;
       public var judgement:String;
       public var splash:String;
-      public var note:String;
 
       //grabbing shit from JsonSettings.hx (note)
       public var sickOff:Int;
