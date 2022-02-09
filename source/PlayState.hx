@@ -5362,14 +5362,16 @@ class PlayState extends MusicBeatState
 				☆☆☆
 				☆☆
 				☆*/
-
-			//shoutots to andromeda engine!! check them out, it's awesome!
-
+				
+			/*andromeda engine was  probably 
+			the first to have the stars idea, check them out!
+			https://github.com/nebulazorua/andromeda-engine*/
+			
 			else if (bads > 0 && ClientPrefs.keAccuracy)
-				ratingFC = "SDB"; // Single Digit Bad - this should count as losing FC despite not giving you misses, needs Complex Accuracy on
+				ratingFC = "SDB"; // Single Digit Bad
 			if (shits > 0)
-				ratingFC = "SDS"; // Single Digit Shit - same as SDB, for when Complex Accuracy is off
-			if (totalMisses > 0 && totalMisses < 10) // gonna leave it as totalMisses for now until CBs are completely done
+				ratingFC = "SDS"; // Single Digit Shit
+			if (totalMisses > 0 && totalMisses < 10) //
 				ratingFC = "SDCB"; // Single Digit Combo Break
 			else if (totalMisses >= 10)
 				ratingFC = "Clear";
