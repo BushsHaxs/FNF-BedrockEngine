@@ -1,11 +1,17 @@
 package;
 
-import haxe.Timer;
 import openfl.Lib;
+import openfl.display.Bitmap;
+import openfl.display.BitmapData;
+import flixel.FlxG;
+import openfl.events.EventType;
+import openfl.display.DisplayObject;
+import haxe.Timer;
+import openfl.display.FPS;
+import openfl.events.Event;
 import openfl.system.System;
 import openfl.text.TextField;
 import openfl.text.TextFormat;
-import openfl.events.Event;
 
 class DisplayCounters extends TextField
 {
@@ -19,7 +25,7 @@ class DisplayCounters extends TextField
 		y = inY;
 		selectable = false;
 		defaultTextFormat = new TextFormat("VCR OSD Mono", 16, inCol);
-		text = "FPS: \nState: \nMemory:";
+		text = "FPS: ";
 		times = [];
 		addEventListener(Event.ENTER_FRAME, onEnter);
 		width = 1280;
@@ -36,21 +42,56 @@ class DisplayCounters extends TextField
 		if (mem > memPeak)
 			memPeak = mem;
 
+		//will make this crap better in the future, rn it sucks.
 		if (visible)
 		{
-			text = "";
+			//1 counter
+			text = "FPS: " + times.length; //FPS Only
 
-			if(ClientPrefs.showFPS)
-				text += "FPS: " + times.length + "\n";
+			if(ClientPrefs.memCounter && !ClientPrefs.memPeak && !ClientPrefs.showFPS) //Mem Only
+				text = "Memory: " + mem + " mb";
 
-			if(ClientPrefs.showState)
-                text += "State: " + Main.curStateS + "\n";
+			if(ClientPrefs.memPeak && !ClientPrefs.memCounter && !ClientPrefs.showState && !ClientPrefs.showFPS) //Peak Only
+                text = "Memory Peak: " + memPeak;
 
-			if(ClientPrefs.memCounter)
-				text += "Memory: " + mem + " mb" + "\n";
+			if(ClientPrefs.showState && !ClientPrefs.showFPS && !ClientPrefs.memCounter && !ClientPrefs.memPeak) //State Only
+                text = "State: " + Main.curStateS;
 
-			if(ClientPrefs.memPeak)
-                text += "Memory Peak: " + memPeak + " mb";
+
+			//2 counters
+			if(ClientPrefs.showFPS && ClientPrefs.memCounter && !ClientPrefs.memPeak && !ClientPrefs.showState) //FPS and Mem
+				text = "FPS: " + times.length + "\nMemory: " + mem + " mb";
+
+			if(ClientPrefs.showFPS && !ClientPrefs.memCounter && ClientPrefs.memPeak && !ClientPrefs.showState) //FPS and Mem
+				text = "FPS: " + times.length + "\nMemory Peak: " + memPeak + " mb";
+
+			if(ClientPrefs.memCounter && ClientPrefs.memPeak && !ClientPrefs.showFPS) //Mem and Peak
+				text = "Memory: " + mem + " mb\nMemory Peak: " + memPeak + " mb";
+
+            if(ClientPrefs.showState && ClientPrefs.showFPS && !ClientPrefs.memCounter && !ClientPrefs.memPeak) //FPS and State
+                text = "FPS: " + times.length + "\nState: " + Main.curStateS;
+
+			if(ClientPrefs.showState && !ClientPrefs.showFPS && ClientPrefs.memCounter && !ClientPrefs.memPeak) //Mem and State
+                text = "Memory: " + mem + " mb " + "\nState: " + Main.curStateS;
+
+			if(ClientPrefs.showState && !ClientPrefs.showFPS && !ClientPrefs.memCounter && ClientPrefs.memPeak) //Peak and State
+                text = "Memory Peak: " + memPeak + "\nState: " + Main.curStateS;
+
+			//3 counters
+			if(ClientPrefs.showState && ClientPrefs.showFPS && ClientPrefs.memCounter && !ClientPrefs.memPeak) //FPS, Mem, and State
+				text = "FPS: " + times.length + "\nMemory: " + mem + " mb" + "\nState: " + Main.curStateS;
+
+			if(ClientPrefs.showState && ClientPrefs.showFPS && !ClientPrefs.memCounter && ClientPrefs.memPeak) //FPS, Peak, and State
+				text = "FPS: " + times.length + "\nMemory Peak: " + memPeak + " mb" + "\nState: " + Main.curStateS;
+
+			//all
+            if(ClientPrefs.showState && ClientPrefs.showFPS && ClientPrefs.memCounter && ClientPrefs.memPeak) //FPS, Mem, Peak, and State
+            	text = "FPS: " + times.length + "\nMemory: " + mem + " mb\nMemory Peak: " + memPeak + " mb" + "\nState: " + Main.curStateS;
+
+
+			//all disabled
+			if(!ClientPrefs.showFPS && !ClientPrefs.memCounter && !ClientPrefs.memPeak && !ClientPrefs.showState)
+				text = "";
 		}
 	}
-}
+} 
