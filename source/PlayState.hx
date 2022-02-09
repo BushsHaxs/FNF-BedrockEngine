@@ -1907,7 +1907,10 @@ class PlayState extends MusicBeatState
 			{
 				setOnLuas('defaultOpponentStrumX' + i, opponentStrums.members[i].x);
 				setOnLuas('defaultOpponentStrumY' + i, opponentStrums.members[i].y);
-				// if(ClientPrefs.middleScroll) opponentStrums.members[i].visible = false;
+				if(ClientPrefs.hideStrumsMiddle)
+				{
+					opponentStrums.members[i].visible = false;
+				}
 			}
 
 			startedCountdown = true;
