@@ -150,11 +150,7 @@ class JsonEditor extends MusicBeatState
             var coolButton = new FlxButton(FlxG.width - 855, 25, "Save Prefs", function()
             {
                   saveUISetting();
-            });
-
-            var coolButon = new FlxButton(FlxG.width - 855, 25, "Save Prefs", function()
-            {
-                  saveGameplaySetting();
+		  saveGameplaySetting();
             });
 
             var coolText = new FlxText(20, 40);
