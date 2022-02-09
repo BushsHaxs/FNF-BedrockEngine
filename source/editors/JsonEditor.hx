@@ -1,6 +1,7 @@
 package editors;
 
 
+import js.html.Int8Array;
 #if desktop
 import Discord.DiscordClient;
 #end
@@ -27,10 +28,15 @@ using StringTools;
 class JsonEditor extends MusicBeatState
 {
 
+      public var coolSick:FlxUIInputText;
+      public var coolMarv:FlxUIInputText;
+      public var coolGood:FlxUIInputText;
+      public var coolBad:FlxUIInputText;
 
       //private var ididyourmom:Bool;
       public var savetext:String;
       public var savegtext:String;
+      public var saventext:String;
 
       public var na:FlxUIInputText;
       public var ney:FlxUIInputText;
@@ -56,6 +62,12 @@ class JsonEditor extends MusicBeatState
       public var splash:String;
       public var note:String;
 
+      //grabbing shit from JsonSettings.hx (note)
+      public var sickOff:Int;
+      public var marvOff:Int;
+      public var goodOff:Int;
+      public var badOff:Int;
+
       //these will be save backup directory
       public var savedir:String = "backup/uiBackup.txt";
       public var backup:String;
@@ -66,6 +78,7 @@ class JsonEditor extends MusicBeatState
       //these will be content
       public var appearance:String;
       public var gameplay:String;
+      public var note:String;
        
       //this will be readme text
       public var readme:String = JsonSettings.read;
@@ -86,6 +99,7 @@ class JsonEditor extends MusicBeatState
             var tabs = [
 			{name: 'Appearance', label: 'Appearance'},
 			{name: 'Gameplay', label: 'Gameplay'},
+                  {name: 'Note', label: 'Note'}
 		];
 		UI_characterbox = new FlxUITabMenu(null, tabs, true);
 
@@ -96,9 +110,13 @@ class JsonEditor extends MusicBeatState
 		add(UI_characterbox);
 
             JsonSettings.dev(JsonSettings.dir);
+            
+            
 	      
 	    appearance = File.getContent(JsonSettings.dir);
             gameplay = File.getContent(JsonSettings.dirtwo);
+            note = File.getContent(JsonSettings.offdir);
+            
 	      
 	    if (FileSystem.exists(savedir) && FileSystem.exists(gsavedir))
 	    {
@@ -127,10 +145,13 @@ class JsonEditor extends MusicBeatState
             divide = JsonSettings.divider;
             mash = JsonSettings.antiMash;
 
-            note = JsonSettings.noteSkin;
             icon = JsonSettings.iconSupport;
             judgement = JsonSettings.judgementSkin;
-            splash = JsonSettings.noteSplashSkin;
+
+            sickOff = JsonSettings.sickWindow;
+            marvOff = JsonSettings.marvWindow;
+            goodOff = JsonSettings.goodWindow;
+            badOff = JsonSettings.badWindow;
 
             backup = File.getContent(savedir);
             gbackup = File.getContent(gsavedir);
@@ -140,6 +161,9 @@ class JsonEditor extends MusicBeatState
 
             var group_two = new FlxUI(null, UI_characterbox);
             group_two.name = "Gameplay";
+
+            var note_group= new FlxUI(null, UI_characterbox);
+            note_group.name = "Note";
 
             var nae = new FlxUICheckBox(20, 60, null, null, "300x150 icon support", 200);
 		nae.checked = icon;
@@ -166,16 +190,31 @@ class JsonEditor extends MusicBeatState
             var coolButton = new FlxButton(FlxG.width - 855, 25, "Save Prefs", function()
             {
                   saveUISetting();
-		  saveGameplaySetting();
+		      saveGameplaySetting();
+                  saveNoteSetting();
             });
 
             var coolText = new FlxText(20, 40);
             coolText.text = "Score divider:";
 
+
+            var sick = new FlxText(20, 60);
+            sick.text = "Sick Offset:";
+            var marv = new FlxText(20, 40);
+            marv.text = "Marv Offset:";
+            var good = new FlxText(20, 80);
+            good.text = "Good Offset:";
+            var bad = new FlxText(20, 100);
+            bad.text = "Bad Offset:";
+            var shit = new FlxText(20, 120);
+            shit.text = "Shits will be handled automatically.";
+
             var text = new FlxText(20, 80);
             text.text = "Note Skin:";
             var texttwo = new FlxText(20, 100);
             texttwo.text = "Splash Skin:";
+
+
             var textthree = new FlxText(15, 120);
             textthree.text = "Judgement Skin:";
 
@@ -186,15 +225,18 @@ class JsonEditor extends MusicBeatState
             ney = new FlxUIInputText(100, 100, 90, splash, 8);
             neya = new FlxUIInputText(100, 120, 90, judgement, 8);
 
-            coolInput = new FlxUIInputText(100, 40, 90, divide, 8); 
+            coolInput = new FlxUIInputText(100, 40, 90, divide, 8);
+            
+            coolSick = new FlxUIInputText(100, 60, 90, sickOff, 8);
+            coolMarv = new FlxUIInputText(100, 40, 90, marvOff, 8);
+            coolGood = new FlxUIInputText(100, 80, 90, goodOff, 8);
+            coolBad = new FlxUIInputText(100, 100, 90, badOff, 8);
 
 		tab_group.add(text);
             tab_group.add(texttwo);
             tab_group.add(textthree);
             tab_group.add(textfour);
             tab_group.add(nae);
-            tab_group.add(na);
-            tab_group.add(ney);
             tab_group.add(neya);
             tab_group.add(coolButton);
             UI_characterbox.addGroup(tab_group);
@@ -205,6 +247,17 @@ class JsonEditor extends MusicBeatState
             group_two.add(oof);
             group_two.add(anti);
             UI_characterbox.addGroup(group_two);
+
+            note_group.add(sick);
+            note_group.add(marv);
+            note_group.add(good);
+            note_group.add(bad);
+            note_group.add(shit);
+            note_group.add(coolSick);
+            note_group.add(coolMarv);
+            note_group.add(coolGood);
+            note_group.add(coolBad);
+            UI_characterbox.addGroup(note_group);
 
             super.create();
       }
@@ -242,8 +295,6 @@ class JsonEditor extends MusicBeatState
             '
             {
                   "iconSupport":'+icon+',
-	            "noteSkin": "'+na.text+'", 
-	            "noteSplashSkin": "'+ney.text+'",
 	            "judgementSkin": "'+neya.text+'" 
             }
             ';
@@ -256,8 +307,6 @@ class JsonEditor extends MusicBeatState
                   {
                         appearance = '{
                         "iconSupport":false,
-                        "noteSkin": "NOTE_assets", 
-                        "noteSplashSkin": "noteSplashes",
                         "judgementSkin": "bedrock"         
                         }';
                   }          
@@ -287,6 +336,37 @@ class JsonEditor extends MusicBeatState
                         "divider": " - "
                         }';
                   }          
+            }
+      }
+
+      function saveNoteSetting()
+      {
+            saventext =
+            '
+            {
+                  "marvOffset": '+coolMarv.text+',
+                  "sickOffset": '+coolSick.text+',
+                  "goodOffset": '+coolGood.text+',
+                  "badOffset": '+coolBad.text+',
+              
+                  "noteSkin":"'+na.text+'",
+                  "noteSplashSkin":"'+ney.text+'"
+            }
+            ';
+            File.saveContent(JsonSettings.offdir, saventext);
+            if (note == null || note.length < 64)
+            {
+                  saventext =
+                  '
+                  "marvOffset": 25,
+                  "sickOffset": 45,
+                  "goodOffset": 90,
+                  "badOffset": 135,
+              
+                  "noteSkin":"NOTE_assets",
+                  "noteSplashSkin":"notesplashes"
+                  ';
+                  File.saveContent(JsonSettings.offdir, saventext);
             }
       }
 }
