@@ -2748,10 +2748,12 @@ class PlayState extends MusicBeatState
 
 		scoreTxt.text = 'Score: ' + songScore;
 		scoreTxt.text += divider + 'Accuracy:' + Highscore.floorDecimal(ratingPercent * 100, 2) + '%';
-		if (ratingFC == "")
+
+		if (ratingFC == "" || totalMisses > 0)
 		scoreTxt.text += '';
 	else
 		scoreTxt.text += ' [' + ratingFC + ']';
+
 		scoreTxt.text += divider + 'Combo Breaks:' + songMisses;
 
 		if (ratingFC == "")
@@ -5356,7 +5358,7 @@ class PlayState extends MusicBeatState
 				ratingFC = "SFC"; // Sick Full Combo
 			if (goods > 0)
 				ratingFC = "GFC"; // Good Full Combo
-			if (bads > 0)
+			if (bads > 0 || shits > 0)
 				ratingFC = "FC"; // Full Combo
 
 			//stars, removed for now
@@ -5368,15 +5370,6 @@ class PlayState extends MusicBeatState
 			/*andromeda engine was  probably 
 			the first to have the stars idea, check them out!
 			https://github.com/nebulazorua/andromeda-engine*/
-			
-			else if (bads > 0 && ClientPrefs.keAccuracy)
-				ratingFC = "SDB"; // Single Digit Bad
-			if (shits > 0)
-				ratingFC = "SDS"; // Single Digit Shit
-			if (totalMisses > 0 && totalMisses < 10) //
-				ratingFC = "SDCB"; // Single Digit Combo Break
-			else if (totalMisses >= 10)
-				ratingFC = "Clear";
 		}
 		JsonSettings.devtwo(JsonSettings.dirtwo);
 
