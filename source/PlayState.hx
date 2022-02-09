@@ -4816,7 +4816,7 @@ class PlayState extends MusicBeatState
 
 	public function spawnNoteSplash(x:Float, y:Float, data:Int, ?note:Note = null, opponent:Bool = true)
 	{
-		JsonSettings.dev(JsonSettings.dir);
+		JsonSettings.offdev(JsonSettings.offdir);
 		var skin:String = JsonSettings.noteSplashSkin;
 		if (PlayState.SONG.splashSkin != null && PlayState.SONG.splashSkin.length > 0)
 			skin = PlayState.SONG.splashSkin;
