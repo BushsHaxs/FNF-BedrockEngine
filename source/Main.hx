@@ -18,8 +18,8 @@ import openfl.text.TextFormat;
 
 class Main extends Sprite
 {
-	var gameWidth:Int = 1280; // Width of the game in pixels (might be less / more in actual pixels depending on your zoom).
-	var gameHeight:Int = 720; // Height of the game in pixels (might be less / more in actual pixels depending on your zoom).
+	public static var gameWidth:Int = 1280; // Width of the game in pixels (might be less / more in actual pixels depending on your zoom).
+	public static var gameHeight:Int = 720; // Height of the game in pixels (might be less / more in actual pixels depending on your zoom).
 
 	public static var mainClassState:Class<FlxState>; // Determine the main class state of the game
 
@@ -95,16 +95,16 @@ class Main extends Sprite
 		addChild(new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen));
 
 		#if !mobile
-		var fps_mem:FPS_Mem = new FPS_Mem(10, 3, 0xFFFFFF);
+		var displaycounters:DisplayCounters = new DisplayCounters(10, 3, 0xFFFFFF);
 		Lib.current.stage.align = "tl";
 		Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
 		#end
 
 		#if !debug
-		addChild(fps_mem);
-		if (fps_mem != null)
+		addChild(displaycounters);
+		if (displaycounters != null)
 		{
-			fps_mem.visible = ClientPrefs.showFPS;
+			displaycounters.visible = ClientPrefs.showFPS;
 		}
 		#end
 	}

@@ -733,7 +733,9 @@ class PlayState extends MusicBeatState
 			introSoundsSuffix = '-pixel';
 		}
 
-		if(!ClientPrefs.hideGf || !ClientPrefs.maniaMode)
+		if(ClientPrefs.hideGf || ClientPrefs.maniaMode)
+			remove(gfGroup);
+		else
 			add(gfGroup);
 
 		// Shitty layering but whatev it works LOL
@@ -1163,9 +1165,8 @@ class PlayState extends MusicBeatState
 		reloadHealthBarColors();
 
 		scoreTxt = new FlxText(0, healthBarBG.y + 40, FlxG.width, "", 20);
-		scoreTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		scoreTxt.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		scoreTxt.scrollFactor.set();
-		scoreTxt.borderSize = 1.25;
 		scoreTxt.visible = !ClientPrefs.hideHud;
 		add(scoreTxt);
 		
@@ -1230,9 +1231,9 @@ class PlayState extends MusicBeatState
 
 		// Just in case.
 		if (ClientPrefs.marvelouses)
-			judgementCounter.text = 'Marvs: ${marvelouses}\nSicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nCombo Breaks: ${songMisses}\nMisses: ${totalMisses}';
+			judgementCounter.text = 'Marvs: ${marvelouses}\nSicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${totalMisses}';
 		else
-			judgementCounter.text = 'Sicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nCombo Breaks: ${songMisses}\nMisses: ${totalMisses}';
+			judgementCounter.text = 'Sicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}${songMisses}\nMisses: ${totalMisses}';
 
 		// then we add them
 		add(judgementCounter);
@@ -2538,7 +2539,7 @@ class PlayState extends MusicBeatState
 		}
 		#end
 
-		if (!FlxG.autoPause && !paused && canPause && !cpuControlled)
+		if (!FlxG.autoPause && !paused && canPause && startedCountdown && !cpuControlled)
 		{
 			pauseState();
 		}
@@ -2745,10 +2746,18 @@ class PlayState extends MusicBeatState
 		var ratingNameTwo:String = ratingName;
 		var divider:String = ' '+JsonSettings.divider+' ';
 
+		scoreTxt.text = 'Score: ' + songScore;
+		scoreTxt.text += divider + 'Accuracy:' + Highscore.floorDecimal(ratingPercent * 100, 2) + '%';
 		if (ratingFC == "")
-			scoreTxt.text = 'Score: ' + songScore + divider + 'Accuracy:' + Highscore.floorDecimal(ratingPercent * 100, 2) + '%' + divider + 'Rank: ?';
-		else
-			scoreTxt.text = 'Score: ' + songScore + divider + 'Accuracy:' + Highscore.floorDecimal(ratingPercent * 100, 2) + '%' + divider + 'Rank: ' + ratingName + divider + ratingFC;
+		scoreTxt.text += '';
+	else
+		scoreTxt.text += ' [' + ratingFC + ']';
+		scoreTxt.text += divider + 'Combo Breaks:' + songMisses;
+
+		if (ratingFC == "")
+		scoreTxt.text += divider + 'Rank: ?';
+	else
+		scoreTxt.text += divider + 'Rank: ' + ratingName;
 
 		if (botplayTxt.visible)
 		{
@@ -5342,21 +5351,29 @@ class PlayState extends MusicBeatState
 			// Rating FC
 			ratingFC = "";
 			if (marvelouses > 0)
-				ratingFC = "☆☆☆☆ (MFC)"; // Marvelous Full Combo
+				ratingFC = "MFC"; // Marvelous Full Combo
 			if (sicks > 0)
-				ratingFC = "☆☆☆ (SFC)"; // Sick Full Combo
+				ratingFC = "SFC"; // Sick Full Combo
 			if (goods > 0)
-				ratingFC = "☆☆ (GFC)"; // Good Full Combo
+				ratingFC = "GFC"; // Good Full Combo
 			if (bads > 0)
-				ratingFC = "☆ (FC)"; // Full Combo
+				ratingFC = "FC"; // Full Combo
 
-			//shoutots to andromeda engine!! check them out, it's awesome!
-
+			//stars, removed for now
+				/*☆☆☆☆
+				☆☆☆
+				☆☆
+				☆*/
+				
+			/*andromeda engine was  probably 
+			the first to have the stars idea, check them out!
+			https://github.com/nebulazorua/andromeda-engine*/
+			
 			else if (bads > 0 && ClientPrefs.keAccuracy)
-				ratingFC = "SDB"; // Single Digit Bad - this should count as losing FC despite not giving you misses, needs Complex Accuracy on
+				ratingFC = "SDB"; // Single Digit Bad
 			if (shits > 0)
-				ratingFC = "SDS"; // Single Digit Shit - same as SDB, for when Complex Accuracy is off
-			if (totalMisses > 0 && totalMisses < 10) // gonna leave it as totalMisses for now until CBs are completely done
+				ratingFC = "SDS"; // Single Digit Shit
+			if (totalMisses > 0 && totalMisses < 10) //
 				ratingFC = "SDCB"; // Single Digit Combo Break
 			else if (totalMisses >= 10)
 				ratingFC = "Clear";
@@ -5367,9 +5384,9 @@ class PlayState extends MusicBeatState
 		setOnLuas('ratingName', ratingName);
 		setOnLuas('ratingFC', ratingFC);
 		if (ClientPrefs.marvelouses)
-			judgementCounter.text = 'Marvs: ${marvelouses}\nSicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nCombo Breaks: ${songMisses}\nMisses: ${totalMisses}\n';
+			judgementCounter.text = 'Marvs: ${marvelouses}\nSicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${totalMisses}\n';
 		else
-			judgementCounter.text = 'Sicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nCombo Breaks: ${songMisses}\nMisses: ${totalMisses}\n';
+			judgementCounter.text = 'Sicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${totalMisses}\n';
 	}
 
 	public static var othersCodeName:String = 'otherAchievements';
