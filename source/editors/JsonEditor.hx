@@ -184,7 +184,7 @@ class JsonEditor extends MusicBeatState
             UI_characterbox.addGroup(tab_group);
 
             group_two.add(coolText);
-            group_two.add(coolButon);
+            group_two.add(coolButton);
             group_two.add(coolInput);
             group_two.add(oof);
             group_two.add(anti);
