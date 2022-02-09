@@ -1,8 +1,9 @@
 package editors;
 
 
-#if (desktop && sys)
+#if desktop
 import Discord.DiscordClient;
+#if sys
 import sys.io.File;
 import sys.FileSystem;
 #end
@@ -24,7 +25,8 @@ using StringTools;
 class JsonEditor extends MusicBeatState
 {
 
-      private var ididyourmom:Bool;
+
+      //private var ididyourmom:Bool;
       public var savetext:String;
       public var savegtext:String;
 
@@ -72,8 +74,8 @@ class JsonEditor extends MusicBeatState
             ctrltext.text = "";
 
             FlxG.mouse.useSystemCursor = true;
-		FlxG.mouse.visible = true;
-            Main.curStateS = 'JsonEditor';
+	    FlxG.mouse.visible = true;
+            Main.curStateS = 'JsonEditor'; //this is used for showing states
 
             var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		bg.screenCenter();
@@ -92,8 +94,18 @@ class JsonEditor extends MusicBeatState
 		add(UI_characterbox);
 
             JsonSettings.dev(JsonSettings.dir);
+	      
+	    appearance = File.getContent(JsonSettings.dir);
+            gameplay = File.getContent(JsonSettings.dirtwo);
+	      
+	    if (FileSystem.exists(savedir) && FileSystem.exists(gsavedir))
+	    {
+		    backup = appearance;
+		    gbackup = gameplay;
+	    }
+		     
 
-            if (FileSystem.exists("backup/") && !FileSystem.exists("backup/uiBackup.txt") && !FileSystem.exists("backup/gameplayBackup.txt"))
+            /* if (FileSystem.exists("backup/") && !FileSystem.exists("backup/uiBackup.txt") && !FileSystem.exists("backup/gameplayBackup.txt"))
                   ididyourmom = true;
             else
                   ididyourmom = false;
@@ -107,10 +119,7 @@ class JsonEditor extends MusicBeatState
 		#end
 		    
                 ididyourmom = true;
-            }
-
-            appearance = File.getContent(JsonSettings.dir);
-            gameplay = File.getContent(JsonSettings.dirtwo);
+            }*/
 
             letterG = JsonSettings.letterGrader;
             divide = JsonSettings.divider;
@@ -237,9 +246,9 @@ class JsonEditor extends MusicBeatState
             }
             ';
             File.saveContent(JsonSettings.dir, savetext);
-            if (!ididyourmom && appearance == null)
+            if (appearance == null)
             {
-                  if (backup != null && backup.contains("iconSupport") && backup.contains("judgementSkin"))
+                  if (FileSystem.exists(backup) && backup.contains("iconSupport") && backup.contains("judgementSkin"))
                         File.saveContent(savedir, backup);
                   else
                   {
@@ -264,9 +273,9 @@ class JsonEditor extends MusicBeatState
             }
             ';
             File.saveContent(JsonSettings.dirtwo, savegtext);
-            if (!ididyourmom && gameplay == null)
+            if (gameplay == null)
             {
-                  if (backup != null && backup.contains("letterGrader") && backup.contains("antiMash"))
+                  if (FileSystem.exists(gbackup) && gbackup.contains("letterGrader") && gbackup.contains("antiMash") && gbackup.contains("divider"))
                         File.saveContent(gsavedir, gbackup);
                   else
                   {
