@@ -1,41 +1,35 @@
 package;
 
-import haxe.Timer;
 import openfl.Lib;
+import openfl.display.Bitmap;
+import openfl.display.BitmapData;
+import flixel.FlxG;
+import openfl.events.EventType;
+import openfl.display.DisplayObject;
+import haxe.Timer;
+import openfl.display.FPS;
+import openfl.events.Event;
 import openfl.system.System;
 import openfl.text.TextField;
 import openfl.text.TextFormat;
-import openfl.events.Event;
 
 class DisplayCounters extends TextField
 {
-	//standard FPS_Mem stuff
 	private var times:Array<Float>;
 	private var memPeak:Float = 0;
 
-	// display info
-	public static var displayFps = true;
-	public static var displayMemory = true;
-	public static var displayState = true;
-	public static var displayPeak = true;
-
-	private var display:Bool = false;
-
-	public function new(inX:Float = 10.0, inY:Float = 10.0, color:Int = 0x000000, counters:Bool = false)
+	public function new(inX:Float = 10.0, inY:Float = 10.0, inCol:Int = 0x000000)
 	{
 		super();
-
-		display = counters;
-
-		this.x = x;
-		this.y = y;
-
+		x = inX;
+		y = inY;
 		selectable = false;
-		defaultTextFormat = new TextFormat("VCR OSD Mono", 16, color);
+		defaultTextFormat = new TextFormat("VCR OSD Mono", 16, inCol);
+		text = "FPS: \nState: \nMemory:";
 		times = [];
 		addEventListener(Event.ENTER_FRAME, onEnter);
-		width = Main.gameWidth;
-		height = Main.gameHeight;
+		width = 1280;
+		height = 720;
 	}
 
 	private function onEnter(_)
@@ -48,29 +42,22 @@ class DisplayCounters extends TextField
 		if (mem > memPeak)
 			memPeak = mem;
 
+		//will make this crap better in the future, rn it sucks.
 		if (visible)
 		{
 			text = "";
-			
+
 			if(ClientPrefs.showFPS)
 				text += "FPS: " + times.length + "\n";
+
+			if(ClientPrefs.showState)
+                text += "State: " + Main.curStateS + "\n";
 
 			if(ClientPrefs.memCounter)
 				text += "Memory: " + mem + " mb" + "\n";
 
 			if(ClientPrefs.memPeak)
-                text += "Memory Peak: " + memPeak + " mb" + "\n";
-
-			if(ClientPrefs.showState)
-                text += "State: " + Main.curStateS;
+                text += "Memory Peak: " + memPeak + " mb";
 		}
-	}
-
-public static function updateDisplayInfo()
-	{
-		displayFps = ClientPrefs.showFPS;
-		displayState = ClientPrefs.showState;
-		displayMemory = ClientPrefs.memCounter;
-		displayPeak = ClientPrefs.memPeak;
 	}
 }
