@@ -1244,15 +1244,19 @@ class PlayState extends MusicBeatState
 		
 		// Botplay Text Stuff V
 		botplayTxt = new FlxText(400, timeBarBG.y + 55, FlxG.width - 800, "BOTPLAY", 32);
+		if(ClientPrefs.downScroll)
+			botplayTxt.y = timeBarBG.y - 78;
+		if(ClientPrefs.middleScroll) {
+			if(ClientPrefs.downScroll)
+				botplayTxt.y = botplayTxt.y - 78;
+			else
+				botplayTxt.y = botplayTxt.y + 78;
+		}
 		botplayTxt.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		botplayTxt.scrollFactor.set();
 		botplayTxt.borderSize = 2;
 		botplayTxt.visible = cpuControlled;
 		add(botplayTxt);
-		if (ClientPrefs.downScroll)
-		{
-			botplayTxt.y = timeBarBG.y - 78;
-		}
 
 		// now we set da cameras stuff
 		strumLineNotes.cameras = [camHUD];
@@ -4068,16 +4072,22 @@ class PlayState extends MusicBeatState
 				score = 50;
 				shits++;
 			case "bad": // bad
+				if (ClientPrefs.keAccuracy)
+				{
+					health -= 0.03 * healthLoss;
+				}
 				totalNotesHit += 0.5;
 				score = 100;
 				bads++;
 			case "good": // good
+				if (ClientPrefs.keAccuracy)
+				{
+					health = note.hitHealth * healthGain;
+				}
 				totalNotesHit += 0.75;
 				score = 200;
 				goods++;
 			case "sick": // sick
-				/*Quick talk, if marvelouses are not disabled sicks should not give %100 rating
-				so instead, it will give you %87.5 */
 				if (!ClientPrefs.marvelouses)
 					totalNotesHit += 1;
 				else
@@ -5585,9 +5595,9 @@ class PlayState extends MusicBeatState
 			case 'mall':
 				bfPos[0] = boyfriend.getMidpoint().x - 100;
 				bfPos[1] = boyfriend.getMidpoint().y - 70;
-			/*case 'school' | 'schoolEvil':
-				bfPos[0] = boyfriend.getMidpoint().x - 300;
-				bfPos[1] = boyfriend.getMidpoint().y - 280;*/
+			case 'school' | 'schoolEvil':
+				bfPos[0] = boyfriend.getMidpoint().x - 350;
+				bfPos[1] = boyfriend.getMidpoint().y - 390;
 			default:
 				bfPos[0] = boyfriend.getMidpoint().x - 100 - boyfriend.cameraPosition[0];
 				bfPos[1] = boyfriend.getMidpoint().y - 100 + boyfriend.cameraPosition[1];	
