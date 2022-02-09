@@ -1,17 +1,11 @@
 package;
 
-import openfl.Lib;
-import openfl.display.Bitmap;
-import openfl.display.BitmapData;
-import flixel.FlxG;
-import openfl.events.EventType;
-import openfl.display.DisplayObject;
 import haxe.Timer;
-import openfl.display.FPS;
-import openfl.events.Event;
+import openfl.Lib;
 import openfl.system.System;
 import openfl.text.TextField;
 import openfl.text.TextFormat;
+import openfl.events.Event;
 
 class DisplayCounters extends TextField
 {
@@ -42,7 +36,6 @@ class DisplayCounters extends TextField
 		if (mem > memPeak)
 			memPeak = mem;
 
-		//will make this crap better in the future, rn it sucks.
 		if (visible)
 		{
 			text = "";
