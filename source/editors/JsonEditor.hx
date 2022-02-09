@@ -93,15 +93,20 @@ class JsonEditor extends MusicBeatState
 
             JsonSettings.dev(JsonSettings.dir);
 
-            if (FileSystem.exists("backup/") && !FileSystem.exists("backup/uiBackup.text") && !FileSystem.exists("backup/gameplayBackup.text"))
+            if (FileSystem.exists("backup/") && !FileSystem.exists("backup/uiBackup.txt") && !FileSystem.exists("backup/gameplayBackup.txt"))
                   ididyourmom = true;
             else
                   ididyourmom = false;
 
             if (!FileSystem.exists("backup/"))
             {
-                  Sys.command("mkdir -p backup/");
-                  ididyourmom = false;
+                #if windows
+		Sys.command("mkdir backup/");
+		#else
+	        Sys.command("mkdir -p backup/");
+		#end
+		    
+                ididyourmom = true;
             }
 
             appearance = File.getContent(JsonSettings.dir);
@@ -164,7 +169,7 @@ class JsonEditor extends MusicBeatState
             textthree.text = "Judgement Skin:";
 
             var textfour = new FlxText(10, 140);
-            textfour.text = "Check the README file on the\nsettings folder for more information\nand default skin names";
+            textfour.text = "Check the README file on the\nsettings folder for more information\nand default skin names.";
 
             na = new FlxUIInputText(100, 80, 90, note, 8);
             ney = new FlxUIInputText(100, 100, 90, splash, 8);
@@ -232,7 +237,7 @@ class JsonEditor extends MusicBeatState
             }
             ';
             File.saveContent(JsonSettings.dir, savetext);
-            if (ididyourmom && appearance == null)
+            if (!ididyourmom && appearance == null)
             {
                   if (backup != null && backup.contains("iconSupport") && backup.contains("judgementSkin"))
                         File.saveContent(savedir, backup);
@@ -245,10 +250,7 @@ class JsonEditor extends MusicBeatState
                         "judgementSkin": "bedrock"         
                         }';
                   }          
-            }
-            else
-            {
-            }
+	    }
       }
 
       function saveGameplaySetting()
@@ -262,7 +264,7 @@ class JsonEditor extends MusicBeatState
             }
             ';
             File.saveContent(JsonSettings.dirtwo, savegtext);
-            if (ididyourmom && gameplay == null)
+            if (!ididyourmom && gameplay == null)
             {
                   if (backup != null && backup.contains("letterGrader") && backup.contains("antiMash"))
                         File.saveContent(gsavedir, gbackup);
@@ -274,10 +276,6 @@ class JsonEditor extends MusicBeatState
                         "divider": " - "
                         }';
                   }          
-            }
-            else
-            {
-
             }
       }
 }
