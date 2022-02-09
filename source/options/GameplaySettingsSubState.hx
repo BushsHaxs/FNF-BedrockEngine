@@ -71,6 +71,13 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		true);
 	addOption(option);
 
+		var option:Option = new Option('Hide Opponent Notes',
+		'If checked, will hide opponent notes on middlescroll.',
+		'hideStrumsMiddle',
+		'bool',
+		false);
+	addOption(option);
+
 		var option:Option = new Option('Instant Respawn',
 		"If checked, skips the Game Over Screen entirely.",
 		'instantRespawn',
