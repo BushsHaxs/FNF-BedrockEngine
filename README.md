@@ -14,6 +14,9 @@ Credits:
 * [XtraXD1](https://github.com/ShadowMario/FNF-PsychEngine/pull/3192) - Show/Hide Weeks temporally + Getting/Setting on Source Code
 * [Yoshubs](https://github.com/Yoshubs/Forever-Engine-Legacy) - made Forever Engine, Main Inspiration
 
+## Currently being Rewriten:
+https://github.com/Gui-iago/FNF-BedrockEngineRewrite
+
 # Sections:
 
 * [Compilation Dependencies](https://github.com/Gui-iago/FNF-BedrockEngine#compiling)
