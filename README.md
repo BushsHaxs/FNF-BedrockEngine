@@ -19,8 +19,8 @@ https://github.com/Gui-iago/FNF-BedrockEngineRewrite
 
 # Sections:
 
-* [Compilation Dependencies](https://github.com/Gui-iago/FNF-BedrockEngine#compiling)
-* [Downloads](https://github.com/Gui-iago/FNF-BedrockEngine#downloads)
+* [How to](https://github.com/Gui-iago/FNF-BedrockEngine/blob/main/README.md#how-to-compile-the-game-and-what-is-needed-to-do-so)
+* [Compiling Dependencies](https://github.com/Gui-iago/FNF-BedrockEngine/blob/main/README.md#how-to-compile-the-game-and-what-is-needed-to-do-so)
 * [Terminal Setup & Commands](https://github.com/Gui-iago/FNF-BedrockEngine#terminal-setup--compiling-game)
 * [Features](https://github.com/Gui-iago/FNF-BedrockEngine#current-features)
 
