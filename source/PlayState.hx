@@ -184,6 +184,7 @@ class PlayState extends MusicBeatState
 	public static var chartingMode:Bool = false;
 
 	// Gameplay settings
+	public var notesOpacity:Float = 1;
 	public var healthGain:Float = 1;
 	public var healthLoss:Float = 1;
 	public var instakillOnMiss:Bool = false;
@@ -327,6 +328,7 @@ class PlayState extends MusicBeatState
 			FlxG.sound.music.stop();
 
 		// Gameplay settings
+		notesOpacity = ClientPrefs.getGameplaySetting('notesopacity', 1);
 		healthGain = ClientPrefs.getGameplaySetting('healthgain', 1);
 		healthLoss = ClientPrefs.getGameplaySetting('healthloss', 1);
 		instakillOnMiss = ClientPrefs.getGameplaySetting('instakill', false);
@@ -2054,7 +2056,7 @@ class PlayState extends MusicBeatState
 				notes.forEachAlive(function(note:Note)
 				{
 					note.copyAlpha = false;
-					note.alpha = note.multAlpha;
+					note.alpha = getNoteOpacity(note.multAlpha);
 					if (ClientPrefs.middleScroll && !note.mustPress)
 					{
 						note.alpha *= 0.5;
@@ -2972,7 +2974,7 @@ class PlayState extends MusicBeatState
 					daNote.angle = strumDirection - 90 + strumAngle;
 
 				if (daNote.copyAlpha)
-					daNote.alpha = strumAlpha;
+					daNote.alpha = getNoteOpacity(strumAlpha);
 
 				if (daNote.copyX)
 					daNote.x = strumX + Math.cos(angleDir) * daNote.distance;
@@ -4848,6 +4850,7 @@ class PlayState extends MusicBeatState
 		}
 
 		var splash:NoteSplash = grpNoteSplashes.recycle(NoteSplash);
+		splash.alpha = getNoteOpacity(1);
 		splash.setupNoteSplash(x, y, data, skin, hue, sat, brt);
 		grpNoteSplashes.add(splash);
 
@@ -5511,6 +5514,16 @@ class PlayState extends MusicBeatState
 
 	var curLight:Int = 0;
 	var curLightEvent:Int = 0;
+
+	function getNoteOpacity(defaultValue:Float):Float { // modified code from project fnf 2.x
+		if (notesOpacity != 1)
+			if (notesOpacity - defaultValue <= 0)
+				return notesOpacity;
+			else
+				return notesOpacity - defaultValue;
+		else
+			return defaultValue;
+	}
 
 	// originally made by brightfyre
 
