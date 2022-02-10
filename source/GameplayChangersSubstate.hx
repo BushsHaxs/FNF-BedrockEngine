@@ -164,16 +164,34 @@ class GameplayChangersSubstate extends MusicBeatSubstate
 
 	var nextAccept:Int = 5;
 	var holdTime:Float = 0;
+	var holdTime2:Float = 0; // This... thing... is for scrolling up and down
 	var holdValue:Float = 0;
 	override function update(elapsed:Float)
 	{
+		var shiftMult:Int = 1;
+		if (FlxG.keys.pressed.SHIFT)
+			shiftMult = 3;
 		if (controls.UI_UP_P)
 		{
-			changeSelection(-1);
+			changeSelection(-shiftMult);
+			holdTime2 = 0;
 		}
 		if (controls.UI_DOWN_P)
 		{
-			changeSelection(1);
+			changeSelection(shiftMult);
+			holdTime2 = 0;
+		}
+		
+		if (controls.UI_DOWN || controls.UI_UP)
+		{
+			var checkLastHold:Int = Math.floor((holdTime2 - 0.5) * 10);
+			holdTime2 += elapsed;
+			var checkNewHold:Int = Math.floor((holdTime2 - 0.5) * 10);
+
+			if (holdTime2 > 0.5 && checkNewHold - checkLastHold > 0)
+			{
+				changeSelection((checkNewHold - checkLastHold) * (controls.UI_UP ? -shiftMult : shiftMult));
+			}
 		}
 
 		if (controls.BACK) {
