@@ -213,21 +213,24 @@ can be enabled on the Gameplay Changers menu
 
 https://user-images.githubusercontent.com/45212377/151046841-dbbdb3e9-9491-4a51-81b6-f97976dabce7.mp4
 
-## Judgement Skins
+## Customization Features
+You can now customize your notes, judgements, note splashes and even something insignificant
+like your dividers, all in one place, the Settings Menu!
 
-![image](https://user-images.githubusercontent.com/45212377/150618450-f25e5a73-2b2d-4304-ace9-5ae346a65c37.png)
+![image](https://user-images.githubusercontent.com/45212377/153362801-fa09bf76-863a-4fff-b1b6-2f7cba8a1d61.png)
 
-read the readme.txt on the settings folder for more information on how to add custom judgement skins, and for default judgement skin names
+Current Changeables:
+* Notes
+* Note Splashes
+* Judgements
+* Dividers (for the Info Bar)
 
-## Note Skins & Note Splash Skins:
+Current Toggles:
+* Disable Winning Icons (old icon support)
+* Enable Letter Grades
+* Disable Antimash
 
-You can change your note skin via the json file
-
-![image](https://imgyukle.com/f/2022/01/30/olXLUI.png)
-
-the same is also true for Note Splashes
-
-read the readme.txt on the settings folder for more information on how to add custom noteskins, and default note skin names
+more features will be added to it in the future.
 
 ## Winning Icons
 
