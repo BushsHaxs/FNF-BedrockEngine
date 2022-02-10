@@ -161,7 +161,7 @@ Append `-debug` at the end of `lime test PLATFORM`
 Windows and Mac: https://code.visualstudio.com/Download
 
 Linux: https://code.visualstudio.com/docs/setup/linux
-Alternatively, you can use your distro's package manager to install Visual Studio Code
+* Alternatively, you can use your distro's package manager to install Visual Studio Code
 
 In case you don't want your mod to be able to run .lua scripts, delete the `LUA_ALLOWED` line on `Project.xml`
 
