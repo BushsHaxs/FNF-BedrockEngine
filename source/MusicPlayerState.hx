@@ -28,9 +28,8 @@ import WeekData;
 import sys.FileSystem;
 #end
 
-//this is literally just a copy of freeplay, feel free to use it
-//a few things here were taken from Dave & Bambi, so shoutots to that mod too
-
+// this is literally just a copy of freeplay, feel free to use it
+// a few things here were taken from Dave & Bambi, so shoutots to that mod too
 using StringTools;
 
 class MusicPlayerState extends MusicBeatState
@@ -45,9 +44,10 @@ class MusicPlayerState extends MusicBeatState
 	var lerpRating:Float = 0;
 	var intendedRating:Float = 0;
 
-	//timebar
+	// timebar
 	public var timeBar:FlxBar;
 	public var playdist:Float = 0;
+
 	private var timeBarBG:AttachedSprite;
 	private var updateTime:Bool = true;
 	var timeTxt:FlxText;
@@ -65,13 +65,16 @@ class MusicPlayerState extends MusicBeatState
 	var selector:FlxText;
 
 	// private static variables
-	private static var curSelected:Int = 0;
+	public static var curSelected:Int = 0;
 	private static var lastDifficultyName:String = '';
 	public static var curPlaying:Bool = false;
 
 	// private variables
 	private var grpSongs:FlxTypedGroup<Alphabet>;
 	private var iconArray:Array<HealthIcon> = [];
+
+	// bools Variables
+	public static var wasloadedonfreeplay:Bool = false;
 
 	override function create()
 	{
@@ -112,7 +115,7 @@ class MusicPlayerState extends MusicBeatState
 		bg.screenCenter();
 
 		songLength = FlxG.sound.music.length;
-		//create time bar
+		// create time bar
 		var showTime:Bool = (ClientPrefs.timeBarType != 'Disabled');
 		timeTxt = new FlxText((FlxG.width / 2) - 248, 19, 400, "", 32);
 		timeTxt.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
@@ -151,7 +154,7 @@ class MusicPlayerState extends MusicBeatState
 		add(timeBarBG);
 		add(timeTxt);
 
-        hideBar();
+		hideBar();
 
 		grpSongs = new FlxTypedGroup<Alphabet>();
 		add(grpSongs);
@@ -172,6 +175,12 @@ class MusicPlayerState extends MusicBeatState
 			add(icon);
 		}
 		WeekData.setDirectoryFromWeek();
+
+		if (wasloadedonfreeplay)
+		{
+			if (curSelected != FreeplayState.curSelected)
+				curSelected = FreeplayState.curSelected;
+		}
 
 		if (curSelected >= songs.length)
 			curSelected = 0;
@@ -262,22 +271,22 @@ class MusicPlayerState extends MusicBeatState
 				holdTime = 0;
 			}
 
-            if (leftP)
-            {
-                if (vocals != null)
-                {
-                    vocals.time -= 5000;
-                }
-                FlxG.sound.music.time -= 5000;
-            }
-            if (rightP)
-            {
-                if (vocals != null)
-                {
-                    vocals.time += 5000;
-                }
-                FlxG.sound.music.time += 5000;
-            }
+			if (leftP)
+			{
+				if (vocals != null)
+				{
+					vocals.time -= 5000;
+				}
+				FlxG.sound.music.time -= 5000;
+			}
+			if (rightP)
+			{
+				if (vocals != null)
+				{
+					vocals.time += 5000;
+				}
+				FlxG.sound.music.time += 5000;
+			}
 
 			if (controls.UI_DOWN || controls.UI_UP)
 			{
@@ -299,39 +308,39 @@ class MusicPlayerState extends MusicBeatState
 		else if (upP || downP)
 			changeDiff();
 
-			if (controls.BACK)
+		if (controls.BACK)
+		{
+			if (curPlaying)
 			{
-				if (curPlaying)
+				persistentUpdate = false;
+				if (colorTween != null)
 				{
+					colorTween.cancel();
+				}
+				FlxG.sound.play(Paths.sound('cancelMenu'));
+				{
+					#if desktop
+					DiscordClient.changePresence('In the Music Player', null);
+					#end
 					persistentUpdate = false;
+
 					if (colorTween != null)
 					{
 						colorTween.cancel();
 					}
-					FlxG.sound.play(Paths.sound('cancelMenu'));
-					{
-						#if desktop
-						DiscordClient.changePresence('In the Music Player', null);
-						#end
-						persistentUpdate = false;
 
-						if (colorTween != null)
-						{
-							colorTween.cancel();
-						}
-						
-						destroyFreeplayVocals();
-						hideBar();
-						FlxG.sound.music.stop();
-						curPlaying = false;
-						FlxG.sound.playMusic(Paths.music('freakyMenu'));
-						}
-					}
-					else
-					{
-						FlxG.switchState(new ExtraMenuState());
-					}
+					destroyFreeplayVocals();
+					hideBar();
+					FlxG.sound.music.stop();
+					curPlaying = false;
+					FlxG.sound.playMusic(Paths.music('freakyMenu'));
 				}
+			}
+			else
+			{
+				FlxG.switchState(new ExtraMenuState());
+			}
+		}
 
 		if (accepted)
 		{
@@ -340,7 +349,7 @@ class MusicPlayerState extends MusicBeatState
 				#if desktop
 				DiscordClient.changePresence('In the Music Player', '\nListening To: ' + CoolUtil.formatString(songs[curSelected].songName), null);
 				#end
-				
+
 				#if PRELOAD_ALL
 				destroyFreeplayVocals();
 				FlxG.sound.music.volume = 0;
@@ -355,7 +364,7 @@ class MusicPlayerState extends MusicBeatState
 				FlxG.sound.list.add(vocals);
 				FlxG.sound.playMusic(Paths.inst(PlayState.SONG.song), 0.7);
 				vocals.play();
-				//showBar();
+				// showBar();
 				vocals.persist = true;
 				vocals.looped = true;
 				vocals.volume = 0.7;
@@ -372,7 +381,7 @@ class MusicPlayerState extends MusicBeatState
 				#end
 			}
 		}
-		else if (ctrl) //I kinda copied BACK a little bit for this one
+		else if (ctrl) // I kinda copied BACK a little bit for this one
 		{
 			if (curPlaying)
 			{
@@ -388,14 +397,14 @@ class MusicPlayerState extends MusicBeatState
 
 					destroyFreeplayVocals();
 					curPlaying = true;
-					}
 				}
 			}
+		}
 		else if (alt)
 		{
 			MusicBeatState.switchState(new FreeplayState());
-			destroyFreeplayVocals();
-			curPlaying = true;
+			// destroyFreeplayVocals(); //idk what happend's if i remove this so -Luis
+			// curPlaying = true;
 		}
 		super.update(elapsed);
 	}
@@ -422,30 +431,30 @@ class MusicPlayerState extends MusicBeatState
 	}
 
 	function hideBar()
+	{
+		FlxTween.tween(timeBar, {alpha: 0}, 0.15);
+		FlxTween.tween(timeBarBG, {alpha: 0}, 0.15);
+		FlxTween.tween(timeTxt, {alpha: 0}, 0.15);
+		new FlxTimer().start(0.15, function(bitchFuckAssDickCockBalls:FlxTimer)
 		{
-			FlxTween.tween(timeBar, {alpha: 0}, 0.15);
-			FlxTween.tween(timeBarBG, {alpha: 0}, 0.15);
-			FlxTween.tween(timeTxt, {alpha: 0}, 0.15);
-			new FlxTimer().start(0.15, function(bitchFuckAssDickCockBalls:FlxTimer)
-			{
-				timeBar.visible = false;
-				timeBarBG.visible = false;
-				timeTxt.visible = false;
-			});
-		}
+			timeBar.visible = false;
+			timeBarBG.visible = false;
+			timeTxt.visible = false;
+		});
+	}
 
 	function showBar()
-		{
-			timeBar.alpha = 0;
-			timeBarBG.alpha = 0;
-			timeTxt.alpha = 0;
-			timeBar.visible = true;
-			timeBarBG.visible = true;
-			timeTxt.visible = true;
-			FlxTween.tween(timeBar, {alpha: 1}, 0.15);
-			FlxTween.tween(timeBarBG, {alpha: 1}, 0.15);
-			FlxTween.tween(timeTxt, {alpha: 1}, 0.15);
-		}
+	{
+		timeBar.alpha = 0;
+		timeBarBG.alpha = 0;
+		timeTxt.alpha = 0;
+		timeBar.visible = true;
+		timeBarBG.visible = true;
+		timeTxt.visible = true;
+		FlxTween.tween(timeBar, {alpha: 1}, 0.15);
+		FlxTween.tween(timeBarBG, {alpha: 1}, 0.15);
+		FlxTween.tween(timeTxt, {alpha: 1}, 0.15);
+	}
 
 	function changeDiff(change:Int = 0)
 	{

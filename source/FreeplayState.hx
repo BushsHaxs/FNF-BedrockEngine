@@ -51,7 +51,7 @@ class FreeplayState extends MusicBeatState
 	var selector:FlxText;
 
 	// private static variables
-	private static var curSelected:Int = 0;
+	public static var curSelected:Int = 0;
 	private static var lastDifficultyName:String = '';
 	public static var curPlaying:Bool = false;
 
@@ -151,6 +151,9 @@ class FreeplayState extends MusicBeatState
 		add(diffText);
 		add(scoreText);
 
+		if (!MusicPlayerState.wasloadedonfreeplay)
+			MusicPlayerState.wasloadedonfreeplay = true;
+
 		if (curSelected >= songs.length)
 			curSelected = 0;
 		bg.color = songs[curSelected].color;
@@ -162,10 +165,10 @@ class FreeplayState extends MusicBeatState
 		}
 		curDifficulty = Math.round(Math.max(0, CoolUtil.defaultDifficulties.indexOf(lastDifficultyName)));
 
-		if (curPlaying)
+		if (MusicPlayerState.curPlaying)
 		{
-			iconArray[instPlaying].canBounce = true;
-			iconArray[instPlaying].animation.curAnim.curFrame = 2;
+			iconArray[MusicPlayerState.instPlaying].canBounce = true;
+			iconArray[MusicPlayerState.instPlaying].animation.curAnim.curFrame = 2;
 		}
 
 		changeSelection();
@@ -281,6 +284,7 @@ class FreeplayState extends MusicBeatState
 		var rightP = controls.UI_RIGHT_P;
 		var accepted = controls.ACCEPT;
 		var space = FlxG.keys.justPressed.SPACE;
+		var alt = FlxG.keys.justPressed.ALT;
 		var ctrl = FlxG.keys.justPressed.CONTROL;
 		var shift = FlxG.keys.pressed.SHIFT;
 
@@ -332,7 +336,7 @@ class FreeplayState extends MusicBeatState
 				colorTween.cancel();
 			}
 			FlxG.sound.play(Paths.sound('cancelMenu'));
-				MusicBeatState.switchState(new MainMenuState());
+			MusicBeatState.switchState(new MainMenuState());
 		}
 
 		if (ctrl)
@@ -373,6 +377,7 @@ class FreeplayState extends MusicBeatState
 			}
 
 			curPlaying = false;
+			MusicPlayerState.curPlaying = false;
 
 			if (FlxG.keys.pressed.SHIFT)
 			{
@@ -386,8 +391,9 @@ class FreeplayState extends MusicBeatState
 			FlxG.sound.music.volume = 0;
 
 			destroyFreeplayVocals();
+			MusicPlayerState.destroyFreeplayVocals();
 		}
-		
+
 		if (controls.RESET)
 		{
 			openResetSub();
@@ -399,11 +405,13 @@ class FreeplayState extends MusicBeatState
 	{
 		super.beatHit();
 
-		if (curPlaying)
-			iconArray[instPlaying].bounce();
+		if (MusicPlayerState.curPlaying)
+		{
+			iconArray[MusicPlayerState.instPlaying].bounce(); // xd --Luis
 
-		if (FlxG.camera.zoom < 1.35 && ClientPrefs.camZooms && curBeat % 4 == 0)
-			FlxG.camera.zoom += 0.015;
+			if (FlxG.camera.zoom < 1.35 && ClientPrefs.camZooms && curBeat % 4 == 0)
+				FlxG.camera.zoom += 0.015;
+		}
 	}
 
 	public static function destroyFreeplayVocals()
@@ -416,7 +424,8 @@ class FreeplayState extends MusicBeatState
 		vocals = null;
 	}
 
-	function openResetSub() /*planning to fix the controls for Reset SubState*/
+	function openResetSub()
+		/*planning to fix the controls for Reset SubState*/
 	{
 		openSubState(new ResetScoreSubState(songs[curSelected].songName, curDifficulty, songs[curSelected].songCharacter));
 		FlxG.sound.play(Paths.sound('scrollMenu'));
@@ -433,7 +442,7 @@ class FreeplayState extends MusicBeatState
 
 		lastDifficultyName = CoolUtil.difficulties[curDifficulty];
 
-		switch (curDifficulty) //if you want to put colors on your custom difficulties, create a new case with your color of choice
+		switch (curDifficulty) // if you want to put colors on your custom difficulties, create a new case with your color of choice
 		{
 			case 0:
 				FlxTween.color(diffText, 0.3, diffText.color, FlxColor.LIME, {ease: FlxEase.quadInOut});
