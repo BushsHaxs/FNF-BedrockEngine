@@ -3728,8 +3728,8 @@ class PlayState extends MusicBeatState
 			camFocus = 'dad';
 
 			camFollow.set(dad.getMidpoint().x + 150, dad.getMidpoint().y - 100);
-			camFollow.x += dad.cameraPosition[0];
-			camFollow.y += dad.cameraPosition[1];
+			camFollow.x = dadPos[0];
+			camFollow.y = dadPos[1];
 			tweenCamIn();
 		}
 		else
@@ -3737,8 +3737,8 @@ class PlayState extends MusicBeatState
 			camFocus = 'bf';
 		
 			camFollow.set(boyfriend.getMidpoint().x - 100, boyfriend.getMidpoint().y - 100);
-			camFollow.x -= boyfriend.cameraPosition[0];
-			camFollow.y += boyfriend.cameraPosition[1];
+			camFollow.x = bfPos[0];
+			camFollow.y = bfPos[1];
 
 			if (Paths.formatToSongPath(SONG.song) == 'tutorial' && cameraTwn == null && FlxG.camera.zoom != 1 && !ClientPrefs.maniaMode)
 			{
@@ -4440,11 +4440,15 @@ class PlayState extends MusicBeatState
 				#end
 			} else if (boyfriend.holdTimer > Conductor.stepCrochet * 0.001 * boyfriend.singDuration && boyfriend.animation.curAnim.name.startsWith('sing')
 			&& !boyfriend.animation.curAnim.name.endsWith('miss'))
+			{
 				boyfriend.dance();
+			}
 
 			if (controlHoldArray.contains(true) && !endingSong && opponentChart) {/*bruh*/} else if (dad.holdTimer > Conductor.stepCrochet * 0.001 * dad.singDuration && dad.animation.curAnim.name.startsWith('sing')
 			&& !dad.animation.curAnim.name.endsWith('miss'))
+			{
 				dad.dance();
+			}	
 		}
 
 		// TO DO: Find a better way to handle controller inputs, this should work for now
@@ -5581,14 +5585,14 @@ class PlayState extends MusicBeatState
 		switch (curStage)
 		{
 			case 'limo':
-				bfPos[0] = boyfriend.getMidpoint().x - 100;
-				bfPos[1] = boyfriend.getMidpoint().y - 70;
+				bfPos[0] = boyfriend.getMidpoint().x - 110;
+				bfPos[1] = boyfriend.getMidpoint().y - 95;
 			case 'mall':
 				bfPos[0] = boyfriend.getMidpoint().x - 100;
-				bfPos[1] = boyfriend.getMidpoint().y - 70;
+				bfPos[1] = boyfriend.getMidpoint().y - 165;
 			case 'school' | 'schoolEvil':
-				bfPos[0] = boyfriend.getMidpoint().x - 350;
-				bfPos[1] = boyfriend.getMidpoint().y - 390;
+				bfPos[0] = boyfriend.getMidpoint().x - 290;
+				bfPos[1] = boyfriend.getMidpoint().y - 300;
 			default:
 				bfPos[0] = boyfriend.getMidpoint().x - 100 - boyfriend.cameraPosition[0];
 				bfPos[1] = boyfriend.getMidpoint().y - 100 + boyfriend.cameraPosition[1];	
