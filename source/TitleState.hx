@@ -48,7 +48,8 @@ typedef TitleData =
 	gfx:Float,
 	gfy:Float,
 	backgroundSprite:String,
-	bpm:Int
+	bpm:Int,
+	cbpm:Int
 }
 
 class TitleState extends MusicBeatState
@@ -89,6 +90,7 @@ class TitleState extends MusicBeatState
 	{
 		Paths.clearStoredMemory();
 		Paths.clearUnusedMemory();
+		Main.curStateS = 'TitleState';
 
 		#if MODS_ALLOWED
 		// Just to load a mod on start up if ya got one. For mods that change the menu music and bg
@@ -120,8 +122,7 @@ class TitleState extends MusicBeatState
 		{
 			path = "assets/images/gfDanceTitle.json";
 		}
-		else if(ClientPrefs.lowQuality)
-				path = "assets/images/lowQuality/gfDanceTitleLow.json";
+
 		// trace(path, FileSystem.exists(path));
 		titleJSON = Json.parse(File.getContent(path));
 		#else
@@ -254,8 +255,19 @@ class TitleState extends MusicBeatState
 				FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
 			}
 		}
+		else if (!initialized && ClientPrefs.useClassicSongs)
+		{
+			if (FlxG.sound.music == null)
+			{
+				FlxG.sound.playMusic(Paths.music('freakyMenuC'), 0);
+			}
+		}
 
 		Conductor.changeBPM(titleJSON.bpm);
+		if(ClientPrefs.useClassicSongs)
+		{
+			Conductor.changeBPM(titleJSON.cbpm);
+		}
 		persistentUpdate = true;
 
 		bgGrad = FlxGradient.createGradientFlxSprite(1460, 821, [FlxColor.TRANSPARENT, FlxColor.fromInt(0xFFDF52A7)]);
@@ -637,6 +649,9 @@ class TitleState extends MusicBeatState
 						FlxG.sound.music.stop();
 						FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
 
+						if(ClientPrefs.useClassicSongs)
+							FlxG.sound.playMusic(Paths.music('freakyMenuC'), 0);
+
 						FlxG.sound.music.fadeIn(5, 0, 0.7);
 					}
 				case 2:
@@ -695,6 +710,7 @@ class TitleState extends MusicBeatState
 			remove(ngSpr);
 
 			FlxG.camera.flash(FlxColor.WHITE, 1);
+
 			remove(credGroup);
 			skippedIntro = true;
 		}

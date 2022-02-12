@@ -92,8 +92,11 @@ class Character extends FlxSprite
 		curCharacter = character;
 		this.isPlayer = isPlayer;
 		antialiasing = ClientPrefs.globalAntialiasing;
+
+		//need to make it so Editors char kill.
 		if (ClientPrefs.maxOptimization)
 			kill();
+
 		var library:String = null;
 		switch (curCharacter)
 		{
@@ -286,7 +289,7 @@ class Character extends FlxSprite
 				dance();
 			}
 
-			if (!isPlayer && !PlayState.instance.opponentChart)
+			if (!isPlayer && !PlayState.instance.opponentChart || PlayState.instance.cpuControlled)
 			{
 				if (animation.curAnim.name.startsWith('sing'))
 				{

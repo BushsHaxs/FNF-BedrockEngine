@@ -24,6 +24,7 @@ import lime.utils.Assets;
 import flixel.system.FlxSound;
 import openfl.utils.Assets as OpenFlAssets;
 import WeekData;
+import JsonSettings;
 #if MODS_ALLOWED
 import sys.FileSystem;
 #end
@@ -80,6 +81,7 @@ class MusicPlayerState extends MusicBeatState
 	{
 		Paths.clearStoredMemory();
 		Paths.clearUnusedMemory();
+		Main.curStateS = 'MusicPlayerState';
 
 		persistentUpdate = true;
 		PlayState.isStoryMode = false;
@@ -193,7 +195,7 @@ class MusicPlayerState extends MusicBeatState
 		}
 		curDifficulty = Math.round(Math.max(0, CoolUtil.defaultDifficulties.indexOf(lastDifficultyName)));
 
-		if (curPlaying)
+		if (curPlaying && !JsonSettings.iconSupport)
 		{
 			iconArray[instPlaying].canBounce = true;
 			iconArray[instPlaying].animation.curAnim.curFrame = 2;
@@ -207,8 +209,8 @@ class MusicPlayerState extends MusicBeatState
 		textBG.alpha = 0.6;
 		add(textBG);
 
-		var leText:String = "Press ACCEPT to Listen to the Song / Press CTRL to Disable Song Vocals. / Press ALT to go to Freeplay.";
-		var size:Int = 16;
+		var leText:String = "Press ACCEPT to Listen to the Song / Press CTRL to Disable Song Vocals. / Press ALT to go to Freeplay / LEFT or RIGHT to Skip/Go Back on the Song.";
+		var size:Int = 14;
 		var text:FlxText = new FlxText(textBG.x, textBG.y + 4, FlxG.width, leText, size);
 		text.setFormat(Paths.font("vcr.ttf"), size, FlxColor.WHITE, RIGHT);
 		text.scrollFactor.set();
@@ -328,18 +330,40 @@ class MusicPlayerState extends MusicBeatState
 					{
 						colorTween.cancel();
 					}
+					FlxG.sound.play(Paths.sound('cancelMenu'));
+					{
+						#if desktop
+						DiscordClient.changePresence('In the Music Player', null);
+						#end
+						persistentUpdate = false;
 
-					destroyFreeplayVocals();
-					hideBar();
-					FlxG.sound.music.stop();
-					curPlaying = false;
-					FlxG.sound.playMusic(Paths.music('freakyMenu'));
+						if (colorTween != null)
+						{
+							colorTween.cancel();
+						}
+
+						destroyFreeplayVocals();
+						hideBar();
+						FlxG.sound.music.stop();
+						curPlaying = false;
+						iconArray[instPlaying].canBounce = false;
+						iconArray[instPlaying].animation.curAnim.curFrame = 0;
+						FlxG.sound.playMusic(Paths.music('freakyMenu'));
+						if (ClientPrefs.useClassicSongs)
+						{
+							FlxG.sound.playMusic(Paths.music('freakyMenuC'));
+						}
+					}
 				}
 			}
 			else
 			{
 				FlxG.switchState(new ExtraMenuState());
 			}
+		}
+		else
+		{
+			FlxG.switchState(new ExtraMenuState());
 		}
 
 		if (accepted)
@@ -349,7 +373,6 @@ class MusicPlayerState extends MusicBeatState
 				#if desktop
 				DiscordClient.changePresence('In the Music Player', '\nListening To: ' + CoolUtil.formatString(songs[curSelected].songName), null);
 				#end
-
 				#if PRELOAD_ALL
 				destroyFreeplayVocals();
 				FlxG.sound.music.volume = 0;
@@ -360,7 +383,6 @@ class MusicPlayerState extends MusicBeatState
 					vocals = new FlxSound().loadEmbedded(Paths.voices(PlayState.SONG.song));
 				else
 					vocals = new FlxSound();
-
 				FlxG.sound.list.add(vocals);
 				FlxG.sound.playMusic(Paths.inst(PlayState.SONG.song), 0.7);
 				vocals.play();
@@ -394,7 +416,6 @@ class MusicPlayerState extends MusicBeatState
 					#if desktop
 					DiscordClient.changePresence('In the Music Player', '\nListening To: ' + CoolUtil.formatString(songs[curSelected].songName), null);
 					#end
-
 					destroyFreeplayVocals();
 					curPlaying = true;
 				}

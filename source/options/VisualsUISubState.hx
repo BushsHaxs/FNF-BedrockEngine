@@ -33,6 +33,7 @@ class VisualsUISubState extends BaseOptionsMenu
 	{
 		title = 'Visuals and UI';
 		rpcTitle = 'Tweaking the Visuals & UI'; //for Discord Rich Presence
+		Main.curStateS = 'VisualsUISubState';
 
 		var option:Option = new Option('Camera Zooms',
 		"If unchecked, the camera won't zoom in on a beat hit.",
@@ -100,6 +101,13 @@ class VisualsUISubState extends BaseOptionsMenu
 		var option:Option = new Option('Show Song Display',
 		"If unchecked, hides song name and difficulty from the bottom left corner of the screen",
 		'showSongDisplay',
+		'bool',
+		true);
+	addOption(option);
+
+		var option:Option = new Option('Use Classic Songs',
+		"If checked, will use the Classic Songs instead of Bedrock's songs.",
+		'useClassicSongs',
 		'bool',
 		true);
 	addOption(option);

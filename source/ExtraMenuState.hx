@@ -53,6 +53,7 @@ class ExtraMenuState extends MusicBeatState
 		#end
 
 		camGame = new FlxCamera();
+		Main.curStateS = 'ExtraMenuState';
 
 		FlxG.cameras.reset(camGame);
 		FlxCamera.defaultCameras = [camGame];
@@ -157,12 +158,6 @@ class ExtraMenuState extends MusicBeatState
 				changeItem(1);
 			}
 
-			if (controls.UI_LEFT_P)
-			{
-				FlxG.sound.play(Paths.sound('scrollMenu'));
-				MusicBeatState.resetState();
-			}
-
 			if (controls.BACK)
 			{
 				selectedSomethin = true;
@@ -222,7 +217,7 @@ class ExtraMenuState extends MusicBeatState
 									case 'ost':
 										MusicBeatState.switchState(new MusicPlayerState());
 									case 'settings':
-										MusicBeatState.switchState(new ExtraMenuState());
+										MusicBeatState.switchState(new editors.JsonEditor());
 								}
 							});
 						}

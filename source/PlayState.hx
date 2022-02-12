@@ -184,12 +184,14 @@ class PlayState extends MusicBeatState
 	public static var chartingMode:Bool = false;
 
 	// Gameplay settings
+	public var notesOpacity:Float = 1;
 	public var healthGain:Float = 1;
 	public var healthLoss:Float = 1;
 	public var instakillOnMiss:Bool = false;
 	public var cpuControlled:Bool = false;
 	public var opponentChart:Bool = false;
 	public var practiceMode:Bool = false;
+	public var noteHitFix:Bool = true;
 
 	public var botplaySine:Float = 0;
 	public var botplayTxt:FlxText;
@@ -325,12 +327,14 @@ class PlayState extends MusicBeatState
 			FlxG.sound.music.stop();
 
 		// Gameplay settings
+		notesOpacity = ClientPrefs.getGameplaySetting('notesopacity', 1);
 		healthGain = ClientPrefs.getGameplaySetting('healthgain', 1);
 		healthLoss = ClientPrefs.getGameplaySetting('healthloss', 1);
 		instakillOnMiss = ClientPrefs.getGameplaySetting('instakill', false);
 		opponentChart = ClientPrefs.getGameplaySetting('opponentplay', false);
 		practiceMode = ClientPrefs.getGameplaySetting('practice', false);
 		cpuControlled = ClientPrefs.getGameplaySetting('botplay', false);
+		noteHitFix = opponentChart;
 
 		shader_chromatic_abberation = new ChromaticAberrationEffect();
 
@@ -747,7 +751,9 @@ class PlayState extends MusicBeatState
 			introSoundsSuffix = '-pixel';
 		}
 
-		if (!ClientPrefs.hideGf || !ClientPrefs.maniaMode)
+		if (ClientPrefs.hideGf || ClientPrefs.maniaMode)
+			remove(gfGroup);
+		else
 			add(gfGroup);
 
 		// Shitty layering but whatev it works LOL
@@ -1180,9 +1186,8 @@ class PlayState extends MusicBeatState
 		reloadHealthBarColors();
 
 		scoreTxt = new FlxText(0, healthBarBG.y + 40, FlxG.width, "", 20);
-		scoreTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		scoreTxt.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		scoreTxt.scrollFactor.set();
-		scoreTxt.borderSize = 1.25;
 		scoreTxt.visible = !ClientPrefs.hideHud;
 		add(scoreTxt);
 
@@ -1248,9 +1253,9 @@ class PlayState extends MusicBeatState
 
 		// Just in case.
 		if (ClientPrefs.marvelouses)
-			judgementCounter.text = 'Marvs: ${marvelouses}\nSicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nCombo Breaks: ${songMisses}\nMisses: ${totalMisses}';
+			judgementCounter.text = 'Marvs: ${marvelouses}\nSicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${totalMisses}';
 		else
-			judgementCounter.text = 'Sicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nCombo Breaks: ${songMisses}\nMisses: ${totalMisses}';
+			judgementCounter.text = 'Sicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}${songMisses}\nMisses: ${totalMisses}';
 
 		// then we add them
 		add(judgementCounter);
@@ -1261,15 +1266,20 @@ class PlayState extends MusicBeatState
 
 		// Botplay Text Stuff V
 		botplayTxt = new FlxText(400, timeBarBG.y + 55, FlxG.width - 800, "BOTPLAY", 32);
+		if (ClientPrefs.downScroll)
+			botplayTxt.y = timeBarBG.y - 78;
+		if (ClientPrefs.middleScroll)
+		{
+			if (ClientPrefs.downScroll)
+				botplayTxt.y = botplayTxt.y - 78;
+			else
+				botplayTxt.y = botplayTxt.y + 78;
+		}
 		botplayTxt.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		botplayTxt.scrollFactor.set();
 		botplayTxt.borderSize = 2;
 		botplayTxt.visible = cpuControlled;
 		add(botplayTxt);
-		if (ClientPrefs.downScroll)
-		{
-			botplayTxt.y = timeBarBG.y - 78;
-		}
 
 		// now we set da cameras stuff
 		strumLineNotes.cameras = [camHUD];
@@ -1919,7 +1929,10 @@ class PlayState extends MusicBeatState
 			{
 				setOnLuas('defaultOpponentStrumX' + i, opponentStrums.members[i].x);
 				setOnLuas('defaultOpponentStrumY' + i, opponentStrums.members[i].y);
-				// if(ClientPrefs.middleScroll) opponentStrums.members[i].visible = false;
+				if (ClientPrefs.hideStrumsMiddle)
+				{
+					opponentStrums.members[i].visible = false;
+				}
 			}
 
 			startedCountdown = true;
@@ -2063,7 +2076,7 @@ class PlayState extends MusicBeatState
 				notes.forEachAlive(function(note:Note)
 				{
 					note.copyAlpha = false;
-					note.alpha = note.multAlpha;
+					note.alpha = getNoteOpacity(note.multAlpha);
 					if (ClientPrefs.middleScroll && !note.mustPress)
 					{
 						note.alpha *= 0.5;
@@ -2563,7 +2576,7 @@ class PlayState extends MusicBeatState
 		}
 		#end
 
-		if (!FlxG.autoPause && !paused && canPause && !cpuControlled)
+		if (!FlxG.autoPause && !paused && canPause && startedCountdown && !cpuControlled)
 		{
 			pauseState();
 		}
@@ -2768,20 +2781,22 @@ class PlayState extends MusicBeatState
 
 		// Info Bar
 		var ratingNameTwo:String = ratingName;
-		var divider:String = JsonSettings.divider;
+		var divider:String = ' ' + JsonSettings.divider + ' ';
+
+		scoreTxt.text = 'Score: ' + songScore;
+		scoreTxt.text += divider + 'Accuracy:' + Highscore.floorDecimal(ratingPercent * 100, 2) + '%';
+
+		if (ratingFC == "" || totalMisses > 0)
+			scoreTxt.text += '';
+		else
+			scoreTxt.text += ' [' + ratingFC + ']';
+
+		scoreTxt.text += divider + 'Combo Breaks:' + songMisses;
 
 		if (ratingFC == "")
-			scoreTxt.text = 'Score: '
-				+ songScore
-				+ divider
-				+ 'Accuracy:'
-				+ Highscore.floorDecimal(ratingPercent * 100, 2)
-				+ '%'
-				+ divider
-				+ 'Rank: ?';
+			scoreTxt.text += divider + 'Rank: ?';
 		else
-			scoreTxt.text = 'Score: ' + songScore + divider + 'Accuracy:' + Highscore.floorDecimal(ratingPercent * 100, 2) + '%' + divider + 'Rank: '
-				+ ratingName + divider + ratingFC;
+			scoreTxt.text += divider + 'Rank: ' + ratingName;
 
 		if (botplayTxt.visible)
 		{
@@ -2987,7 +3002,7 @@ class PlayState extends MusicBeatState
 					daNote.angle = strumDirection - 90 + strumAngle;
 
 				if (daNote.copyAlpha)
-					daNote.alpha = strumAlpha;
+					daNote.alpha = getNoteOpacity(strumAlpha);
 
 				if (daNote.copyX)
 					daNote.x = strumX + Math.cos(angleDir) * daNote.distance;
@@ -3747,8 +3762,8 @@ class PlayState extends MusicBeatState
 			camFocus = 'dad';
 
 			camFollow.set(dad.getMidpoint().x + 150, dad.getMidpoint().y - 100);
-			camFollow.x += dad.cameraPosition[0];
-			camFollow.y += dad.cameraPosition[1];
+			camFollow.x = dadPos[0];
+			camFollow.y = dadPos[1];
 			tweenCamIn();
 		}
 		else
@@ -3756,8 +3771,8 @@ class PlayState extends MusicBeatState
 			camFocus = 'bf';
 
 			camFollow.set(boyfriend.getMidpoint().x - 100, boyfriend.getMidpoint().y - 100);
-			camFollow.x -= boyfriend.cameraPosition[0];
-			camFollow.y += boyfriend.cameraPosition[1];
+			camFollow.x = bfPos[0];
+			camFollow.y = bfPos[1];
 
 			if (Paths.formatToSongPath(SONG.song) == 'tutorial' && cameraTwn == null && FlxG.camera.zoom != 1 && !ClientPrefs.maniaMode)
 			{
@@ -3910,6 +3925,10 @@ class PlayState extends MusicBeatState
 				if (storyPlaylist.length <= 0)
 				{
 					FlxG.sound.playMusic(Paths.music('freakyMenu'));
+					if (ClientPrefs.useClassicSongs)
+					{
+						FlxG.sound.playMusic(Paths.music('freakyMenuC'));
+					}
 
 					cancelMusicFadeTween();
 					if (FlxTransitionableState.skipNextTransIn)
@@ -3986,6 +4005,10 @@ class PlayState extends MusicBeatState
 				}
 				MusicBeatState.switchState(new FreeplayState());
 				FlxG.sound.playMusic(Paths.music('freakyMenu'));
+				if (ClientPrefs.useClassicSongs)
+				{
+					FlxG.sound.playMusic(Paths.music('freakyMenuC'));
+				}
 				changedDifficulty = false;
 			}
 			transitioning = true;
@@ -4092,16 +4115,22 @@ class PlayState extends MusicBeatState
 				score = 50;
 				shits++;
 			case "bad": // bad
+				if (ClientPrefs.keAccuracy)
+				{
+					health -= 0.03 * healthLoss;
+				}
 				totalNotesHit += 0.5;
 				score = 100;
 				bads++;
 			case "good": // good
+				if (ClientPrefs.keAccuracy)
+				{
+					health = note.hitHealth * healthGain;
+				}
 				totalNotesHit += 0.75;
 				score = 200;
 				goods++;
 			case "sick": // sick
-				/*Quick talk, if marvelouses are not disabled sicks should not give %100 rating
-				so instead, it will give you %87.5 */
 				if (!ClientPrefs.marvelouses)
 					totalNotesHit += 1;
 				else
@@ -4456,14 +4485,18 @@ class PlayState extends MusicBeatState
 			else if (boyfriend.holdTimer > Conductor.stepCrochet * 0.001 * boyfriend.singDuration
 				&& boyfriend.animation.curAnim.name.startsWith('sing')
 				&& !boyfriend.animation.curAnim.name.endsWith('miss'))
+			{
 				boyfriend.dance();
+			}
 
 			if (controlHoldArray.contains(true) && !endingSong && opponentChart)
 			{/*bruh*/}
 			else if (dad.holdTimer > Conductor.stepCrochet * 0.001 * dad.singDuration
 				&& dad.animation.curAnim.name.startsWith('sing')
 				&& !dad.animation.curAnim.name.endsWith('miss'))
+			{
 				dad.dance();
+			}
 		}
 
 		// TO DO: Find a better way to handle controller inputs, this should work for now
@@ -4682,7 +4715,7 @@ class PlayState extends MusicBeatState
 			spawnNoteSplashOnNote(note, true);
 		}
 
-		callOnLuas('opponentNoteHit', [
+		callOnLuas((noteHitFix ? 'goodNoteHit' : 'opponentNoteHit'), [
 			notes.members.indexOf(note),
 			Math.abs(note.noteData),
 			note.noteType,
@@ -4826,7 +4859,7 @@ class PlayState extends MusicBeatState
 			var leType:String = note.noteType;
 			if (camFocus == 'bf' && ClientPrefs.dynamicCam)
 				triggerCamMovement(Math.abs(note.noteData % 4));
-			callOnLuas('goodNoteHit', [notes.members.indexOf(note), leData, leType, isSus]);
+			callOnLuas((noteHitFix ? 'opponentNoteHit' : 'goodNoteHit'), [notes.members.indexOf(note), leData, leType, isSus]);
 
 			if (!note.isSustainNote)
 			{
@@ -4862,7 +4895,7 @@ class PlayState extends MusicBeatState
 
 	public function spawnNoteSplash(x:Float, y:Float, data:Int, ?note:Note = null, opponent:Bool = true)
 	{
-		JsonSettings.dev(JsonSettings.dir);
+		JsonSettings.offdev(JsonSettings.offdir);
 		var skin:String = JsonSettings.noteSplashSkin;
 		if (PlayState.SONG.splashSkin != null && PlayState.SONG.splashSkin.length > 0)
 			skin = PlayState.SONG.splashSkin;
@@ -4879,6 +4912,7 @@ class PlayState extends MusicBeatState
 		}
 
 		var splash:NoteSplash = grpNoteSplashes.recycle(NoteSplash);
+		splash.alpha = getNoteOpacity(1);
 		splash.setupNoteSplash(x, y, data, skin, hue, sat, brt);
 		grpNoteSplashes.add(splash);
 
@@ -5174,31 +5208,6 @@ class PlayState extends MusicBeatState
 			gf.dance();
 		}
 
-		var funny:Float = (healthBar.percent * 0.01) + 0.01;
-
-		if (curBeat % gfSpeed == 0)
-		{
-			curBeat % (gfSpeed * 2) == 0 ? {
-				iconP1.scale.set(1.1, 0.8);
-				iconP2.scale.set(1.1, 1.3);
-
-				FlxTween.angle(iconP1, -15, 0, Conductor.crochet / 1300 * gfSpeed, {ease: FlxEase.quadOut});
-				FlxTween.angle(iconP2, 15, 0, Conductor.crochet / 1300 * gfSpeed, {ease: FlxEase.quadOut});
-			} : {
-				iconP1.scale.set(1.1, 1.3);
-				iconP2.scale.set(1.1, 0.8);
-
-				FlxTween.angle(iconP2, -15, 0, Conductor.crochet / 1300 * gfSpeed, {ease: FlxEase.quadOut});
-				FlxTween.angle(iconP1, 15, 0, Conductor.crochet / 1300 * gfSpeed, {ease: FlxEase.quadOut});
-				}
-
-			FlxTween.tween(iconP1, {'scale.x': 1, 'scale.y': 1}, Conductor.crochet / 1250 * gfSpeed, {ease: FlxEase.quadOut});
-			FlxTween.tween(iconP2, {'scale.x': 1, 'scale.y': 1}, Conductor.crochet / 1250 * gfSpeed, {ease: FlxEase.quadOut});
-
-			iconP1.updateHitbox();
-			iconP2.updateHitbox();
-		}
-
 		if (curBeat % 2 == 0)
 		{
 			if (boyfriend.animation.curAnim.name != null && !boyfriend.animation.curAnim.name.startsWith("sing"))
@@ -5397,23 +5406,22 @@ class PlayState extends MusicBeatState
 			// Rating FC
 			ratingFC = "";
 			if (marvelouses > 0)
-				ratingFC = "☆☆☆☆ (MFC)"; // Marvelous Full Combo
+				ratingFC = "MFC"; // Marvelous Full Combo
 			if (sicks > 0)
-				ratingFC = "☆☆☆ (SFC)"; // Sick Full Combo
+				ratingFC = "SFC"; // Sick Full Combo
 			if (goods > 0)
-				ratingFC = "☆☆ (GFC)"; // Good Full Combo
-			if (bads > 0)
-				ratingFC = "☆ (FC)"; // Full Combo
+				ratingFC = "GFC"; // Good Full Combo
+			if (bads > 0 || shits > 0)
+				ratingFC = "FC"; // Full Combo
 
-			// shoutots to andromeda engine!! check them out, it's awesome!
-			else if (bads > 0 && ClientPrefs.keAccuracy)
-				ratingFC = "SDB"; // Single Digit Bad - this should count as losing FC despite not giving you misses, needs Complex Accuracy on
-			if (shits > 0)
-				ratingFC = "SDS"; // Single Digit Shit - same as SDB, for when Complex Accuracy is off
-			if (totalMisses > 0 && totalMisses < 10) // gonna leave it as totalMisses for now until CBs are completely done
-				ratingFC = "SDCB"; // Single Digit Combo Break
-			else if (totalMisses >= 10)
-				ratingFC = "Clear";
+			// stars, removed for now
+			/*☆☆☆☆
+			☆☆☆
+			☆☆
+			☆ */
+			/*andromeda engine was  probably 
+			the first to have the stars idea, check them out!
+			https://github.com/nebulazorua/andromeda-engine */
 		}
 		JsonSettings.devtwo(JsonSettings.dirtwo);
 
@@ -5421,9 +5429,9 @@ class PlayState extends MusicBeatState
 		setOnLuas('ratingName', ratingName);
 		setOnLuas('ratingFC', ratingFC);
 		if (ClientPrefs.marvelouses)
-			judgementCounter.text = 'Marvs: ${marvelouses}\nSicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nCombo Breaks: ${songMisses}\nMisses: ${totalMisses}\n';
+			judgementCounter.text = 'Marvs: ${marvelouses}\nSicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${totalMisses}\n';
 		else
-			judgementCounter.text = 'Sicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nCombo Breaks: ${songMisses}\nMisses: ${totalMisses}\n';
+			judgementCounter.text = 'Sicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${totalMisses}\n';
 	}
 
 	public static var othersCodeName:String = 'otherAchievements';
@@ -5568,6 +5576,17 @@ class PlayState extends MusicBeatState
 	var curLight:Int = 0;
 	var curLightEvent:Int = 0;
 
+	function getNoteOpacity(defaultValue:Float):Float
+	{ // modified code from project fnf 2.x
+		if (notesOpacity != 1)
+			if (notesOpacity - defaultValue <= 0)
+				return notesOpacity;
+			else
+				return notesOpacity - defaultValue;
+		else
+			return defaultValue;
+	}
+
 	// originally made by brightfyre
 
 	var camFocus:String = "";
@@ -5623,14 +5642,14 @@ class PlayState extends MusicBeatState
 		switch (curStage)
 		{
 			case 'limo':
-				bfPos[0] = boyfriend.getMidpoint().x - 100;
-				bfPos[1] = boyfriend.getMidpoint().y - 70;
+				bfPos[0] = boyfriend.getMidpoint().x - 110;
+				bfPos[1] = boyfriend.getMidpoint().y - 95;
 			case 'mall':
 				bfPos[0] = boyfriend.getMidpoint().x - 100;
-				bfPos[1] = boyfriend.getMidpoint().y - 70;
-			/*case 'school' | 'schoolEvil':
-			bfPos[0] = boyfriend.getMidpoint().x - 300;
-			bfPos[1] = boyfriend.getMidpoint().y - 280; */
+				bfPos[1] = boyfriend.getMidpoint().y - 165;
+			case 'school' | 'schoolEvil':
+				bfPos[0] = boyfriend.getMidpoint().x - 290;
+				bfPos[1] = boyfriend.getMidpoint().y - 300;
 			default:
 				bfPos[0] = boyfriend.getMidpoint().x - 100 - boyfriend.cameraPosition[0];
 				bfPos[1] = boyfriend.getMidpoint().y - 100 + boyfriend.cameraPosition[1];
