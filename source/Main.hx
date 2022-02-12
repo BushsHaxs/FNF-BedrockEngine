@@ -21,9 +21,7 @@ class Main extends Sprite
 	public static var gameWidth:Int = 1280; // Width of the game in pixels (might be less / more in actual pixels depending on your zoom).
 	public static var gameHeight:Int = 720; // Height of the game in pixels (might be less / more in actual pixels depending on your zoom).
 
-	public static var mainClassState:Class<FlxState>; // Determine the main class state of the game
-
-	public static var curStateS:String = ''; // Determine the current state of the game, text for the counter
+	public static var mainClassState:Class<FlxState> = TitleState; // Determine the main class state of the game
 
 	public static var instance:Main;
 

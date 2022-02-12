@@ -29,15 +29,25 @@ using StringTools;
 
 class OptionsState extends MusicBeatState
 {
-	var options:Array<String> = ['Adjust Delay and Combo', 'Controls', 'Graphics', 'Gameplay Settings', 'Note Colors', 'Visuals and UI'];
+	var options:Array<String> = [
+		'Adjust Delay and Combo',
+		'Controls',
+		'Graphics',
+		'Gameplay Settings',
+		'Note Colors',
+		'Visuals and UI'
+	];
 	private var grpOptions:FlxTypedGroup<Alphabet>;
+
 	private static var curSelected:Int = 0;
 	public static var menuBG:FlxSprite;
 
 	var holdTime:Float = 0;
 
-	function openSelectedSubstate(label:String) {
-		switch(label) {
+	function openSelectedSubstate(label:String)
+	{
+		switch (label)
+		{
 			case 'Note Colors':
 				openSubState(new options.NotesSubState());
 			case 'Controls':
@@ -56,11 +66,11 @@ class OptionsState extends MusicBeatState
 	var selectorLeft:Alphabet;
 	var selectorRight:Alphabet;
 
-	override function create() {
+	override function create()
+	{
 		#if desktop
 		DiscordClient.changePresence("In the Options Menu", null);
 		#end
-		Main.curStateS = 'OptionsState';
 
 		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		bg.color = 0xFFea71fd;
@@ -92,23 +102,27 @@ class OptionsState extends MusicBeatState
 		super.create();
 	}
 
-	override function closeSubState() {
+	override function closeSubState()
+	{
 		super.closeSubState();
 		ClientPrefs.saveSettings();
 	}
 
-	override function update(elapsed:Float) {
+	override function update(elapsed:Float)
+	{
 		super.update(elapsed);
 
 		var shiftMult:Int = 1;
 		if (FlxG.keys.pressed.SHIFT)
 			shiftMult = 3;
 
-		if (controls.UI_UP_P) {
+		if (controls.UI_UP_P)
+		{
 			changeSelection(-shiftMult);
 			holdTime = 0;
 		}
-		if (controls.UI_DOWN_P) {
+		if (controls.UI_DOWN_P)
+		{
 			changeSelection(shiftMult);
 			holdTime = 0;
 		}
@@ -125,17 +139,20 @@ class OptionsState extends MusicBeatState
 			}
 		}
 
-		if (controls.BACK) {
+		if (controls.BACK)
+		{
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			MusicBeatState.switchState(new MainMenuState());
 		}
 
-		if (controls.ACCEPT) {
+		if (controls.ACCEPT)
+		{
 			openSelectedSubstate(options[curSelected]);
 		}
 	}
-	
-	function changeSelection(change:Int = 0, playSound:Bool = true) {
+
+	function changeSelection(change:Int = 0, playSound:Bool = true)
+	{
 		if (playSound)
 			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 
@@ -147,12 +164,14 @@ class OptionsState extends MusicBeatState
 
 		var bullShit:Int = 0;
 
-		for (item in grpOptions.members) {
+		for (item in grpOptions.members)
+		{
 			item.targetY = bullShit - curSelected;
 			bullShit++;
 
 			item.alpha = 0.6;
-			if (item.targetY == 0) {
+			if (item.targetY == 0)
+			{
 				item.alpha = 1;
 				selectorLeft.x = item.x - 63;
 				selectorLeft.y = item.y;

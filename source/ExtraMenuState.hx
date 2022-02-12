@@ -23,8 +23,7 @@ import sys.FileSystem;
 import sys.io.File;
 #end
 
-//this is mostly just MainMenuState
-
+// this is mostly just MainMenuState
 using StringTools;
 
 class ExtraMenuState extends MusicBeatState
@@ -35,10 +34,7 @@ class ExtraMenuState extends MusicBeatState
 	var menuItems:FlxTypedGroup<FlxSprite>;
 	private var camGame:FlxCamera;
 
-	var optionShit:Array<String> = [
-		'ost',
-		'settings'
-	];
+	var optionShit:Array<String> = ['ost', 'settings'];
 
 	var magenta:FlxSprite;
 	var bg:FlxSprite;
@@ -57,7 +53,6 @@ class ExtraMenuState extends MusicBeatState
 		#end
 
 		camGame = new FlxCamera();
-		Main.curStateS = 'ExtraMenuState';
 
 		FlxG.cameras.reset(camGame);
 		FlxCamera.defaultCameras = [camGame];
@@ -129,6 +124,9 @@ class ExtraMenuState extends MusicBeatState
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
 
+		if (MusicPlayerState.wasloadedonfreeplay)
+			MusicPlayerState.wasloadedonfreeplay = false;
+
 		changeItem();
 		super.create();
 	}
@@ -170,6 +168,22 @@ class ExtraMenuState extends MusicBeatState
 
 			if (controls.ACCEPT)
 			{
+				if (optionShit[curSelected] == 'appearance')
+				{
+					#if windows
+					// open custom settings file
+					Sys.command('C:/Windows/notepad.exe /A settings/uiSettings.json');
+					// open readme for information
+					Sys.command('C:/Windows/notepad.exe /A settings/do-READ-me.txt');
+					#elseif mac
+					Sys.command('open -a TextEdit settings/uiSettings.json');
+					Sys.command('open -a TextEdit settings/do-READ-me.txt');
+					#elseif linux
+					Sys.command('nano settings/uiSettings.json');
+					Sys.command('nano settings/do-READ-me.txt');
+					#end
+				}
+				else
 				{
 					selectedSomethin = true;
 					FlxG.sound.play(Paths.sound('confirmMenu'));

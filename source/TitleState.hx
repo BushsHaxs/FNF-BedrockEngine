@@ -90,7 +90,6 @@ class TitleState extends MusicBeatState
 	{
 		Paths.clearStoredMemory();
 		Paths.clearUnusedMemory();
-		Main.curStateS = 'TitleState';
 
 		#if MODS_ALLOWED
 		// Just to load a mod on start up if ya got one. For mods that change the menu music and bg
@@ -264,7 +263,7 @@ class TitleState extends MusicBeatState
 		}
 
 		Conductor.changeBPM(titleJSON.bpm);
-		if(ClientPrefs.useClassicSongs)
+		if (ClientPrefs.useClassicSongs)
 		{
 			Conductor.changeBPM(titleJSON.cbpm);
 		}
@@ -327,14 +326,14 @@ class TitleState extends MusicBeatState
 		if (!FileSystem.exists(path))
 		{
 			path = "assets/images/gfDanceTitle.png";
-			if(ClientPrefs.lowQuality)
+			if (ClientPrefs.lowQuality)
 				path = "assets/images/lowQuality/gfDanceTitleLow.png";
 			// trace(path, FileSystem.exists(path));
 		}
 		gfDance.frames = FlxAtlasFrames.fromSparrow(BitmapData.fromFile(path), File.getContent(StringTools.replace(path, ".png", ".xml")));
 		#else
 		gfDance.frames = Paths.getSparrowAtlas('gfDanceTitle.png');
-		if(ClientPrefs.lowQuality)
+		if (ClientPrefs.lowQuality)
 			gfDance.frames = Paths.getSparrowAtlas('lowQuality/gfDanceTitleLow.png');
 		#end
 		gfDance.animation.addByIndices('danceLeft', 'GF Dancing Beat', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
@@ -477,10 +476,12 @@ class TitleState extends MusicBeatState
 			{
 				cantBump = true;
 				if (logoBl != null)
-					if (!idk) {
+					if (!idk)
+					{
 						idk = true;
 						logoBl.animation.play('press');
-						new FlxTimer().start(0.3, (tmr: FlxTimer) -> {
+						new FlxTimer().start(0.3, (tmr:FlxTimer) ->
+						{
 							logoBl.animation.stop();
 						});
 					}
@@ -649,7 +650,7 @@ class TitleState extends MusicBeatState
 						FlxG.sound.music.stop();
 						FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
 
-						if(ClientPrefs.useClassicSongs)
+						if (ClientPrefs.useClassicSongs)
 							FlxG.sound.playMusic(Paths.music('freakyMenuC'), 0);
 
 						FlxG.sound.music.fadeIn(5, 0, 0.7);

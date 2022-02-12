@@ -9,7 +9,7 @@ import openfl.events.Event;
 
 class DisplayCounters extends TextField
 {
-	//standard FPS_Mem stuff
+	// standard FPS_Mem stuff
 	private var times:Array<Float>;
 	private var memPeak:Float = 0;
 
@@ -51,22 +51,22 @@ class DisplayCounters extends TextField
 		if (visible)
 		{
 			text = "";
-			
-			if(ClientPrefs.showFPS)
+
+			if (ClientPrefs.showFPS)
 				text += "FPS: " + times.length + "\n";
 
-			if(ClientPrefs.memCounter)
+			if (ClientPrefs.memCounter)
 				text += "Memory: " + mem + " mb" + "\n";
 
-			if(ClientPrefs.memPeak)
-                text += "Memory Peak: " + memPeak + " mb" + "\n";
+			if (ClientPrefs.memPeak)
+				text += "Memory Peak: " + memPeak + " mb" + "\n";
 
-			if(ClientPrefs.showState)
-                text += "State: " + Main.curStateS;
+			if (ClientPrefs.showState)
+				text += "State: " + Main.mainClassState;
 		}
 	}
 
-public static function updateDisplayInfo()
+	public static function updateDisplayInfo()
 	{
 		displayFps = ClientPrefs.showFPS;
 		displayState = ClientPrefs.showState;
