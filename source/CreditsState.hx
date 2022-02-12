@@ -44,12 +44,11 @@ class CreditsState extends MusicBeatState
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("Reading the Credits", null);
 		#end
-		Main.curStateS = 'CreditsState';
 
 		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		add(bg);
 		bg.screenCenter();
-		
+
 		grpOptions = new FlxTypedGroup<Alphabet>();
 		add(grpOptions);
 
@@ -97,13 +96,7 @@ class CreditsState extends MusicBeatState
 				'https://github.com/Gui-iago',
 				'26B65B'
 			],
-			[
-				'Luisinh010',
-				'luis',
-				'Engine Coder',
-				'https://github.com/Luisinhi010',
-				'DBAC50'
-			],
+			['Luisinh010', 'luis', 'Engine Coder', 'https://github.com/Luisinhi010', 'DBAC50'],
 			[
 				'Stilic',
 				'stilic',
@@ -401,9 +394,11 @@ class CreditsState extends MusicBeatState
 		descText.borderSize = 2.4;
 		add(descText);
 
-		warningDialogue = new FunkinConfirm(null, "WARNING!!!", null, (action: FunkinConfirmAction) -> {
+		warningDialogue = new FunkinConfirm(null, "WARNING!!!", null, (action:FunkinConfirmAction) ->
+		{
 			warningDialogue.hide();
-			if (action == FunkinConfirmAction.YES_BUTTON_PRESSED) {
+			if (action == FunkinConfirmAction.YES_BUTTON_PRESSED)
+			{
 				CoolUtil.browserLoad(creditsStuff[curSelected][3]);
 			}
 		});
@@ -420,7 +415,7 @@ class CreditsState extends MusicBeatState
 	override function update(elapsed:Float)
 	{
 		warningDialogue.setText("YOU ARE ABOUT TO GO TO: \n"
-		+ creditsStuff[curSelected][3] + "\nARE YOU ABSOLUTELY SURE YOU WANT TO GO TO THIS URL? \n(Y - Yes, N - No, C - Close this window)");
+			+ creditsStuff[curSelected][3] + "\nARE YOU ABSOLUTELY SURE YOU WANT TO GO TO THIS URL? \n(Y - Yes, N - No, C - Close this window)");
 
 		if (FlxG.sound.music.volume < 0.7)
 		{
@@ -474,7 +469,8 @@ class CreditsState extends MusicBeatState
 	}
 
 	function changeSelection(change:Int = 0, playSound:Bool = true)
-	{	if (playSound)
+	{
+		if (playSound)
 			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 		do
 		{

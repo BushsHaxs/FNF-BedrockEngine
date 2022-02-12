@@ -81,7 +81,6 @@ class MusicPlayerState extends MusicBeatState
 	{
 		Paths.clearStoredMemory();
 		Paths.clearUnusedMemory();
-		Main.curStateS = 'MusicPlayerState';
 
 		persistentUpdate = true;
 		PlayState.isStoryMode = false;
@@ -358,12 +357,8 @@ class MusicPlayerState extends MusicBeatState
 			}
 			else
 			{
-				FlxG.switchState(new ExtraMenuState());
+				MusicBeatState.justswitchState(new ExtraMenuState());
 			}
-		}
-		else
-		{
-			FlxG.switchState(new ExtraMenuState());
 		}
 
 		if (accepted)
