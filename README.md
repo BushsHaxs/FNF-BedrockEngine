@@ -111,7 +111,15 @@ https://my.visualstudio.com/Downloads?q=visual%20studio%202017&wt.mc_id=o~msft~v
 
 > ### Visual Studo Community Setup
 
-Once you download and install VS Community, on the "Workloads" tab, select "Desktop Development with C++"
+Once you download and install VS Community, on the "Individual Components" tab, select:
+
+```
+MSVC v142 - VS 2019 C++ x64/x86 build tools
+Windows SDK (10.0.17763.0)
+```
+
+
+Desktop Development with C++
 Near the "Install" button, there's a Drop-Down menu, click on it, Select "Download first, then Install"
 Now wait until it finishes, it is recommended to reboot your PC once it finishes, but it's not needed at all
 
