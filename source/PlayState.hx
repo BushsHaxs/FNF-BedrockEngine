@@ -1,12 +1,16 @@
 package;
 
-import flixel.graphics.FlxGraphic;
-#if desktop
-import Discord.DiscordClient;
-#end
+import Achievements;
+import DialogueBoxPsych;
+import FunkinLua;
+import Note.EventNote;
 import Section.SwagSection;
+import Shaders;
 import Song.SwagSong;
+import StageData;
 import WiggleEffect.WiggleEffectType;
+import editors.CharacterEditorState;
+import editors.ChartingState;
 import flixel.FlxBasic;
 import flixel.FlxCamera;
 import flixel.FlxG;
@@ -21,12 +25,16 @@ import flixel.addons.effects.FlxTrailArea;
 import flixel.addons.effects.chainable.FlxEffectSprite;
 import flixel.addons.effects.chainable.FlxWaveEffect;
 import flixel.addons.transition.FlxTransitionableState;
+import flixel.graphics.FlxGraphic;
 import flixel.graphics.atlas.FlxAtlas;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.group.FlxSpriteGroup;
+import flixel.input.gamepad.FlxGamepad;
+import flixel.input.keyboard.FlxKey;
+import flixel.math.FlxAngle;
 import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
-import flixel.math.FlxAngle;
 import flixel.math.FlxRect;
 import flixel.system.FlxAssets.FlxShader;
 import flixel.system.FlxSound;
@@ -45,27 +53,20 @@ import openfl.Lib;
 import openfl.display.BlendMode;
 import openfl.display.Shader;
 import openfl.display.StageQuality;
+import openfl.events.KeyboardEvent;
 import openfl.filters.BitmapFilter;
 import openfl.filters.ShaderFilter;
 import openfl.utils.Assets as OpenFlAssets;
-import editors.ChartingState;
-import editors.CharacterEditorState;
-import flixel.group.FlxSpriteGroup;
-import flixel.input.keyboard.FlxKey;
-import Note.EventNote;
-import openfl.events.KeyboardEvent;
-import flixel.input.gamepad.FlxGamepad;
-import Achievements;
-import StageData;
-import FunkinLua;
-import DialogueBoxPsych;
-import Shaders;
+
+using StringTools;
+#if desktop
+import Discord.DiscordClient;
+#end
 #if sys
 import sys.FileSystem;
 import sys.io.File;
 #end
 
-using StringTools;
 
 class PlayState extends MusicBeatState
 {
@@ -154,6 +155,10 @@ class PlayState extends MusicBeatState
 	public var gfSpeed:Int = 1;
 	public var health:Float = 1;
 	public var combo:Int = 0;
+	// stores the last judgement object
+	public static var lastRating:FlxSprite;
+	// stores the last combo objects in an array
+	public static var lastCombo:Array<FlxSprite>;
 
 	private var healthBarBG:AttachedSprite;
 
@@ -305,6 +310,9 @@ class PlayState extends MusicBeatState
 
 		// for lua
 		instance = this;
+		
+		// sets up the combo object array
+		lastCombo = [];
 
 		debugKeysChart = ClientPrefs.copyKey(ClientPrefs.keyBinds.get('debug_1'));
 		debugKeysCharacter = ClientPrefs.copyKey(ClientPrefs.keyBinds.get('debug_2'));
@@ -4097,6 +4105,16 @@ class PlayState extends MusicBeatState
 
 		var rating:FlxSprite = new FlxSprite();
 		var score:Int = 350;
+		
+		// deletes all combo sprites prior to initalizing new ones
+		if (lastCombo != null)
+		{
+			while (lastCombo.length > 0)
+			{
+				lastCombo[0].kill();
+				lastCombo.remove(lastCombo[0]);
+			}
+		}
 
 		// tryna do MS based judgment due to popular demand
 		var daRating:String = Conductor.judgeNote(note, noteDiff);
@@ -4190,6 +4208,12 @@ class PlayState extends MusicBeatState
 		rating.visible = !ClientPrefs.hideHud;
 		rating.x += ClientPrefs.comboOffset[0];
 		rating.y -= ClientPrefs.comboOffset[1];
+		
+		if (lastRating != null) {
+				lastRating.kill();
+			}
+		add(rating);
+		lastRating = rating;
 
 		var comboSpr:FlxSprite = new FlxSprite().loadGraphic(Paths.image(getUiSkin(uiSkin, 'combo', altPart)));
 		comboSpr.cameras = [camHUD];
@@ -4241,6 +4265,8 @@ class PlayState extends MusicBeatState
 
 			numScore.x += ClientPrefs.comboOffset[2];
 			numScore.y -= ClientPrefs.comboOffset[3];
+			
+			lastCombo.push(numScore);
 
 			if (!PlayState.isPixelStage)
 			{
