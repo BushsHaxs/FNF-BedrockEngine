@@ -29,7 +29,7 @@ https://github.com/Gui-iago/FNF-BedrockEngineRewrite
 > ### Dependencies
 
 - Git
-- Haxel (LATEST VERSION ONLY, PLEASE, STOP USING 4.1.5!!!!)
+- Haxe (LATEST VERSION ONLY, PLEASE, STOP USING 4.1.5!!!!)
 - Visual Studio Community (Windows Only)
 
 > ### OPTIONAL Dependencies
