@@ -6,7 +6,6 @@ import openfl.utils.ByteArray;
 @:fileXml('tags="haxe,release"')
 @:noDebug
 #end
-
 // Edited by gedehari
 class GraphicsShader extends Shader
 {
@@ -107,7 +106,7 @@ class GraphicsShader extends Shader
 	}
 
 	override public function __initGL()
-	{		
+	{
 		processSource();
 
 		__isGenerated = true;

@@ -61,7 +61,6 @@ class HealthIcon extends FlxSprite
 		JsonSettings.dev(JsonSettings.dir);
 		if (this.char != char)
 		{
-			
 			if (!JsonSettings.iconSupport)
 			{
 				var name:String = 'icons/' + char;

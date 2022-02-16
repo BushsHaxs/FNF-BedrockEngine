@@ -15,7 +15,8 @@ import haxe.Json;
 
 using StringTools;
 
-typedef EventNote = {
+typedef EventNote =
+{
 	strumTime:Float,
 	event:String,
 	value1:String,
@@ -82,9 +83,6 @@ class Note extends FlxSprite
 	public var noAnimation:Bool = false;
 	public var hitCausesMiss:Bool = false;
 	public var distance:Float = 2000; // plan on doing scroll directions soon -bb
-
-
-
 
 	private function set_texture(value:String):String
 	{
@@ -273,7 +271,7 @@ class Note extends FlxSprite
 			skin = PlayState.SONG.arrowSkin;
 			if (skin == null || skin.length < 1)
 			{
-				skin = 'noteskins/'+JsonSettings.noteSkin;
+				skin = 'noteskins/' + JsonSettings.noteSkin;
 			}
 		}
 

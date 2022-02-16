@@ -268,7 +268,8 @@ import lime._internal.graphics.ImageDataUtil; // TODO
 			__blurX, __blurY, __quality, __strength);
 		finalImage.colorTransform(finalImage.rect, new ColorTransform(0, 0, 0, __alpha, r, g, b, 0).__toLimeColorMatrix());
 
-		if (finalImage == bitmapData.image) return bitmapData;
+		if (finalImage == bitmapData.image)
+			return bitmapData;
 		#end
 		return sourceBitmapData;
 	}
@@ -368,7 +369,8 @@ import lime._internal.graphics.ImageDataUtil; // TODO
 
 	@:noCompletion private function set_alpha(value:Float):Float
 	{
-		if (value != __alpha) __renderDirty = true;
+		if (value != __alpha)
+			__renderDirty = true;
 		return __alpha = value;
 	}
 
@@ -411,7 +413,8 @@ import lime._internal.graphics.ImageDataUtil; // TODO
 
 	@:noCompletion private function set_color(value:Int):Int
 	{
-		if (value != __color) __renderDirty = true;
+		if (value != __color)
+			__renderDirty = true;
 		return __color = value;
 	}
 
@@ -467,7 +470,8 @@ import lime._internal.graphics.ImageDataUtil; // TODO
 
 	@:noCompletion private function set_strength(value:Float):Float
 	{
-		if (value != __strength) __renderDirty = true;
+		if (value != __strength)
+			__renderDirty = true;
 		return __strength = value;
 	}
 }

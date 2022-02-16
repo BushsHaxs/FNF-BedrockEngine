@@ -3,26 +3,29 @@ package;
 import flixel.FlxG;
 import flixel.system.FlxAssets.FlxShader;
 
-class ColorSwap {
-	
+class ColorSwap
+{
 	public var shader(default, null):ColorSwapShader = new ColorSwapShader();
 	public var hue(default, set):Float = 0;
 	public var saturation(default, set):Float = 0;
 	public var brightness(default, set):Float = 0;
 
-	private function set_hue(value:Float) {
+	private function set_hue(value:Float)
+	{
 		hue = value;
 		shader.data.uTime.value[0] = hue;
 		return hue;
 	}
 
-	private function set_saturation(value:Float) {
+	private function set_saturation(value:Float)
+	{
 		saturation = value;
 		shader.data.uTime.value[1] = saturation;
 		return saturation;
 	}
 
-	private function set_brightness(value:Float) {
+	private function set_brightness(value:Float)
+	{
 		brightness = value;
 		shader.data.uTime.value[2] = brightness;
 		return brightness;
@@ -35,8 +38,8 @@ class ColorSwap {
 	}
 }
 
-class ColorSwapShader extends FlxShader {
-
+class ColorSwapShader extends FlxShader
+{
 	public function new()
 	{
 		super('
@@ -112,7 +115,7 @@ class ColorSwapShader extends FlxShader {
 			}
 			gl_FragColor = color;
 
-		}',false,'
+		}', false, '
 
 		attribute float alpha;
 		attribute vec4 colorMultiplier;
@@ -138,5 +141,6 @@ class ColorSwapShader extends FlxShader {
 				openfl_ColorMultiplierv = colorMultiplier;
 			}
 		}');
+
 	}
 }

@@ -19,12 +19,11 @@ import sys.FileSystem;
 	@author Kemo
 
 	Please respect the effort but to this and credit us if used :]
-	
-	
-	
+
+
+
 	Hiiiii bbpanzu i edited the shits to work with psych engineee < 33333
  */
- 
 class DynamicShaderHandler
 {
 	public var shader:FlxGraphicsShader;
@@ -36,8 +35,9 @@ class DynamicShaderHandler
 	{
 		var path = Paths.modsShaderFragment(fileName);
 		trace(path);
-		if (!FileSystem.exists(path)) path = Paths.shaderFragment(fileName);
-		
+		if (!FileSystem.exists(path))
+			path = Paths.shaderFragment(fileName);
+
 		trace(path);
 		var fragSource:String = "";
 
@@ -46,11 +46,11 @@ class DynamicShaderHandler
 			fragSource = sys.io.File.getContent(path);
 		}
 
-		
 		var path2 = Paths.modsShaderVertex(fileName);
 		trace(path2);
-		if (!FileSystem.exists(path2)) path2 = Paths.shaderVertex(fileName);
-		
+		if (!FileSystem.exists(path2))
+			path2 = Paths.shaderVertex(fileName);
+
 		trace(path2);
 		var vertSource:String = "";
 
@@ -81,13 +81,12 @@ class DynamicShaderHandler
 			shader.data.iTime.value = [0];
 		}
 
-		#if LUA_ALLOWED 
+		#if LUA_ALLOWED
 		PlayState.instance.luaShaders[fileName] = this;
 		#end
 		PlayState.animatedShaders[fileName] = this;
-	
-			//trace(shader.data.get('rOffset'));
-		
+
+		// trace(shader.data.get('rOffset'));
 	}
 
 	public function modifyShaderProperty(property:String, value:Dynamic)
@@ -96,7 +95,7 @@ class DynamicShaderHandler
 		{
 			return;
 		}
-		
+
 		if (shader.data.get(property) != null)
 		{
 			shader.data.get(property).value = value;

@@ -189,7 +189,8 @@ import lime._internal.graphics.ImageDataUtil; // TODO
 			__blurX, __blurY, __quality);
 		var elapsed = Timer.stamp() - time;
 		// trace("blurX: " + __blurX + " blurY: " + __blurY + " quality: " + __quality + " elapsed: " + elapsed * 1000 + "ms");
-		if (finalImage == bitmapData.image) return bitmapData;
+		if (finalImage == bitmapData.image)
+			return bitmapData;
 		#end
 		return sourceBitmapData;
 	}
@@ -263,7 +264,8 @@ import lime._internal.graphics.ImageDataUtil; // TODO
 
 		__numShaderPasses = __horizontalPasses + __verticalPasses;
 
-		if (value != __quality) __renderDirty = true;
+		if (value != __quality)
+			__renderDirty = true;
 		return __quality = value;
 	}
 }
