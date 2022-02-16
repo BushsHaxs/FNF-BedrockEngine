@@ -48,7 +48,7 @@ class StrumNote extends FlxSprite
 		this.noteData = leData;
 		super(x, y);
 
-		var skin:String = 'noteskins/' + JsonSettings.noteSkin;
+		var skin:String = BedrockUtil.getNoteSkin(ClientPrefs.noteSkin);
 
 		if (PlayState.SONG.arrowSkin != null && PlayState.SONG.arrowSkin.length > 1)
 			skin = PlayState.SONG.arrowSkin;

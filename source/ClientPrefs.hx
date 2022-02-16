@@ -80,6 +80,7 @@ class ClientPrefs
 	public static var showState:Bool = false;
 	public static var useClassicSongs:Bool = false;
 	public static var hideStrumsMiddle:Bool = false;
+	public static var noteSkin:String = 'normal';
 
 	// Added by Bedrock Engine (via Pull Requests)
 	public static var marvelouses:Bool = false;
@@ -170,6 +171,7 @@ class ClientPrefs
 		FlxG.save.data.showState = showState;
 		FlxG.save.data.useClassicSongs = useClassicSongs;
 		FlxG.save.data.hideStrumsMiddle = hideStrumsMiddle;
+		FlxG.save.data.noteSkin = noteSkin;
 
 		// Added by Bedrock Engine (via Pull Requests)
 		FlxG.save.data.marvelousWindow = marvelousWindow;
@@ -397,6 +399,10 @@ class ClientPrefs
 		if (FlxG.save.data.hideStrumsMiddle != null)
 		{
 			hideStrumsMiddle = FlxG.save.data.hideStrumsMiddle;
+		}
+		if (FlxG.save.data.noteSkin != null)
+		{
+			noteSkin = FlxG.save.data.noteSkin;
 		}
 
 		// Added by Bedrock Engine (via Pull Requests)

@@ -271,7 +271,7 @@ class Note extends FlxSprite
 			skin = PlayState.SONG.arrowSkin;
 			if (skin == null || skin.length < 1)
 			{
-				skin = 'noteskins/' + JsonSettings.noteSkin;
+				skin = BedrockUtil.getNoteSkin(ClientPrefs.noteSkin);
 			}
 		}
 
