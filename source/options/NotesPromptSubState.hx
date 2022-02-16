@@ -14,6 +14,8 @@ class NotesPromptSubState extends MusicBeatSubstate
 	{
 		super.create();
 
+		BedrockUtil.reloadNoteSkinFiles();
+
 		for (skin in BedrockUtil.noteSkins.keys())
 			noteSkinList.push(skin);
 

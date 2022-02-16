@@ -1,9 +1,20 @@
 package;
 
+import haxe.Json;
+import sys.io.File;
+import sys.FileSystem;
+
+using StringTools;
+
+typedef NoteSkinFile =
+{
+	var name:String;
+	var imageFile:String;
+}
+
 // Utils for Bedrock Engine
 class BedrockUtil
 {
-	// hardcoded but softcoding coming soon
 	public static var noteSkins:Map<String, String> = [
 		'bar' => 'NOTE_bar',
 		'circle' => 'NOTE_circle',
@@ -13,7 +24,44 @@ class BedrockUtil
 		'normal' => 'NOTE_assets'
 	];
 
-	// ayo a actual helper for note shitz????
+	// ayo actual helpers for note shitz????
+	public static function reloadNoteSkinFiles()
+	{
+		#if MODS_ALLOWED
+		var directories:Array<String> = [
+			Paths.mods('noteskins/'),
+			Paths.mods(Paths.currentModDirectory + '/noteskins/'),
+			Paths.getPreloadPath('noteskins/')
+		];
+		#else
+		var directories:Array<String> = [Paths.getPreloadPath('noteskins/')];
+		#end
+
+		for (i in 0...directories.length)
+		{
+			var directory:String = directories[i];
+			if (FileSystem.exists(directory))
+			{
+				for (file in FileSystem.readDirectory(directory))
+				{
+					var path = haxe.io.Path.join([directory, file]);
+					if (!FileSystem.isDirectory(path) && file.endsWith('.json'))
+					{
+						var rawJson:String = File.getContent(path).trim();
+						while (!rawJson.endsWith("}"))
+						{
+							rawJson = rawJson.substr(0, rawJson.length - 1);
+							// LOL GOING THROUGH THE BULLSHIT TO CLEAN IDK WHATS STRANGE
+						}
+						var json:NoteSkinFile = cast Json.parse(rawJson);
+						if (!noteSkins.exists(json.name))
+							noteSkins.set(json.name, json.imageFile);
+					}
+				}
+			}
+		}
+	}
+
 	public static function getNoteSkin(skin:String = 'normal', ?pixel:Bool = false)
 	{
 		var path:String = 'noteskins/';
