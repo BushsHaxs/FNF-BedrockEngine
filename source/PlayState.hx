@@ -4119,11 +4119,6 @@ class PlayState extends MusicBeatState
 	{
 		var noteDiff:Float = Math.abs(note.strumTime - Conductor.songPosition + ClientPrefs.ratingOffset);
 
-		/*if (ClientPrefs.keAccuracy)
-		totalNotesHit += Etterna.wife3(-noteDiff, Conductor.timeScale); */
-
-		// trace(noteDiff, ' ' + Math.abs(note.strumTime - Conductor.songPosition));
-
 		if (ClientPrefs.playHitSounds)
 			FlxG.sound.play(Paths.sound('Tick'));
 
@@ -4140,6 +4135,9 @@ class PlayState extends MusicBeatState
 		var rating:FlxSprite = new FlxSprite();
 		var score:Int = 350;
 
+		if (ClientPrefs.keAccuracy)
+			totalNotesHit += Etterna.wife3(-noteDiff, Conductor.safeZoneOffset / 166);
+
 		// deletes all combo sprites prior to initalizing new ones
 		if (lastCombo != null)
 		{
@@ -4153,43 +4151,57 @@ class PlayState extends MusicBeatState
 		// tryna do MS based judgment due to popular demand
 		var daRating:String = Conductor.judgeNote(note, noteDiff);
 
-		switch (daRating)
+		if (!ClientPrefs.keAccuracy)
 		{
-			case "shit": // shit
-				if (ClientPrefs.keAccuracy)
-				{
-					totalMisses++;
-					songMisses++;
-					combo = 0;
-				}
-				totalNotesHit += 0;
-				score = 50;
-				shits++;
-			case "bad": // bad
-				if (ClientPrefs.keAccuracy)
-				{
-					health -= 0.03 * healthLoss;
-				}
-				totalNotesHit += 0.5;
-				score = 100;
-				bads++;
-			case "good": // good
-				if (ClientPrefs.keAccuracy)
-				{
-					health = note.hitHealth * healthGain;
-				}
-				totalNotesHit += 0.75;
-				score = 200;
-				goods++;
-			case "sick": // sick
-				if (!ClientPrefs.marvelouses)
+			switch (daRating)
+			{
+				case "shit":
+					totalNotesHit += 0;
+					score = 50;
+					shits++;
+				case "bad":
+					totalNotesHit += 0.5;
+					score = 100;
+					bads++;
+				case "good": // good
+					totalNotesHit += 0.75;
+					score = 200;
+					goods++;
+				case "sick":
+					if (!ClientPrefs.marvelouses)
+						totalNotesHit += 1;
+					else
+						totalNotesHit += 0.95;
+					sicks++;
+				case "marvelous":
 					totalNotesHit += 1;
-				else
-					totalNotesHit += 0.95;
-				sicks++;
-			case "marvelous": // marvelous
-				totalNotesHit += 1;
-				marvelouses++;
+					marvelouses++;
+			}
+		}
+		else
+		{
+			switch (daRating)
+			{
+				case 'shit':
+					score = -300;
+					combo = 0;
+					songMisses++;
+					health -= 0.1;
+					shits++;
+				case 'bad':
+					daRating = 'bad';
+					score = 0;
+					health -= 0.06;
+					bads++;
+				case 'good':
+					daRating = 'good';
+					score = 200;
+					goods++;
+				case 'sick':
+					if (health < 2)
+						health += 0.04;
+					sicks++;
+			}
 		}
 
 		if (daRating == (ClientPrefs.marvelouses ? 'marvelous' : 'sick') && !note.noteSplashDisabled)
@@ -4199,10 +4211,7 @@ class PlayState extends MusicBeatState
 
 		if (!practiceMode && !cpuControlled)
 		{
-			if (ClientPrefs.keAccuracy)
-				songScore += Math.round(score);
-			else
-				songScore += score;
+			songScore += score;
 			songHits++;
 			totalPlayed++;
 			RecalculateRating();

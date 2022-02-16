@@ -34,12 +34,9 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		title = 'Gameplay Settings';
 		rpcTitle = 'Adjusting the Gameplay Settings'; // for Discord Rich Presence
 
-		/*var Option = new Option('Complex Accuracy',
-				"If checked, the accuracy will follow a harsher system, Based on Etterna and Kade Engine.",
-				'keAccuracy',
-				'bool',
-				false);
-			addOption(Option); */
+		var Option = new Option('Complex Accuracy', "If checked, the accuracy will follow a harsher system, Based on Etterna and Kade Engine.", 'keAccuracy',
+			'bool', false);
+		addOption(Option);
 
 		var option:Option = new Option('Disable Reset Button', "If checked, pressing Reset won't do anything.", 'noReset', 'bool', false);
 		addOption(option);

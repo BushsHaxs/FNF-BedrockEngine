@@ -1,10 +1,11 @@
-/*package;
+package;
 
-// STOLEN FROM KE BRUH!!!!!!!!!
+// stolen from ke, like you already know that idk????
 class Etterna
 {
 	// erf constants
 	public static var a1 = 0.254829592;
+
 	public static var a2 = -0.284496736;
 	public static var a3 = 1.421413741;
 	public static var a4 = -1.453152027;
@@ -26,14 +27,14 @@ class Etterna
 		return sign * y;
 	}
 
-	public static function getNotes(sections:Array<SwagSection>):Int
+	public static function getNotes():Int
 	{
 		var notes:Int = 0;
-		for (i in 0...sections.length)
+		for (i in 0...PlayState.SONG.notes.length)
 		{
-			for (ii in 0...sections[i].sectionNotes.length)
+			for (ii in 0...PlayState.SONG.notes[i].sectionNotes.length)
 			{
-				var n = sections[i].sectionNotes[ii];
+				var n = PlayState.SONG.notes[i].sectionNotes[ii];
 				if (n[1] <= 0)
 					notes++;
 			}
@@ -41,16 +42,14 @@ class Etterna
 		return notes;
 	}
 
-	public static function getHolds(sections:Array<SwagSection>):Int
+	public static function getHolds():Int
 	{
 		var notes:Int = 0;
-		for (i in 0...sections.length)
+		for (i in 0...PlayState.SONG.notes.length)
 		{
-			trace(sections[i]);
-			for (ii in 0...sections[i].sectionNotes.length)
+			for (ii in 0...PlayState.SONG.notes[i].sectionNotes.length)
 			{
-				var n = sections[i].sectionNotes[ii];
-				trace(n);
+				var n = PlayState.SONG.notes[i].sectionNotes[ii];
 				if (n[1] > 0)
 					notes++;
 			}
@@ -58,12 +57,17 @@ class Etterna
 		return notes;
 	}
 
+	public static function getMapMaxScore():Int
+	{
+		return (getNotes() * 350);
+	}
+
 	public static function wife3(maxms:Float, ts:Float)
 	{
 		var max_points = 1.0;
 		var miss_weight = -5.5;
 		var ridic = 5 * ts;
-		var max_boo_weight = 166 * (ts / PlayState.songMultiplier);
+		var max_boo_weight = 166 * (ts / PlayState.instance.songSpeed);
 		var ts_pow = 0.75;
 		var zero = 65 * (Math.pow(ts, ts_pow));
 		var power = 2.5;
@@ -79,4 +83,3 @@ class Etterna
 			return miss_weight;
 	}
 }
-*/
