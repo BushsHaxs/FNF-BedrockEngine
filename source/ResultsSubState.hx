@@ -100,7 +100,7 @@ class ResultsSubState extends MusicBeatSubstate
         }
     }
 
-    public static function countAcc(number:Float, precision:Int):Float
+    public static function countAcc(number:Float, precision:Int):Float // ROBBED FROM KADE LMAOO
     {
         var num = number;
         num = num * Math.pow(10, precision);
