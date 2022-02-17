@@ -25,7 +25,7 @@ class ResultsSubState extends MusicBeatSubstate
     override function create()
     {
         applause = new FlxSound().loadEmbedded(Paths.sound('applause'));
-        results = new FlxSound().loadEmbedded(Paths.music('resultsScreen'));
+        results = new FlxSound().loadEmbedded(Paths.music('resultsScreen', true));
 
         var ratingResult:String = '';
 
@@ -98,12 +98,12 @@ class ResultsSubState extends MusicBeatSubstate
         {
             resultRank.visble = true;
             FlxG.sound.play(Paths.sound('confirmMenu'));
+        }
 
-            onComplete: function(tmr:FlxTimer)
-            {
-                applause.play();
-                results.play()
-            }
+        new FlxTimer().start(1.2, function(tmr:FlxTimer)
+        {
+            results.play();
+            applause.play();
         }
     }
 
