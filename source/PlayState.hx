@@ -2813,19 +2813,22 @@ class PlayState extends MusicBeatState
 		var ratingDivider:String = ' ' + '|' + ' ';
 
 		scoreTxt.text = 'Score: ' + songScore;
-		scoreTxt.text += divider + 'Misses:' + totalMisses;
 		scoreTxt.text += divider + 'Accuracy:' + Highscore.floorDecimal(ratingPercent * 100, 2) + '%';
 
-		scoreTxt.text += divider + '[' + ratingName + ratingDivider + ratingFC + ']';
+		if (ratingFC == "" || totalMisses > 0)
+			scoreTxt.text += '';
+		else
+			scoreTxt.text += ' [' + ratingFC + ']';
 
-	if (ratingFC == "")
-		scoreTxt.text += divider + '[? | ?]';
+		scoreTxt.text += divider + 'Misses:' + songMisses;
 
-	if (ratingFC == "" && totalMisses > 0)
-		scoreTxt.text += divider + '[' + ratingName + ']';
+		if (ratingFC == "")
+			scoreTxt.text += divider + '?';
+		else
+			scoreTxt.text += divider + ratingName;
 
-	if (ClientPrefs.ratingSystem == "None")
-		scoreTxt.text = 'Score: ' + songScore + divider + 'Misses: ' + totalMisses;
+		if (ClientPrefs.ratingSystem == "None")
+			scoreTxt.text = 'Score: ${songScore} Misses: ${totalMisses}';
 
 		if (botplayTxt.visible)
 		{
@@ -4299,7 +4302,15 @@ class PlayState extends MusicBeatState
 		var daLoop:Int = 0;
 		for (i in seperatedScore)
 		{
+			/* I will probably try to change this in the future
+			   I wanna make it so numbers spawn depending on the current combo value
+			   ex: if combo is at 1, then spawn number 1 and nothing else, then keep counting up if needed
+			       if combo is at 10, then spawn number 1 and number 0, nothing else, then keep counting up if needed
+			       if combo is at 100, then spawn number 1, then 0, then 0, nothing else, then keep counting up if needed
+			  etc...
+			-Gui iago */
 			var numScore:FlxSprite = new FlxSprite().loadGraphic(Paths.image(getUiSkin(uiSkin, '', altPart, true, Std.int(i))));
+			add(numScore);
 			numScore.cameras = [camHUD];
 			numScore.screenCenter();
 			numScore.x = coolText.x + (43 * daLoop) - 90;
@@ -5499,7 +5510,7 @@ class PlayState extends MusicBeatState
 						
 
 			// Rating FC
-			ratingFC = "";
+			ratingFC = "?";
 			if (marvelouses > 0)
 				ratingFC = "MFC"; // Marvelous Full Combo
 			if (sicks > 0)
