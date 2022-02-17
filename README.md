@@ -16,9 +16,6 @@ Credits:
 
 > **Remember: this engine should be treated as nothing but a Mod/Fork of Psych Engine**
 
-## Currently being Rewriten:
-https://github.com/Gui-iago/FNF-BedrockEngineRewrite
-
 # Sections:
 
 * [How to](https://github.com/Gui-iago/FNF-BedrockEngine/blob/main/README.md#how-to-compile-the-game-and-what-is-needed-to-do-so)
