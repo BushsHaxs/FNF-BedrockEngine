@@ -81,6 +81,7 @@ class ClientPrefs
 	public static var useClassicSongs:Bool = false;
 	public static var ratingSystem:String = "Bedrock";
 	public static var noteSkin:String = 'normal';
+	public static var antiMash:Null<Bool> = true;
 
 	// Added by Bedrock Engine (via Pull Requests)
 	public static var marvelouses:Bool = false;

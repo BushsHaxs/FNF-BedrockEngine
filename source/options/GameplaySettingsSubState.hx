@@ -37,6 +37,9 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		var Option = new Option('Complex Accuracy', "If checked, the accuracy will follow a harsher system, Based on Etterna.", 'keAccuracy', 'bool', false);
 		addOption(Option);
 
+		var Option = new Option('Antimash', "If unchecked, antimash will be disabled.", 'antiMash', 'bool', true);
+		addOption(Option);
+
 		var option:Option = new Option('Disable Reset Button', "If checked, pressing Reset won't do anything.", 'noReset', 'bool', false);
 		addOption(option);
 
@@ -73,7 +76,7 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		addOption(option);
 
 		var option:Option = new Option('Rating System:', "What should your Rating System be?", 'ratingSystem', 'string', 'Bedrock',
-			['Bedrock', 'Psych', 'Forever', 'Andromeda', "None"]);
+			['Bedrock', 'Psych', 'Forever', 'Andromeda', "Accurate", "None"]);
 		addOption(option);
 
 		/*var option:Option = new Option('Note Delay',

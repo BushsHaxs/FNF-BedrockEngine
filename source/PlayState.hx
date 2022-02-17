@@ -5428,9 +5428,6 @@ class PlayState extends MusicBeatState
 		setOnLuas('misses', songMisses);
 		setOnLuas('hits', songHits);
 
-		Ratings.callRating();
-		// JsonSettings.devtwo(JsonSettings.dirtwo);
-
 		var ret:Dynamic = callOnLuas('onRecalculateRating', []);
 		if (ret != FunkinLua.Function_Stop)
 		{
@@ -5452,6 +5449,8 @@ class PlayState extends MusicBeatState
 				// ALSO TRY ANDROMEDA!! https://github.com/nebulazorua/andromeda-engine
 				case "Andromeda":
 					ratings = Ratings.andromedaRatings;
+				case "Accurate":
+					ratings = Ratings.accurateRatings;
 			}
 
 			// Rating Name
