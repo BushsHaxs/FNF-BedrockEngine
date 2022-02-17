@@ -5463,7 +5463,10 @@ class PlayState extends MusicBeatState
 
 			// Rating Name
 			if (ratingPercent >= 1)
-				ratings[ratings.length - 1][0]
+			{
+				var dummyRating = ratings[ratings.length - 1][0];
+				ratingName = dummyRating;
+			}
 			else
 			{
 				for (i in 0...ratings.length - 1)
