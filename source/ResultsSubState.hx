@@ -12,6 +12,7 @@ import flixel.text.FlxText;
 class ResultsSubState extends MusicBeatSubstate
 {
     public var applause:FlxSound;
+    public var results:FlxSound;
 
     public var bg:FlxSprite;
     public var resultRank:FlxSprite;
@@ -24,7 +25,7 @@ class ResultsSubState extends MusicBeatSubstate
     override function create()
     {
         applause = new FlxSound().loadEmbedded(Paths.sound('applause'));
-        FlxG.sound.playMusic(Paths.music('resultsScreen'));
+        results = new FlxSound().loadEmbedded(Paths.music('resultsScreen'));
 
         var ratingResult:String = '';
 
@@ -76,7 +77,7 @@ class ResultsSubState extends MusicBeatSubstate
     {
         if(FlxG.keys.justPressed.ENTER)
         {
-            FlxG.sound.music.fadeIn(0.4, 1, 0);
+            results.fadeIn(0.4, 1, 0);
             applause.fadeIn(0.4, 1, 0);
             close();
 
@@ -97,6 +98,12 @@ class ResultsSubState extends MusicBeatSubstate
         {
             resultRank.visble = true;
             FlxG.sound.play(Paths.sound('confirmMenu'));
+
+            onComplete: function(tmr:FlxTimer)
+            {
+                applause.play();
+                results.play()
+            }
         }
     }
 
