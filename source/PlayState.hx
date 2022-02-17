@@ -1960,7 +1960,7 @@ class PlayState extends MusicBeatState
 			{
 				setOnLuas('defaultOpponentStrumX' + i, opponentStrums.members[i].x);
 				setOnLuas('defaultOpponentStrumY' + i, opponentStrums.members[i].y);
-				//opponentStrums.members[i].visible = false;
+				// opponentStrums.members[i].visible = false;
 			}
 
 			startedCountdown = true;
@@ -4305,8 +4305,8 @@ class PlayState extends MusicBeatState
 			/* I will probably try to change this in the future
 			   I wanna make it so numbers spawn depending on the current combo value
 			   ex: if combo is at 1, then spawn number 1 and nothing else, then keep counting up if needed
-			       if combo is at 10, then spawn number 1 and number 0, nothing else, then keep counting up if needed
-			       if combo is at 100, then spawn number 1, then 0, then 0, nothing else, then keep counting up if needed
+				   if combo is at 10, then spawn number 1 and number 0, nothing else, then keep counting up if needed
+				   if combo is at 100, then spawn number 1, then 0, then 0, nothing else, then keep counting up if needed
 			  etc...
 			-Gui iago */
 			var numScore:FlxSprite = new FlxSprite().loadGraphic(Paths.image(getUiSkin(uiSkin, '', altPart, true, Std.int(i))));
@@ -5429,7 +5429,7 @@ class PlayState extends MusicBeatState
 		setOnLuas('hits', songHits);
 
 		Ratings.callRating();
-		//JsonSettings.devtwo(JsonSettings.dirtwo);
+		// JsonSettings.devtwo(JsonSettings.dirtwo);
 
 		var ret:Dynamic = callOnLuas('onRecalculateRating', []);
 		if (ret != FunkinLua.Function_Stop)
@@ -5440,74 +5440,34 @@ class PlayState extends MusicBeatState
 				// Rating Percent
 				ratingPercent = Math.min(1, Math.max(0, totalNotesHit / totalPlayed));
 
+			// i swear to the guy who makes the old rating code
+			var ratings:Array<Dynamic> = Ratings.bedrockRatings;
+			switch (ClientPrefs.ratingSystem)
+			{
+				case "Psych":
+					ratings = Ratings.psychRatings;
+				// GO CHECK FOREVER ENGINE OUT!! https://github.com/Yoshubs/Forever-Engine-Legacy
+				case "Forever":
+					ratings = Ratings.foreverRatings;
+				// ALSO TRY ANDROMEDA!! https://github.com/nebulazorua/andromeda-engine
+				case "Andromeda":
+					ratings = Ratings.andromedaRatings;
+			}
+
 			// Rating Name
 			if (ratingPercent >= 1)
-			{
-				switch (ClientPrefs.ratingSystem)
-				{
-					case "Bedrock":
-						ratingName = Ratings.bedrockRatings[Ratings.bedrockRatings.length - 1][0];
-						
-					case "Psych":
-						ratingName = Ratings.psychRatings[Ratings.psychRatings.length - 1][0];
-						
-					case "Forever":
-						ratingName = Ratings.foreverRatings[Ratings.foreverRatings.length - 1][0];
-						
-					/*GO CHECK FOREVER ENGINE OUT!! https://github.com/Yoshubs/Forever-Engine-Legacy*/
-					case "Andromeda":
-						ratingName = Ratings.andromedaRatings[Ratings.andromedaRatings.length - 1][0];
-						
-					/*ALSO TRY ANDROMEDA!! https://github.com/nebulazorua/andromeda-engine*/
-				}
-				
-			}
-			
+				ratings[ratings.length - 1][0]
 			else
 			{
-				switch(ClientPrefs.ratingSystem)
+				for (i in 0...ratings.length - 1)
 				{
-						case "Bedrock":
-						for (i in 0...Ratings.bedrockRatings.length - 1)
-							{
-							if (ratingPercent < Ratings.bedrockRatings[i][1])
-								{
-									ratingName = Ratings.bedrockRatings[i][0];
-									break;
-								}
-							}
-						case "Forever": 
-						for (i in 0...Ratings.foreverRatings.length - 1)
-							{
-								if (ratingPercent < Ratings.foreverRatings[i][1])
-								{
-									ratingName = Ratings.foreverRatings[i][0];
-									break;
-								}
-							}
-						case "Psych":
-						for (i in 0...Ratings.psychRatings.length - 1)
-							{
-								if (ratingPercent < Ratings.psychRatings[i][1])
-								{
-									ratingName = Ratings.psychRatings[i][0];
-									break;
-								}
-							}
-						case "Andromeda":
-						for (i in 0...Ratings.andromedaRatings.length - 1)
-							{
-								if (ratingPercent < Ratings.andromedaRatings[i][1])
-								{
-									ratingName = Ratings.andromedaRatings[i][0];
-									break;
-								}
-							}
+					if (ratingPercent < ratings[i][1])
+					{
+						ratingName = ratings[i][0];
+						break;
+					}
 				}
 			}
-						
-						
-						
 
 			// Rating FC
 			ratingFC = "";
