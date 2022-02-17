@@ -2804,7 +2804,17 @@ class PlayState extends MusicBeatState
 		
 		// Info Bar
 		var ratingNameTwo:String = ratingName;
-		var divider:String = ' ' + '-' + ' ';
+		var divider:String;
+		#if MODS_ALLOWED
+		divider = ' ' + File.getContent(Paths.mods("divider/") + "divider.divider")) + ' ';
+
+		if (!FileSystem.exists(Paths.mods("divider/") + "divider.divider"))
+		{
+			divider = ' ' + '-' + ' ';
+		}
+		#else
+		divider = ' ' + '-' + ' ';
+		#end
 
 		scoreTxt.text = 'Score: ' + songScore;
 		scoreTxt.text += divider + 'Accuracy:' + Highscore.floorDecimal(ratingPercent * 100, 2) + '%';
@@ -4236,7 +4246,7 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		var uiSkin:String = 'classic';
+		var uiSkin:String = ClientPrefs.judgementSkin.toLowerCase();
 		var altPart:String = isPixelStage ? '-pixel' : '';
 
 		//uiSkin = BedrockUtils.uiSkin;

@@ -47,6 +47,14 @@ class VisualsUISubState extends BaseOptionsMenu
 		var option:Option = new Option('Hide HUD', 'If checked, hides most HUD elements.', 'hideHud', 'bool', false);
 		addOption(option);
 
+		var option:Option = new Option('Judgement Skin', "What should judgements skins be?", 'judgementSkin', 'string', 'Bedrock',
+			["Bedrock", "Classic"]);
+		addOption(option);
+
+		var option:Option = new Option('300x150 Icon Support', "If checked, enables the old icon support.", 'iconSupport',
+			'bool', false);
+		addOption(option)
+
 		var option:Option = new Option('Judgement Counters', "If checked, will show Judgement Counters at the left side of the screen", 'judgCounter', 'bool',
 			true);
 		addOption(option);
