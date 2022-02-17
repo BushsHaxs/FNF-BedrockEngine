@@ -11,8 +11,9 @@ You can change your Noteskins using the Note Preferences menu on the Options Men
 Just press "S" on your Keyboard to change it
 
 you can also add your own noteskins
-just place them on "mods/noteskins"
+place them on "mods/images/noteskins"
 then use the template json to create a new entry on the Note Preferences menu
+jsons should go to "mods/noteskins"
 
 if a skin doesn't have a pixel variant, pixel stages will crash
 so make sure to create or copy any existing skin to mods/pixelUI/noteskins so your noteskin won't crash
