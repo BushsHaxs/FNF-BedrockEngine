@@ -8,9 +8,10 @@ import flixel.util.FlxColor;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.text.FlxText;
+import flixel.util.FlxTimer;
 
 class ResultsSubState extends MusicBeatSubstate
-{
+{    
     public var applause:FlxSound;
     public var results:FlxSound;
 
@@ -25,8 +26,10 @@ class ResultsSubState extends MusicBeatSubstate
     override function create()
     {
         applause = new FlxSound().loadEmbedded(Paths.sound('applause'));
-        results = new FlxSound().loadEmbedded(Paths.music('resultsScreen', true));
+        results = new FlxSound().loadEmbedded(Paths.music('resultsScreen'));
+        results.looped = true;
 
+        var percent:Float = PlayState.instance.ratingPercent;
         var ratingResult:String = '';
 
         bg = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
@@ -35,7 +38,7 @@ class ResultsSubState extends MusicBeatSubstate
         var ratings:FlxSpriteGroup = new FlxSpriteGroup();
 
         accText = new FlxText(-200, 65, 0,
-            'Accuracy: ${countAcc(PlayState.Highscore.floorDecimal(ratingPercent * 100, 2))}'
+            'Accuracy: ${countAcc(PlayState.instance.accuracy, 2)}'
         );
 
         var perfect:FlxSprite = new FlxSprite(-150, 65).loadGraphic(Paths.image('maniamode/resultsscreen/perfect'));
@@ -43,10 +46,7 @@ class ResultsSubState extends MusicBeatSubstate
 
         var percent:Float = PlayState.instance.ratingPercent;
         resultRank = new FlxSprite(150, 30).loadGraphic(Paths.image('maniamode/resultsscreen/' + ratingResult));
-        resultRank.antialiasing = true;
-
-        if(PlayState.songMisses < 0 && ratingResult = 'X' || ratingResult = 'S')
-            resultRank = new FlxSprite(150, 30).loadGraphic(Paths.image('maniamode/resultsscreen/' + ratingResult + '-gold'));
+        resultRank.antialiasing = ClientPrefs.globalAntialiasing;
 
         switch (percent)
         {
@@ -69,11 +69,16 @@ class ResultsSubState extends MusicBeatSubstate
                 ratingResult = 'D';
         }
 
+        if(PlayState.instance.totalMisses < 1 && ratingResult == 'X' || ratingResult == 'S')
+            resultRank = new FlxSprite(150, 30).loadGraphic(Paths.image('maniamode/resultsscreen/' + ratingResult + '-gold'));
+
         hidingBG = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
         add(hidingBG);
+
+        super.create();
     }
 
-    override function update()
+    override function update(elapsed:Float)
     {
         if(FlxG.keys.justPressed.ENTER)
         {
@@ -86,6 +91,8 @@ class ResultsSubState extends MusicBeatSubstate
             else
                 MusicBeatState.switchState(new FreeplayState());
         }
+
+        super.update(elapsed);
     }
 
     public function new()
@@ -96,15 +103,16 @@ class ResultsSubState extends MusicBeatSubstate
 
         new FlxTimer().start(0.9, function(tmr:FlxTimer)
         {
-            resultRank.visble = true;
+            resultRank.visible = true;
             FlxG.sound.play(Paths.sound('confirmMenu'));
-        }
+            new FlxTimer().start(0.3, function(tmr:FlxTimer)
+            {
+                results.play();
+                applause.play();
+            });
+        });
 
-        new FlxTimer().start(1.2, function(tmr:FlxTimer)
-        {
-            results.play();
-            applause.play();
-        }
+        super();
     }
 
     public static function countAcc(number:Float, precision:Int):Float // ROBBED FROM KADE LMAOO
