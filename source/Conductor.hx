@@ -62,10 +62,10 @@ class Conductor
 	{
 		JsonSettings.offdev(JsonSettings.offdir);
 		var timingWindows:Array<Int> = [
-			JsonSettings.marvWindow,
-			JsonSettings.sickWindow,
-			JsonSettings.goodWindow,
-			JsonSettings.badWindow
+			ClientPrefs.marvWindow,
+			ClientPrefs.sickWindow,
+			ClientPrefs.goodWindow,
+			ClientPrefs.badWindow
 		];
 		// tryna do MS based judgment due to popular demand
 		var windowNames:Array<String> = ['sick', 'good', 'bad'];

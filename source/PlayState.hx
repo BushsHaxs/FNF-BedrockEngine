@@ -5419,7 +5419,8 @@ class PlayState extends MusicBeatState
 		setOnLuas('misses', songMisses);
 		setOnLuas('hits', songHits);
 
-		JsonSettings.devtwo(JsonSettings.dirtwo);
+		Ratings.callRating();
+		//JsonSettings.devtwo(JsonSettings.dirtwo);
 
 		var ret:Dynamic = callOnLuas('onRecalculateRating', []);
 		if (ret != FunkinLua.Function_Stop)
@@ -5433,34 +5434,56 @@ class PlayState extends MusicBeatState
 			// Rating Name
 			if (ratingPercent >= 1)
 			{
-				if (JsonSettings.letterGrader)
-					ratingName = Ratings.ratingStuff[Ratings.ratingStuff.length - 1][0]; // Uses last string
-				else
-					ratingName = Ratings.ratingSimple[Ratings.ratingSimple.length - 1][0];
-			}
-			else
-			{
-				if (JsonSettings.letterGrader)
+				switch (ClientPrefs.ratingSystem)
 				{
-					for (i in 0...Ratings.ratingStuff.length - 1)
-					{
-						if (ratingPercent < Ratings.ratingStuff[i][1])
+					case "Bedrock":
+						ratingName = Ratings.bedrockRatings[Ratings.bedrockRatings.length - 1][0];
 						{
-							ratingName = Ratings.ratingStuff[i][0];
-							break;
+							for (i in 0...Ratings.bedrockRatings.length - 1)
+							{
+							if (ratingPercent < Ratings.bedrockRatings[i][1])
+								{
+									ratingName = Ratings.bedrockRatings[i][0];
+									break;
+								}
+							}
 						}
-					}
-				}
-				else
-				{
-					for (i in 0...Ratings.ratingSimple.length - 1)
-					{
-						if (ratingPercent < Ratings.ratingSimple[i][1])
+					case "Psych":
+						ratingName = Ratings.psychRatings[Ratings.psychRatings.length - 1][0];
 						{
-							ratingName = Ratings.ratingSimple[i][0];
-							break;
+							for (i in 0...Ratings.psychRatings.length - 1)
+							{
+								if (ratingPercent < Ratings.psychRatings[i][1])
+								{
+									ratingName = Ratings.psychRatings[i][0];
+									break;
+								}
+							}
 						}
-					}
+					case "Forever":
+						ratingName = Ratings.foreverRatings[Ratings.foreverRatings.length - 1][0];
+						{
+							for (i in 0...Ratings.foreverRatings.length - 1)
+							{
+							if (ratingPercent < Ratings.foreverRatings[i][1])
+								{
+									ratingName = Ratings.foreverRatings[i][0];
+									break;
+								}
+							}
+						}
+					case "Andromeda":
+						ratingName = Ratings.andromedaRatings[Ratings.andromedaRatings.length - 1][0];
+						{
+							for (i in 0...Ratings.andromedaRatings.length - 1)
+							{
+								if (ratingPercent < Ratings.andromedaRatings[i][1])
+								{
+									ratingName = Ratings.andromedaRatings[i][0];
+									break;
+								}
+							}
+						}
 				}
 			}
 
