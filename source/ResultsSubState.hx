@@ -32,7 +32,7 @@ class ResultsSubState extends MusicBeatSubstate
         bg = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
         bg.alpha = 0.5;
 
-        var ratings:FlxSpriteGroup = new FlxSpriteGroup
+        var ratings:FlxSpriteGroup = new FlxSpriteGroup;
 
         accText = new FlxText(-200, 65, 0,
             'Accuracy: ${countAcc(PlayState.Highscore.floorDecimal(ratingPercent * 100, 2))}'
