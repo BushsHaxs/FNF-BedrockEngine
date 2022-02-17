@@ -82,6 +82,7 @@ class ClientPrefs
 	public static var ratingSystem:String = "Bedrock";
 	public static var noteSkin:String = 'normal';
 	public static var antiMash:Null<Bool> = true;
+	public static var screenRes:String = '1280x720';
 
 	// Added by Bedrock Engine (via Pull Requests)
 	public static var marvelouses:Bool = false;
@@ -173,6 +174,7 @@ class ClientPrefs
 		FlxG.save.data.useClassicSongs = useClassicSongs;
 		FlxG.save.data.ratingSystem = ratingSystem;
 		FlxG.save.data.noteSkin = noteSkin;
+		FlxG.save.data.screenRes = screenRes;
 
 		// Added by Bedrock Engine (via Pull Requests)
 		FlxG.save.data.marvWindow = marvWindow;
@@ -404,6 +406,9 @@ class ClientPrefs
 		if (FlxG.save.data.noteSkin != null)
 		{
 			noteSkin = FlxG.save.data.noteSkin;
+		}
+		if(FlxG.save.data.screenRes != null) {
+			screenRes = FlxG.save.data.screenRes;
 		}
 
 		// Added by Bedrock Engine (via Pull Requests)

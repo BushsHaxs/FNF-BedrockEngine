@@ -90,7 +90,26 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 			'showState', 'bool', false);
 		addOption(option);
 
+		#if desktop //no need for this at other platforms cuz only desktop has fullscreen as false by default
+		var option:Option = new Option('Screen Resolution',
+			'Choose your preferred screen resolution.',
+			'screenRes',
+			'string',
+			'1280x720',
+			['640x360', '852x480', '960x540', '1280x720', '1960x1080', '3840x2160', '7680x4320']);
+		addOption(option);
+		option.onChange = onChangeScreenRes;
+		#end
+
 		super();
+	}
+
+	function onChangeScreenRes()
+	{
+		if(!FlxG.fullscreen) {
+			var res = ClientPrefs.screenRes.split('x');
+			FlxG.resizeWindow(Std.parseInt(res[0]), Std.parseInt(res[1]));
+		}
 	}
 
 	function onChangeAutoPause()
