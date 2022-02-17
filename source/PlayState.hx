@@ -5436,8 +5436,28 @@ class PlayState extends MusicBeatState
 				{
 					case "Bedrock":
 						ratingName = Ratings.bedrockRatings[Ratings.bedrockRatings.length - 1][0];
-						{
-							for (i in 0...Ratings.bedrockRatings.length - 1)
+						
+					case "Psych":
+						ratingName = Ratings.psychRatings[Ratings.psychRatings.length - 1][0];
+						
+					case "Forever":
+						ratingName = Ratings.foreverRatings[Ratings.foreverRatings.length - 1][0];
+						
+					/*GO CHECK FOREVER ENGINE OUT!! https://github.com/Yoshubs/Forever-Engine-Legacy*/
+					case "Andromeda":
+						ratingName = Ratings.andromedaRatings[Ratings.andromedaRatings.length - 1][0];
+						
+					/*ALSO TRY ANDROMEDA!! https://github.com/nebulazorua/andromeda-engine*/
+				}
+				
+			}
+			
+			else
+			{
+				switch(ClientPrefs.ratingSystem)
+				{
+						case "Bedrock":
+						for (i in 0...Ratings.bedrockRatings.length - 1)
 							{
 							if (ratingPercent < Ratings.bedrockRatings[i][1])
 								{
@@ -5445,23 +5465,8 @@ class PlayState extends MusicBeatState
 									break;
 								}
 							}
-						}
-					case "Psych":
-						ratingName = Ratings.psychRatings[Ratings.psychRatings.length - 1][0];
-						{
-							for (i in 0...Ratings.psychRatings.length - 1)
-							{
-								if (ratingPercent < Ratings.psychRatings[i][1])
-								{
-									ratingName = Ratings.psychRatings[i][0];
-									break;
-								}
-							}
-						}
-					case "Forever":
-						ratingName = Ratings.foreverRatings[Ratings.foreverRatings.length - 1][0];
-						{
-							for (i in 0...Ratings.foreverRatings.length - 1)
+						case "Forever": 
+						for (i in 0...Ratings.foreverRatings.length - 1)
 							{
 								if (ratingPercent < Ratings.foreverRatings[i][1])
 								{
@@ -5469,12 +5474,17 @@ class PlayState extends MusicBeatState
 									break;
 								}
 							}
-						}
-					/*GO CHECK FOREVER ENGINE OUT!! https://github.com/Yoshubs/Forever-Engine-Legacy*/
-					case "Andromeda":
-						ratingName = Ratings.andromedaRatings[Ratings.andromedaRatings.length - 1][0];
-						{
-							for (i in 0...Ratings.andromedaRatings.length - 1)
+						case "Psych":
+						for (i in 0...Ratings.psychRatings.length - 1)
+							{
+								if (ratingPercent < Ratings.psychRatings[i][1])
+								{
+									ratingName = Ratings.psychRatings[i][0];
+									break;
+								}
+							}
+						case "Andromeda":
+						for (i in 0...Ratings.andromedaRatings.length - 1)
 							{
 								if (ratingPercent < Ratings.andromedaRatings[i][1])
 								{
@@ -5482,10 +5492,11 @@ class PlayState extends MusicBeatState
 									break;
 								}
 							}
-						}
-					/*ALSO TRY ANDROMEDA!! https://github.com/nebulazorua/andromeda-engine*/
 				}
 			}
+						
+						
+						
 
 			// Rating FC
 			ratingFC = "";
