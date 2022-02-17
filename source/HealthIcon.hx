@@ -46,13 +46,14 @@ class HealthIcon extends FlxSprite
 	private var iconOffsets:Array<Float> = [0, 0, 0];
 	public var int:Int = 3;
 
-	if (ClientPrefs.iconSupport)
-	{
-		iconOffsets = [0, 0];
-		int = 2;
-	}
+	
 
 	public function changeIcon(char:String) {
+		if (ClientPrefs.iconSupport)
+		{
+			iconOffsets = [0, 0];
+			int = 2;
+		}
 		if(this.char != char) {
 			var name:String = 'icons/' + char;
 			if (ClientPrefs.iconSupport)
