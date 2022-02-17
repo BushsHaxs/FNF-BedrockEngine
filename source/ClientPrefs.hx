@@ -53,7 +53,7 @@ class ClientPrefs
 
 	public static var comboOffset:Array<Int> = [0, 0, 0, 0];
 	public static var ratingOffset:Int = 0;
-	public static var marvelousWindow:Int = 25;
+	public static var marvWindow:Int = 25;
 	public static var sickWindow:Int = 45;
 	public static var goodWindow:Int = 90;
 	public static var badWindow:Int = 135;
@@ -174,7 +174,7 @@ class ClientPrefs
 		FlxG.save.data.noteSkin = noteSkin;
 
 		// Added by Bedrock Engine (via Pull Requests)
-		FlxG.save.data.marvelousWindow = marvelousWindow;
+		FlxG.save.data.marvWindow = marvWindow;
 		FlxG.save.data.marvelouses = marvelouses;
 		FlxG.save.data.showWatermarks = showWatermarks;
 
@@ -406,9 +406,9 @@ class ClientPrefs
 		}
 
 		// Added by Bedrock Engine (via Pull Requests)
-		if (FlxG.save.data.marvelousWindow != null)
+		if (FlxG.save.data.marvWindow != null)
 		{
-			marvelousWindow = FlxG.save.data.marvelousWindow;
+			marvWindow = FlxG.save.data.marvWindow;
 		}
 		if (FlxG.save.data.marvelouses != null)
 		{

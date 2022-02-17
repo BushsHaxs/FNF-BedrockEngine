@@ -1960,10 +1960,7 @@ class PlayState extends MusicBeatState
 			{
 				setOnLuas('defaultOpponentStrumX' + i, opponentStrums.members[i].x);
 				setOnLuas('defaultOpponentStrumY' + i, opponentStrums.members[i].y);
-				if (ClientPrefs.hideStrumsMiddle)
-				{
-					opponentStrums.members[i].visible = false;
-				}
+				//opponentStrums.members[i].visible = false;
 			}
 
 			startedCountdown = true;
@@ -2813,6 +2810,7 @@ class PlayState extends MusicBeatState
 		// Info Bar
 		var ratingNameTwo:String = ratingName;
 		var divider:String = ' ' + JsonSettings.divider + ' ';
+		var ratingDivider:String = ' ' + '|' + ' ';
 
 		scoreTxt.text = 'Score: ' + songScore;
 		scoreTxt.text += divider + 'Misses:' + totalMisses;
@@ -5465,13 +5463,14 @@ class PlayState extends MusicBeatState
 						{
 							for (i in 0...Ratings.foreverRatings.length - 1)
 							{
-							if (ratingPercent < Ratings.foreverRatings[i][1])
+								if (ratingPercent < Ratings.foreverRatings[i][1])
 								{
 									ratingName = Ratings.foreverRatings[i][0];
 									break;
 								}
 							}
 						}
+					/*GO CHECK FOREVER ENGINE OUT!! https://github.com/Yoshubs/Forever-Engine-Legacy*/
 					case "Andromeda":
 						ratingName = Ratings.andromedaRatings[Ratings.andromedaRatings.length - 1][0];
 						{
@@ -5484,6 +5483,7 @@ class PlayState extends MusicBeatState
 								}
 							}
 						}
+					/*ALSO TRY ANDROMEDA!! https://github.com/nebulazorua/andromeda-engine*/
 				}
 			}
 
@@ -5497,15 +5497,6 @@ class PlayState extends MusicBeatState
 				ratingFC = "GFC"; // Good Full Combo
 			if (bads > 0 || shits > 0)
 				ratingFC = "FC"; // Full Combo
-
-			// stars, removed for now
-			/*☆☆☆☆
-			☆☆☆
-			☆☆
-			☆ */
-			/*andromeda engine was  probably 
-			the first to have the stars idea, check them out!
-			https://github.com/nebulazorua/andromeda-engine */
 		}
 		JsonSettings.devtwo(JsonSettings.dirtwo);
 
