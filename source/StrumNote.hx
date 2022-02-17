@@ -39,8 +39,6 @@ class StrumNote extends FlxSprite
 
 	public function new(x:Float, y:Float, leData:Int, player:Int)
 	{
-		JsonSettings.offdev(JsonSettings.offdir);
-
 		colorSwap = new ColorSwap();
 		shader = colorSwap.shader;
 		noteData = leData;

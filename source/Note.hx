@@ -256,8 +256,6 @@ class Note extends FlxSprite
 
 	function reloadNote(?prefix:String = '', ?texture:String = '', ?suffix:String = '')
 	{
-		JsonSettings.offdev(JsonSettings.offdir);
-
 		if (prefix == null)
 			prefix = '';
 		if (texture == null)

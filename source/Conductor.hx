@@ -60,7 +60,6 @@ class Conductor
 	public static function judgeNote(note:Note,
 			diff:Float = 0) // STOLEN FROM KADE ENGINE (bbpanzu) - I had to rewrite it later anyway after i added the custom hit windows lmao (Shadow Mario)
 	{
-		JsonSettings.offdev(JsonSettings.offdir);
 		var timingWindows:Array<Int> = [
 			ClientPrefs.marvWindow,
 			ClientPrefs.sickWindow,

@@ -9,6 +9,8 @@ import sys.io.File;
 #end
 import haxe.Json;
 
+//yes, splashes will have skins too.
+
 class NoteSplash extends FlxSprite
 {
 	public var colorSwap:ColorSwap = null;
@@ -20,9 +22,7 @@ class NoteSplash extends FlxSprite
 	{
 		super(x, y);
 
-		JsonSettings.offdev(JsonSettings.offdir);
-
-		var skin:String = JsonSettings.noteSplashSkin;
+		var skin:String = 'noteSplashes';
 		if (PlayState.SONG.splashSkin != null && PlayState.SONG.splashSkin.length > 0)
 			skin = PlayState.SONG.splashSkin;
 
@@ -37,20 +37,18 @@ class NoteSplash extends FlxSprite
 
 	public function setupNoteSplash(x:Float, y:Float, note:Int = 0, texture:String = null, hueColor:Float = 0, satColor:Float = 0, brtColor:Float = 0)
 	{
-		JsonSettings.offdev(JsonSettings.offdir);
-
 		setPosition(x - Note.swagWidth * 0.95, y - Note.swagWidth);
 		alpha = 0.6;
 
 		if (texture == null)
 		{
-			texture = JsonSettings.noteSplashSkin;
+			texture = 'noteSplashes';
 			if (PlayState.SONG.splashSkin != null && PlayState.SONG.splashSkin.length > 0)
 				texture = PlayState.SONG.splashSkin;
 
 			if (PlayState.isPixelStage)
 			{
-				texture = 'pixelUI/' + JsonSettings.noteSplashSkin;
+				texture = 'pixelUI/' + 'noteSplashes';
 				if (PlayState.SONG.splashSkin != null && PlayState.SONG.splashSkin.length > 0)
 					texture = 'pixelUI/' + PlayState.SONG.splashSkin;
 				if (animation.curAnim != null)

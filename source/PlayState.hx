@@ -1274,8 +1274,6 @@ class PlayState extends MusicBeatState
 		judgementCounter.scrollFactor.set();
 		judgementCounter.screenCenter(Y);
 
-		JsonSettings.devtwo(JsonSettings.dirtwo);
-
 		// Just in case.
 		if (ClientPrefs.marvelouses)
 			judgementCounter.text = 'Marvs: ${marvelouses}\nSicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nCombo Breaks: ${songMisses}';
@@ -2637,8 +2635,6 @@ class PlayState extends MusicBeatState
 		{
 			iconP1.swapOldIcon();
 	}*/
-
-		JsonSettings.devtwo(JsonSettings.dirtwo);
 		if (cpuControlled && !alreadyChanged)
 		{
 			scoreTxt.visible = false;
@@ -2805,12 +2801,10 @@ class PlayState extends MusicBeatState
 		}
 
 		super.update(elapsed);
-		JsonSettings.devtwo(JsonSettings.dirtwo);
-
+		
 		// Info Bar
 		var ratingNameTwo:String = ratingName;
-		var divider:String = ' ' + JsonSettings.divider + ' ';
-		var ratingDivider:String = ' ' + '|' + ' ';
+		var divider:String = ' ' + '-' + ' ';
 
 		scoreTxt.text = 'Score: ' + songScore;
 		scoreTxt.text += divider + 'Accuracy:' + Highscore.floorDecimal(ratingPercent * 100, 2) + '%';
@@ -2875,9 +2869,19 @@ class PlayState extends MusicBeatState
 		if (health > 2)
 			health = 2;
 
-		JsonSettings.dev(JsonSettings.dir);
+		//note to self: add old icons back?? - Gui iago
+		if (healthBar.percent < 20) {
+            iconP2.animation.curAnim.curFrame = 2;
+            iconP1.animation.curAnim.curFrame = 1;
+        } else if (healthBar.percent > 80) {
+            iconP2.animation.curAnim.curFrame = 1;
+            iconP1.animation.curAnim.curFrame = 2;
+        } else {
+            iconP2.animation.curAnim.curFrame = 0;
+            iconP1.animation.curAnim.curFrame = 0;
+        }
 
-		if (healthBar.percent < 20)
+		/*if (healthBar.percent < 20)
 		{
 			(opponentChart ? iconP2 : iconP1).animation.curAnim.curFrame = 1;
 			(opponentChart ? iconP1 : iconP2).animation.curAnim.curFrame = 2;
@@ -2904,7 +2908,7 @@ class PlayState extends MusicBeatState
 		{
 			(opponentChart ? iconP2 : iconP1).animation.curAnim.curFrame = 0;
 			(opponentChart ? iconP1 : iconP2).animation.curAnim.curFrame = 0;
-		}
+		}*/
 
 		if (FlxG.keys.anyJustPressed(debugKeysCharacter) && !endingSong && !inCutscene)
 		{
@@ -4208,8 +4212,6 @@ class PlayState extends MusicBeatState
 		if (daRating == (ClientPrefs.marvelouses ? 'marvelous' : 'sick') && !note.noteSplashDisabled)
 			spawnNoteSplashOnNote(note, false);
 
-		JsonSettings.devtwo(JsonSettings.dirtwo);
-
 		if (!practiceMode && !cpuControlled)
 		{
 			songScore += score;
@@ -4234,12 +4236,10 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		var uiSkin:String = '';
+		var uiSkin:String = 'classic';
 		var altPart:String = isPixelStage ? '-pixel' : '';
 
-		JsonSettings.dev(JsonSettings.dir);
-
-		uiSkin = JsonSettings.judgementSkin;
+		//uiSkin = BedrockUtils.uiSkin;
 
 		rating.loadGraphic(Paths.image(getUiSkin(uiSkin, daRating, altPart)));
 		rating.cameras = [camHUD];
@@ -4376,7 +4376,6 @@ class PlayState extends MusicBeatState
 
 	private function onKeyPress(event:KeyboardEvent):Void
 	{
-		JsonSettings.devtwo(JsonSettings.dirtwo);
 		var eventKey:FlxKey = event.keyCode;
 		var key:Int = getKeyFromEvent(eventKey);
 		// trace('Pressed: ' + eventKey);
@@ -4406,7 +4405,7 @@ class PlayState extends MusicBeatState
 							sortedNotesList.push(daNote);
 							// notesDatas.push(daNote.noteData);
 						}
-						if (JsonSettings.antiMash)
+						if (ClientPrefs.antiMash)
 							canMiss = true;
 					}
 				});
@@ -4970,8 +4969,7 @@ class PlayState extends MusicBeatState
 
 	public function spawnNoteSplash(x:Float, y:Float, data:Int, ?note:Note = null, opponent:Bool = true)
 	{
-		JsonSettings.offdev(JsonSettings.offdir);
-		var skin:String = JsonSettings.noteSplashSkin;
+		var skin:String = 'noteSplashes';
 		if (PlayState.SONG.splashSkin != null && PlayState.SONG.splashSkin.length > 0)
 			skin = PlayState.SONG.splashSkin;
 
@@ -5479,7 +5477,6 @@ class PlayState extends MusicBeatState
 			if (bads > 0 || shits > 0)
 				ratingFC = "FC"; // Full Combo
 		}
-		JsonSettings.devtwo(JsonSettings.dirtwo);
 
 		setOnLuas('rating', ratingPercent);
 		setOnLuas('ratingName', ratingName);
