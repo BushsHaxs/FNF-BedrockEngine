@@ -80,7 +80,7 @@ class ResultsSubState extends MusicBeatSubstate
 
     override function update(elapsed:Float)
     {
-        if(FlxG.keys.justPressed.ENTER)
+        if(controls.ACCEPT)
         {
             results.fadeIn(0.4, 1, 0);
             applause.fadeIn(0.4, 1, 0);
@@ -92,7 +92,7 @@ class ResultsSubState extends MusicBeatSubstate
                 MusicBeatState.switchState(new FreeplayState());
         }
 
-        super.update(elapsed);
+        super.update();
     }
 
     public function new()
