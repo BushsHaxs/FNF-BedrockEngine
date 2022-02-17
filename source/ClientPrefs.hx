@@ -79,7 +79,7 @@ class ClientPrefs
 	public static var memPeak:Bool = false;
 	public static var showState:Bool = false;
 	public static var useClassicSongs:Bool = false;
-	public static var ratingSystem:Bool = false;
+	public static var ratingSystem:String = "Bedrock";
 	public static var noteSkin:String = 'normal';
 
 	// Added by Bedrock Engine (via Pull Requests)
