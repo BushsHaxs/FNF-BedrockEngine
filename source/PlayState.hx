@@ -4008,6 +4008,8 @@ class PlayState extends MusicBeatState
 						FlxG.save.flush();
 					}
 					changedDifficulty = false;
+
+					openSubState(new ResultsSubState());
 				}
 				else
 				{
@@ -4051,6 +4053,8 @@ class PlayState extends MusicBeatState
 						LoadingState.loadAndSwitchState(new PlayState());
 					}
 				}
+
+				openSubState(new ResultsSubState());
 			}
 			else
 			{
