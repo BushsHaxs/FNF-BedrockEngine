@@ -33,7 +33,7 @@ class ResultsSubState extends MusicBeatSubstate
 
         var ratings:FlxSpriteGroup = new FlxSpriteGroup
 
-        accText = new FlxText(-200, 65, 0
+        accText = new FlxText(-200, 65, 0,
             'Accuracy: ${countAcc(PlayState.Highscore.floorDecimal(ratingPercent * 100, 2))}'
         );
 
