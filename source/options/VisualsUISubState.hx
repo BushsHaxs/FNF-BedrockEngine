@@ -53,7 +53,7 @@ class VisualsUISubState extends BaseOptionsMenu
 
 		var option:Option = new Option('300x150 Icon Support', "If checked, enables the old icon support.", 'iconSupport',
 			'bool', false);
-		addOption(option)
+		addOption(option);
 
 		var option:Option = new Option('Judgement Counters', "If checked, will show Judgement Counters at the left side of the screen", 'judgCounter', 'bool',
 			true);

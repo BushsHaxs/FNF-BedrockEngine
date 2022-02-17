@@ -2804,11 +2804,12 @@ class PlayState extends MusicBeatState
 		
 		// Info Bar
 		var ratingNameTwo:String = ratingName;
+		var dividerdir:String =  File.getContent(Paths.mods("divider/") + "divider.divider");
 		var divider:String;
 		#if MODS_ALLOWED
-		divider = ' ' + File.getContent(Paths.mods("divider/") + "divider.divider")) + ' ';
+		divider = ' ' + dividerdir + ' ';
 
-		if (!FileSystem.exists(Paths.mods("divider/") + "divider.divider"))
+		if (!FileSystem.exists(dividerdir))
 		{
 			divider = ' ' + '-' + ' ';
 		}
