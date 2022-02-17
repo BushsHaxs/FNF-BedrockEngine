@@ -5440,7 +5440,7 @@ class PlayState extends MusicBeatState
 				// Rating Percent
 				ratingPercent = Math.min(1, Math.max(0, totalNotesHit / totalPlayed));
 
-			// i swear to the guy who mades the old rating code
+			// i swear to the guy who made the old rating code
 			var ratings:Array<Dynamic> = Ratings.bedrockRatings;
 			switch (ClientPrefs.ratingSystem)
 			{
