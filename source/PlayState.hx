@@ -4258,6 +4258,14 @@ class PlayState extends MusicBeatState
 
 		//uiSkin = BedrockUtils.uiSkin;
 
+		/*
+			gonna try to make it so a "early" or "late" graphic shows up
+			near your current rating, it will probably look kinda janky
+			but I will try my best, if I can't, then I will just leave
+			the idea to someone else
+			- Gui iago
+		*/
+
 		rating.loadGraphic(Paths.image(getUiSkin(uiSkin, daRating, altPart)));
 		rating.cameras = [camHUD];
 		rating.screenCenter();
@@ -4319,13 +4327,14 @@ class PlayState extends MusicBeatState
 		var daLoop:Int = 0;
 		for (i in seperatedScore)
 		{
-			/* I will probably try to change this in the future
+			/* 
+			   I will probably try to change this in the future
 			   I wanna make it so numbers spawn depending on the current combo value
 			   ex: if combo is at 1, then spawn number 1 and nothing else, then keep counting up if needed
 				   if combo is at 10, then spawn number 1 and number 0, nothing else, then keep counting up if needed
-				   if combo is at 100, then spawn number 1, then 0, then 0, nothing else, then keep counting up if needed
-			  etc...
-			-Gui iago */
+				   if combo is at 100, then spawn number 1, then 0, then 0, nothing else, then keep counting up if needed, etc...
+				   -Gui iago
+			*/
 			var numScore:FlxSprite = new FlxSprite().loadGraphic(Paths.image(getUiSkin(uiSkin, '', altPart, true, Std.int(i))));
 			add(numScore);
 			numScore.cameras = [camHUD];
