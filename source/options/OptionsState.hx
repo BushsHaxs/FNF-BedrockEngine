@@ -34,7 +34,7 @@ class OptionsState extends MusicBeatState
 		'Controls',
 		'Graphics',
 		'Gameplay Settings',
-		'Note Colors',
+		'Note Preferences',
 		'Visuals and UI'
 	];
 	private var grpOptions:FlxTypedGroup<Alphabet>;
@@ -48,7 +48,7 @@ class OptionsState extends MusicBeatState
 	{
 		switch (label)
 		{
-			case 'Note Colors':
+			case 'Note Preferences':
 				openSubState(new options.NotesSubState());
 			case 'Controls':
 				openSubState(new options.ControlsSubState());

@@ -1,26 +1,18 @@
-DO NOT PUT YOUR SKINS TO ASSETS, BEDROCK WILL IGNORE ASSETS FOLDER IF YOU DON'T MESS WITH SOURCE
-
-
-more options will be ported to these jsons if needed.
+DO NOT PUT YOUR SKINS TO ASSETS, BEDROCK WILL IGNORE THE ASSETS FOLDER IF YOU DON'T MESS WITH SOURCE
 
 ------------------UI------------------
 
 iconSupport means 300x150 icon support.
 those icons need to be placed on mods/images/icons-old
 
-
 NOTE SKINS
 
-Available note skins are:
--NOTE_assets
--NOTE_circle
--NOTE_bar
--NOTE_diamond
--NOTE_step
--NOTE_simplyarrow
+You can change your Noteskins using the Note Preferences menu on the Options Menu
+Just press "S" on your Keyboard to change it
 
 you can also add your own noteskins
 just place them on "mods/images/noteskins"
+then use the template json to create a new entry on the Note Preferences menu
 
 if a skin doesn't have a pixel variant, pixel stages will crash
 so make sure to create or copy any existing skin to mods/pixelUI/noteskins so your noteskin won't crash
@@ -35,16 +27,15 @@ Available judgement skins are:
 You can also add your own judgement skins,
 just place them on "mods/images/judgements".
 
-At the moment, botplay crashes no matter which noteskins or judgement skin you are using, this will be fixed soon.
-
 -------GAMEPLAY SETTINGS-------
 
-LETTER GRADERS
+RATING SYSTEM
 
-letterGrader on true means that the game will use Letter Ratings.
-Example, if accuracy is below 20% rank will be 'D'.
-letterGrader on false means game will use original ratings.
-Example, if accuracy is below 20% rank will be 'You suck!'.
+on the Gameplay Settings menu inside Options, you can set your rating system of choice
+this changes how the game will show the rating names, for example, if you have 100% on a song
+and you are using Forever Engine's Rating System, the rating should be "S+"
+
+these can also be changed by modifying any of the assets on the assets/ratings folder
 
 DIVIDERS
 
@@ -52,4 +43,6 @@ divider means that the info bar will show the specific separator you set yoursel
 For example, if it's set as
 "divider": "//", info bar will be like this:
 
-"Score: // Accuracy: // Rank:".
+"Score: // Accuracy: // Rank:"
+
+dividers can be changed using the gamplaySettings.json.

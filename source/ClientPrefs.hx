@@ -79,7 +79,7 @@ class ClientPrefs
 	public static var memPeak:Bool = false;
 	public static var showState:Bool = false;
 	public static var useClassicSongs:Bool = false;
-	public static var hideStrumsMiddle:Bool = false;
+	public static var ratingSystem:Bool = false;
 	public static var noteSkin:String = 'normal';
 
 	// Added by Bedrock Engine (via Pull Requests)
@@ -170,7 +170,7 @@ class ClientPrefs
 		FlxG.save.data.memPeak = memPeak;
 		FlxG.save.data.showState = showState;
 		FlxG.save.data.useClassicSongs = useClassicSongs;
-		FlxG.save.data.hideStrumsMiddle = hideStrumsMiddle;
+		FlxG.save.data.ratingSystem = ratingSystem;
 		FlxG.save.data.noteSkin = noteSkin;
 
 		// Added by Bedrock Engine (via Pull Requests)
@@ -396,9 +396,9 @@ class ClientPrefs
 		{
 			useClassicSongs = FlxG.save.data.useClassicSongs;
 		}
-		if (FlxG.save.data.hideStrumsMiddle != null)
+		if (FlxG.save.data.ratingSystem != null)
 		{
-			hideStrumsMiddle = FlxG.save.data.hideStrumsMiddle;
+			ratingSystem = FlxG.save.data.ratingSystem;
 		}
 		if (FlxG.save.data.noteSkin != null)
 		{

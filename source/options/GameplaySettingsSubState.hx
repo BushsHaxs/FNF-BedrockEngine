@@ -34,45 +34,109 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		title = 'Gameplay Settings';
 		rpcTitle = 'Adjusting the Gameplay Settings'; // for Discord Rich Presence
 
-		var Option = new Option('Complex Accuracy', "If checked, the accuracy will follow a harsher system, Based on Etterna and Kade Engine.", 'keAccuracy',
-			'bool', false);
+		var Option = new Option
+		(
+			'Complex Accuracy',
+			"If checked, the accuracy will follow a harsher system, Based on Etterna.",
+			'keAccuracy',
+			'bool',
+			false
+		);
 		addOption(Option);
 
 		var option:Option = new Option('Disable Reset Button', "If checked, pressing Reset won't do anything.", 'noReset', 'bool', false);
 		addOption(option);
 
-		var option:Option = new Option('Camera Movements', 'if unchecked, the camera won\'t follow the pressed notes.', 'dynamicCam', 'bool', true);
+		var option:Option = new Option
+		(
+			'Camera Movements',
+			'if unchecked, the camera won\'t follow the pressed notes.',
+			'dynamicCam',
+			'bool',
+			true
+		);
 		addOption(option);
 
 		// I'd suggest using "Downscroll" as an example for making your own option since it is the simplest here
-		var option:Option = new Option('Downscroll', // Name
+		var option:Option = new Option
+		(
+			'Downscroll', // Name
 			'If checked, notes go Down instead of Up, simple enough.', // Description
 			'downScroll', // Save data variable name
 			'bool', // Variable type
-			false); // Default value
+			false // Default value
+		);
 		addOption(option);
 
-		var option:Option = new Option('Ghost Tapping', "If checked, you won't get misses from pressing keys\nwhile there are no notes able to be hit.",
-			'ghostTapping', 'bool', true);
+		var option:Option = new Option
+		(
+			'Ghost Tapping',
+			"If checked, you won't get misses from pressing keys\nwhile there are no notes able to be hit.",
+			'ghostTapping',
+			'bool',
+			true
+		);
 		addOption(option);
 
-		var option:Option = new Option('Hide Opponent Notes', 'If checked, will hide opponent notes on middlescroll.', 'hideStrumsMiddle', 'bool', false);
+		var option:Option = new Option
+		(
+			'Instant Respawn',
+			"If checked, skips the Game Over Screen entirely.",
+			'instantRespawn',
+			'bool',
+			false
+		);
 		addOption(option);
 
-		var option:Option = new Option('Instant Respawn', "If checked, skips the Game Over Screen entirely.", 'instantRespawn', 'bool', false);
+		var option:Option = new Option
+		(
+			'Marvelous Ratings',
+			'If unchecked, marvelous ratings will not be used.',
+			'marvelouses',
+			'bool',
+			false
+		);
 		addOption(option);
 
-		var option:Option = new Option('Marvelous Ratings', 'If unchecked, marvelous ratings will disappear.', 'marvelouses', 'bool', false);
+		var option:Option = new Option
+		(
+			'Middlescroll',
+			'If checked, your notes get centered.',
+			'middleScroll',
+			'bool',
+			false
+		);
 		addOption(option);
 
-		var option:Option = new Option('Middlescroll', 'If checked, your notes get centered.', 'middleScroll', 'bool', false);
+		var option:Option = new Option
+		(
+			'Play Hit Sounds',
+			"If checked, will play a sound when you hit a note",
+			'playHitSounds',
+			'bool',
+			false
+		);
 		addOption(option);
 
-		var option:Option = new Option('Play Hit Sounds', "If checked, will play a sound when you hit a note", 'playHitSounds', 'bool', false);
+		var option:Option = new Option
+		(
+			'Play Miss Sounds',
+			"If unchecked, sounds for when you miss a Note will be disabled entirely",
+			'playMissSounds',
+			'bool',
+			true
+		);
 		addOption(option);
 
-		var option:Option = new Option('Play Miss Sounds', "If unchecked, sounds for when you miss a Note will be disabled entirely", 'playMissSounds',
-			'bool', true);
+		var option:Option = new Option
+		(
+			'Rating System:',
+			"What should your Rating System be?",
+			'ratingSystem',
+			'string',
+			'Bedrock',
+		['Bedrock', 'Psych', 'Forever', 'Andromeda', "None"]
+		);
 		addOption(option);
 
 		/*var option:Option = new Option('Note Delay',
