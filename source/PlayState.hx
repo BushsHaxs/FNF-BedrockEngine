@@ -89,8 +89,6 @@ class PlayState extends MusicBeatState
 	public static var STRUM_X_MIDDLESCROLL = -278;
 	public static var animatedShaders:Map<String, DynamicShaderHandler> = new Map<String, DynamicShaderHandler>();
 
-	public var accuracy:Float = Highscore.floorDecimal(ratingPercent * 100, 2);
-
 	public var modchartTweens:Map<String, FlxTween> = new Map<String, FlxTween>();
 	public var modchartSprites:Map<String, ModchartSprite> = new Map<String, ModchartSprite>();
 	public var modchartTimers:Map<String, FlxTimer> = new Map<String, FlxTimer>();
@@ -2805,19 +2803,9 @@ class PlayState extends MusicBeatState
 		super.update(elapsed);
 		
 		// Info Bar
+		var accuracy:Float = Highscore.floorDecimal(ratingPercent * 100, 2);
 		var ratingNameTwo:String = ratingName;
-		var dividerdir:String =  File.getContent(Paths.mods("divider/") + "divider.divider");
-		var divider:String;
-		#if MODS_ALLOWED
-		divider = ' ' + dividerdir + ' ';
-
-		if (!FileSystem.exists(dividerdir))
-		{
-			divider = ' ' + '-' + ' ';
-		}
-		#else
-		divider = ' ' + '-' + ' ';
-		#end
+		var divider:String = divider = ' ' + '-' + ' ';
 
 		scoreTxt.text = 'Score: ' + songScore;
 		scoreTxt.text += divider + 'Accuracy:' + accuracy + '%';
