@@ -2805,7 +2805,7 @@ class PlayState extends MusicBeatState
 		// Info Bar
 		var accuracy:Float = Highscore.floorDecimal(ratingPercent * 100, 2);
 		var ratingNameTwo:String = ratingName;
-		var divider:String = divider = ' ' + '-' + ' ';
+		var divider:String = ' ' + '-' + ' ';
 
 		scoreTxt.text = 'Score: ' + songScore;
 		scoreTxt.text += divider + 'Accuracy:' + accuracy + '%';
