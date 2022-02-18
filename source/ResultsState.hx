@@ -10,16 +10,12 @@ import flixel.tweens.FlxTween;
 import flixel.text.FlxText;
 import flixel.util.FlxTimer;
 
-class ResultsSubState extends MusicBeatState
-{   
-    public var ratingsShit:Array<Dynamic> = [
-        ['D', 0.61],
-        ['C', 0.71],
-        ['B', 0.81],
-        ['A', 0.91],
-        ['S', 0.951],
-        ['X', 1]
-    ];
+class ResultsState extends MusicBeatState
+{
+    public var swagQuotes:FlxText;
+    public var accText:FlxText;
+    public var ratingShit:Array<Dynamic>;
+    // public var continue:FlxText;
 
     public var applause:FlxSound;
     public var results:FlxSound;
@@ -27,9 +23,6 @@ class ResultsSubState extends MusicBeatState
     public var bg:FlxSprite;
     public var resultRank:FlxSprite;
     public var hidingBG:FlxSprite;
-
-    public var accText:FlxText;
-    // public var continue:FlxText;
 
     // WIP
     override function create()
@@ -49,6 +42,7 @@ class ResultsSubState extends MusicBeatState
         var perfect:FlxSprite = new FlxSprite(-150, 65).loadGraphic(Paths.image('maniamode/resultsscreen/perfect'));
         perfect.antialiasing = true;
 
+        ratingShit = Ratings.maniaMode;
         var percent:Float = PlayState.instance.ratingPercent;
 
         if(percent >= 1) {
@@ -64,6 +58,11 @@ class ResultsSubState extends MusicBeatState
 				}
 			}
 		}
+        
+        switch(ratingShit) {
+            case 'D':
+                swagQuotes = new FlxText
+        }
 
         resultRank = new FlxSprite(FlxG.width - 400, 60).loadGraphic(Paths.image('maniamode/rankresults/' + ratingResult));
         resultRank.antialiasing = ClientPrefs.globalAntialiasing;

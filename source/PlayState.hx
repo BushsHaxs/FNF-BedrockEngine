@@ -5497,6 +5497,8 @@ class PlayState extends MusicBeatState
 					ratings = Ratings.andromedaRatings;
 				case "Accurate":
 					ratings = Ratings.accurateRatings;
+				case 'Mania Mode':
+					ratings = Ratings.maniaRatings
 			}
 
 			// Rating Name
