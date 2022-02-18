@@ -4043,9 +4043,6 @@ class PlayState extends MusicBeatState
 						LoadingState.loadAndSwitchState(new PlayState());
 					}
 				}
-
-				if (!ClientPrefs.getGameplaySetting('practice', false) && !ClientPrefs.getGameplaySetting('botplay', false))
-					openSubState(new ResultsSubState());
 			}
 			else
 			{
@@ -4064,6 +4061,9 @@ class PlayState extends MusicBeatState
 				changedDifficulty = false;
 			}
 			transitioning = true;
+
+			if (!ClientPrefs.getGameplaySetting('practice', false) && !ClientPrefs.getGameplaySetting('botplay', false))
+				openSubState(new ResultsSubState());
 		}
 	}
 
