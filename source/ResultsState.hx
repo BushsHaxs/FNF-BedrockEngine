@@ -10,8 +10,17 @@ import flixel.tweens.FlxTween;
 import flixel.text.FlxText;
 import flixel.util.FlxTimer;
 
-class ResultsSubState extends MusicBeatSubstate
-{    
+class ResultsSubState extends MusicBeatState
+{   
+    public var ratingsShit:Array<Dynamic> = [
+        ['D', 0.61],
+        ['C', 0.71],
+        ['B', 0.81],
+        ['A', 0.91],
+        ['S', 0.951],
+        ['X', 1]
+    ];
+
     public var applause:FlxSound;
     public var results:FlxSound;
 
@@ -29,13 +38,9 @@ class ResultsSubState extends MusicBeatSubstate
         results = new FlxSound().loadEmbedded(Paths.music('resultsScreen'));
         results.looped = true;
 
-        var percent:Float = PlayState.instance.ratingPercent;
         var ratingResult:String = '';
 
-        bg = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
-        bg.alpha = 0.5;
-
-        var ratings:FlxSpriteGroup = new FlxSpriteGroup();
+        var judgements:FlxSpriteGroup = new FlxSpriteGroup();
 
         accText = new FlxText(-200, 65, 0,
             'Accuracy: ${countAcc(Highscore.floorDecimal(PlayState.instance.ratingPercent * 100, 2), 2)}'
@@ -45,35 +50,32 @@ class ResultsSubState extends MusicBeatSubstate
         perfect.antialiasing = true;
 
         var percent:Float = PlayState.instance.ratingPercent;
-        resultRank = new FlxSprite(150, 30).loadGraphic(Paths.image('maniamode/resultsscreen/' + ratingResult));
-        resultRank.antialiasing = ClientPrefs.globalAntialiasing;
 
-        switch (percent)
-        {
-            case 1:
-                ratingResult = 'X';
-    
-            case 0.951:
-                ratingResult = 'S';
-    
-            case 0.91:
-                ratingResult = 'A';
-    
-            case 0.81:
-                ratingResult = 'B';
-    
-            case 0.71:
-                ratingResult = 'C';
-    
-            case 0.61:
-                ratingResult = 'D';
-        }
+        if(percent >= 1) {
+            var poop = ratingsShit[ratingsShit.length - 1][0];
+            ratingResult = poop;
+        } else {
+            for (i in 0...ratingsShit.length - 1)
+			{
+				if (percent < ratingsShit[i][1])
+				{
+					ratingResult = ratingsShit[i][0];
+					break;
+				}
+			}
+		}
+
+        resultRank = new FlxSprite(FlxG.width - 400, 60).loadGraphic(Paths.image('maniamode/rankresults/' + ratingResult));
+        resultRank.antialiasing = ClientPrefs.globalAntialiasing;
+        resultRank.visible = false;
 
         if(PlayState.instance.totalMisses < 1 && ratingResult == 'X' || ratingResult == 'S')
-            resultRank = new FlxSprite(150, 30).loadGraphic(Paths.image('maniamode/resultsscreen/' + ratingResult + '-gold'));
+            resultRank = new FlxSprite(600, 60).loadGraphic(Paths.image('maniamode/rankresults/' + ratingResult + '-gold'));
 
         hidingBG = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
-        add(hidingBG);
+
+        add(accText);
+        add(resultRank);
 
         super.create();
     }
@@ -84,7 +86,12 @@ class ResultsSubState extends MusicBeatSubstate
         {
             results.fadeIn(0.4, 1, 0);
             applause.fadeIn(0.4, 1, 0);
-            close();
+
+            FlxG.sound.playMusic(Paths.music('freakyMenu'));
+			if (ClientPrefs.useClassicSongs)
+			{
+				FlxG.sound.playMusic(Paths.music('freakyMenuC'));
+			}
 
             if(PlayState.isStoryMode)
                 MusicBeatState.switchState(new StoryMenuState());
@@ -97,15 +104,18 @@ class ResultsSubState extends MusicBeatSubstate
 
     public function new()
     {
-        FlxTween.tween(hidingBG, {alpha:0}, 0.2, {
-            ease:FlxEase.circOut
+        bg = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+        bg.alpha = 0;
+
+        FlxTween.tween(bg, {alpha: 0.6}, 1, {
+            ease: FlxEase.circOut
         });
 
         new FlxTimer().start(0.9, function(tmr:FlxTimer)
         {
             resultRank.visible = true;
             FlxG.sound.play(Paths.sound('confirmMenu'));
-            new FlxTimer().start(0.3, function(tmr:FlxTimer)
+            new FlxTimer().start(0.6, function(tmr:FlxTimer)
             {
                 results.play();
                 applause.play();
