@@ -79,7 +79,7 @@ class Ratings
 		["AAAAA", 1] //%100
 	];
 
-	public var maniaRatings:Array<Dynamic> = [
+	public static var maniaRatings:Array<Dynamic> = [
         ['D', 0.61],
         ['C', 0.71],
         ['B', 0.81],
