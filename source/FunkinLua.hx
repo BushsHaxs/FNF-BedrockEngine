@@ -23,12 +23,9 @@ import flixel.FlxObject;
 import flixel.FlxSprite;
 import openfl.Lib;
 import openfl.display.BlendMode;
-import openfl.display.ShaderParameter;
 import openfl.filters.BitmapFilter;
-import openfl.filters.ShaderFilter;
 import openfl.utils.Assets;
 import flixel.math.FlxMath;
-import Shaders;
 import flixel.addons.transition.FlxTransitionableState;
 #if sys
 import sys.FileSystem;
@@ -1086,6 +1083,7 @@ class FunkinLua
 			PlayState.instance.modchartSprites.set(tag, leSprite);
 			leSprite.active = true;
 		});
+<<<<<<< HEAD
 		Lua_helper.add_callback(lua, "makeLuaShaderSprite", function(tag:String, shader:String, x:Float, y:Float, optimize:Bool = false)
 		{
 			tag = tag.replace('.', '');
@@ -1098,6 +1096,9 @@ class FunkinLua
 		});
 		Lua_helper.add_callback(lua, "makeAnimatedLuaSprite", function(tag:String, image:String, x:Float, y:Float, ?spriteType:String = "sparrow")
 		{
+=======
+		Lua_helper.add_callback(lua, "makeAnimatedLuaSprite", function(tag:String, image:String, x:Float, y:Float, ?spriteType:String = "sparrow") {
+>>>>>>> upstream/main
 			tag = tag.replace('.', '');
 			resetSpriteTag(tag);
 			var leSprite:ModchartSprite = new ModchartSprite(x, y);
@@ -2006,6 +2007,7 @@ class FunkinLua
 			FlxG.sound.music.fadeOut(duration, toValue);
 			luaTrace('musicFadeOut is deprecated! Use soundFadeOut instead.', false, true);
 		});
+<<<<<<< HEAD
 
 		// SHADER SHIT
 
@@ -2110,6 +2112,9 @@ class FunkinLua
 		});
 		Discord.DiscordClient.addLuaCallbacks(lua);
 
+=======
+		
+>>>>>>> upstream/main
 		call('onCreate', []);
 		#end
 	}
@@ -2370,6 +2375,7 @@ class FunkinLua
 		return PlayState.instance.camGame;
 	}
 
+<<<<<<< HEAD
 	function shaderFromString(cam:String)
 	{
 		// switch(cam.toLowerCase()) {
@@ -2381,6 +2387,9 @@ class FunkinLua
 
 	public function luaTrace(text:String, ignoreCheck:Bool = false, deprecated:Bool = false)
 	{
+=======
+	public function luaTrace(text:String, ignoreCheck:Bool = false, deprecated:Bool = false) {
+>>>>>>> upstream/main
 		#if LUA_ALLOWED
 		if (ignoreCheck || getBool('luaDebugMode'))
 		{
@@ -2531,6 +2540,7 @@ class FunkinLua
 class ModchartSprite extends FlxSprite
 {
 	public var wasAdded:Bool = false;
+<<<<<<< HEAD
 
 	// public var isInFront:Bool = false;
 	var hShader:DynamicShaderHandler;
@@ -2554,6 +2564,14 @@ class ModchartSprite extends FlxSprite
 
 			antialiasing = FlxG.save.data.antialiasing;
 		}
+=======
+	//public var isInFront:Bool = false;
+
+	public function new(?x:Float = 0, ?y:Float = 0)
+	{
+		super(x, y);
+		antialiasing = ClientPrefs.globalAntialiasing;
+>>>>>>> upstream/main
 	}
 }
 
