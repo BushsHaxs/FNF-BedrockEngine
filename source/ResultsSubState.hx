@@ -78,7 +78,7 @@ class ResultsSubState extends MusicBeatSubstate
         super.create();
     }
 
-    override function update(elapsed:Float)
+    override function update(elapsed:Float):Void
     {
         if(controls.ACCEPT)
         {
@@ -92,7 +92,7 @@ class ResultsSubState extends MusicBeatSubstate
                 MusicBeatState.switchState(new FreeplayState());
         }
 
-        super.update();
+        super.update(elapsed);
     }
 
     public function new()

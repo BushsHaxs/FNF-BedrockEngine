@@ -89,7 +89,8 @@ class PlayState extends MusicBeatState
 	public static var STRUM_X_MIDDLESCROLL = -278;
 	public static var animatedShaders:Map<String, DynamicShaderHandler> = new Map<String, DynamicShaderHandler>();
 
-	public var accuracy:Float = Highscore.floorDecimal(ratingPercent * 100, 2);
+	public var percent:Float;
+	public var accuracy:Float = Highscore.floorDecimal(percent * 100, 2);
 
 	public var modchartTweens:Map<String, FlxTween> = new Map<String, FlxTween>();
 	public var modchartSprites:Map<String, ModchartSprite> = new Map<String, ModchartSprite>();
@@ -3961,7 +3962,7 @@ class PlayState extends MusicBeatState
 			if (SONG.validScore)
 			{
 				#if !switch
-				var percent:Float = ratingPercent;
+				percent = ratingPercent;
 				if (Math.isNaN(percent))
 					percent = 0;
 				Highscore.saveScore(SONG.song, songScore, storyDifficulty, percent);
