@@ -1349,6 +1349,7 @@ class PlayState extends MusicBeatState
 		healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, (opponentChart ? LEFT_TO_RIGHT : RIGHT_TO_LEFT), Std.int(healthBarBG.width - 8),
 			Std.int(healthBarBG.height - 8), this, 'health', 0, 2);
 		healthBar.scrollFactor.set();
+		// healthBar
 		healthBar.visible = !ClientPrefs.hideHud;
 		healthBar.alpha = ClientPrefs.healthBarAlpha;
 		add(healthBar);
@@ -1385,6 +1386,20 @@ class PlayState extends MusicBeatState
 		scoreTxt.scrollFactor.set();
 		scoreTxt.visible = !ClientPrefs.hideHud;
 		add(scoreTxt);
+
+		if (ClientPrefs.maniaMode)
+		{ // da big if
+			ClientPrefs.middleScroll = true;
+			laneunderlayOpponent.visible = false;
+			laneunderlay.alpha = 0.6;
+			// underlayOutline.visible = true;
+			healthBar.color = FlxColor.WHITE;
+			healthBar.angle = 90;
+			healthBar.x = 590;
+			healthBar.y = 415;
+			iconP1.visible = false;
+			iconP2.visible = false;
+		}
 
 		// Watermarks, this is for Bedrock Engine
 		beWatermark = new FlxText(0, FlxG.height - 50, 0, "Bedrock Engine: v" + MainMenuState.bedrockEngineVersion, 16);
@@ -1438,26 +1453,6 @@ class PlayState extends MusicBeatState
 
 		// then we add them
 		add(judgementCounter);
-
-		if(ClientPrefs.maniaMode)
-		{ // da big if
-			ClientPrefs.middleScroll = true;
-			laneunderlayOpponent.visible = false;
-			laneunderlay.alpha = 0.6;
-			// underlayOutline.visible = true;
-			healthBar.color = FlxColor.WHITE;
-			healthBar.angle = 90;
-			healthBar.x = 590;
-			healthBar.y = 415;
-			health = 2;
-			healthLoss = 2.3;
-			iconP1.visible = false;
-			iconP2.visible = false;
-			judgementCounter.y += 60;
-			beWatermark.x = FlxG.width - 60;
-			peWatermark.x = FlxG.width - 60;
-			songDisplay.y = 70;
-		}
 
 		// or Disable them in case the option is turned off
 		if (!ClientPrefs.judgCounter || cpuControlled)
@@ -2741,15 +2736,10 @@ class PlayState extends MusicBeatState
 			{
 				if (ClientPrefs.middleScroll)
 				{
-					if(!ClientPrefs.maniaMode) {
-						babyArrow.x += 310;
-						if (i > 1)
-						{ // Up and Right
-							babyArrow.x += FlxG.width / 2 + 25;
-						}
-					} else {
-						babyArrow.x = ClientPrefs.middleScroll ? STRUM_X_MIDDLESCROLL : STRUM_X;
-						babyArrow.y = strumLine.y;
+					babyArrow.x += 310;
+					if (i > 1)
+					{ // Up and Right
+						babyArrow.x += FlxG.width / 2 + 25;
 					}
 				}
 				if (!opponentChart || opponentChart && ClientPrefs.middleScroll)
@@ -4287,6 +4277,12 @@ class PlayState extends MusicBeatState
 
 				if (storyPlaylist.length <= 0)
 				{
+					FlxG.sound.playMusic(Paths.music('freakyMenu'));
+					if (ClientPrefs.useClassicSongs)
+					{
+						FlxG.sound.playMusic(Paths.music('freakyMenuC'));
+					}
+
 					cancelMusicFadeTween();
 					if (FlxTransitionableState.skipNextTransIn)
 					{
@@ -4307,8 +4303,7 @@ class PlayState extends MusicBeatState
 						FlxG.save.data.weekCompleted = StoryMenuState.weekCompleted;
 						FlxG.save.flush();
 
-						//FlxTween.tween();
-						MusicBeatState.switchState(new ResultsState());
+						openSubState(new ResultsSubState());
 					}
 					changedDifficulty = false;
 				}
@@ -4363,13 +4358,18 @@ class PlayState extends MusicBeatState
 				{
 					CustomFadeTransition.nextCamera = null;
 				}
-				if (!ClientPrefs.getGameplaySetting('practice', false) && !ClientPrefs.getGameplaySetting('botplay', false))
-					openSubState(new ResultsSubState());
-				else
-					MusicBeatState.switchState(new FreeplayState());
+				MusicBeatState.switchState(new FreeplayState());
+				FlxG.sound.playMusic(Paths.music('freakyMenu'));
+				if (ClientPrefs.useClassicSongs)
+				{
+					FlxG.sound.playMusic(Paths.music('freakyMenuC'));
+				}
 				changedDifficulty = false;
 			}
 			transitioning = true;
+
+			if (!ClientPrefs.getGameplaySetting('practice', false) && !ClientPrefs.getGameplaySetting('botplay', false))
+				openSubState(new ResultsSubState());
 		}
 	}
 

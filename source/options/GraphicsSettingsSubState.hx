@@ -106,14 +106,10 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 
 	function onChangeScreenRes()
 	{
-		var res = ClientPrefs.screenRes.split('x');
-
-		if(!FlxG.fullscreen)
+		if(!FlxG.fullscreen) {
+			var res = ClientPrefs.screenRes.split('x');
 			FlxG.resizeWindow(Std.parseInt(res[0]), Std.parseInt(res[1]));
-
-		Main.gameWidth = Std.parseInt(res[0]);
-		Main.gameHeight = Std.parseInt(res[1]);
-		FlxG.scaleMode = modeStage;
+		}
 	}
 
 	function onChangeAutoPause()
