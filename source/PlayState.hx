@@ -5601,9 +5601,9 @@ class PlayState extends MusicBeatState
 				// ALSO TRY ANDROMEDA!! https://github.com/nebulazorua/andromeda-engine
 				case "Andromeda":
 					ratings = Ratings.andromedaRatings;
-				case "Accurate":
+				case "Etterna":
 					ratings = Ratings.accurateRatings;
-				case 'Mania Mode':
+				case 'Mania':
 					ratings = Ratings.maniaRatings
 			}
 

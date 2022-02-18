@@ -80,7 +80,7 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 			'ratingSystem', 
 			'string', 
 			'Bedrock',
-			['Bedrock', 'Psych', 'Forever', 'Andromeda', "Accurate", 'Mania Mode', "None"]);
+			['Bedrock', 'Psych', 'Forever', 'Andromeda', "Etterna", 'Mania', "None"]);
 		addOption(option);
 
 		/*var option:Option = new Option('Note Delay',
