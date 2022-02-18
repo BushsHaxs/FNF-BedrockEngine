@@ -5604,7 +5604,7 @@ class PlayState extends MusicBeatState
 				case "Etterna":
 					ratings = Ratings.accurateRatings;
 				case 'Mania':
-					ratings = Ratings.maniaRatings
+					ratings = Ratings.maniaRatings;
 			}
 
 			// Rating Name
