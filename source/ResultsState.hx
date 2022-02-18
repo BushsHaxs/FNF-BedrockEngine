@@ -10,7 +10,7 @@ import flixel.tweens.FlxTween;
 import flixel.text.FlxText;
 import flixel.util.FlxTimer;
 
-class ResultsSubState extends MusicBeatState
+class ResulsState extends MusicBeatState
 {   
     public var ratingsShit:Array<Dynamic> = [
         ['D', 0.61],

@@ -34,7 +34,6 @@ class CreditsState extends MusicBeatState
 	public var creditsStuff:Array<Array<String>> = [];
 
 	var bg:FlxSprite;
-	var descBox:FlxSprite;
 	var descText:FlxText;
 	var intendedColor:Int;
 	var colorTween:FlxTween;
@@ -513,8 +512,7 @@ class CreditsState extends MusicBeatState
 	var moveTween:FlxTween = null;
 	function changeSelection(change:Int = 0)
 	{
-		if (playSound)
-			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 		do
 		{
 			curSelected += change;
