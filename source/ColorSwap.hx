@@ -3,12 +3,7 @@ package;
 import flixel.FlxG;
 import flixel.system.FlxAssets.FlxShader;
 
-<<<<<<< HEAD
-class ColorSwap
-{
-=======
 class ColorSwap {
->>>>>>> upstream/main
 	public var shader(default, null):ColorSwapShader = new ColorSwapShader();
 	public var hue(default, set):Float = 0;
 	public var saturation(default, set):Float = 0;
@@ -42,13 +37,6 @@ class ColorSwap {
 	}
 }
 
-<<<<<<< HEAD
-class ColorSwapShader extends FlxShader
-{
-	public function new()
-	{
-		super('
-=======
 class ColorSwapShader extends FlxShader {
 	@:glFragmentSource('
 		varying float openfl_Alphav;
@@ -97,7 +85,6 @@ class ColorSwapShader extends FlxShader {
 			}
 			return vec4(0.0, 0.0, 0.0, 0.0);
 		}
->>>>>>> upstream/main
 
 		uniform vec3 uTime;
 		uniform bool awesomeOutline;
@@ -170,9 +157,6 @@ class ColorSwapShader extends FlxShader {
 			}
 			gl_FragColor = color;
 
-<<<<<<< HEAD
-		}', false, '
-=======
 			/* 
 			if (color.a > 0.5)
 				gl_FragColor = color;
@@ -203,7 +187,6 @@ class ColorSwapShader extends FlxShader {
 		uniform mat4 openfl_Matrix;
 		uniform bool openfl_HasColorTransform;
 		uniform vec2 openfl_TextureSize;
->>>>>>> upstream/main
 
 		attribute float alpha;
 		attribute vec4 colorMultiplier;
@@ -228,15 +211,10 @@ class ColorSwapShader extends FlxShader {
 				openfl_ColorOffsetv = colorOffset / 255.0;
 				openfl_ColorMultiplierv = colorMultiplier;
 			}
-<<<<<<< HEAD
-		}');
-
-=======
 		}')
 
 	public function new()
 	{
 		super();
->>>>>>> upstream/main
 	}
 }

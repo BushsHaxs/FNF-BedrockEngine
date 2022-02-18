@@ -108,39 +108,12 @@ class TitleState extends MusicBeatState
 			}
 		}
 		#end
-<<<<<<< HEAD
-
-		#if (desktop && MODS_ALLOWED)
-		var path = "mods/" + Paths.currentModDirectory + "/images/gfDanceTitle.json";
-		// trace(path, FileSystem.exists(path));
-		if (!FileSystem.exists(path))
-		{
-			path = "mods/images/gfDanceTitle.json";
-		}
-		// trace(path, FileSystem.exists(path));
-		if (!FileSystem.exists(path))
-		{
-			path = "assets/images/gfDanceTitle.json";
-		}
-
-		// trace(path, FileSystem.exists(path));
-		titleJSON = Json.parse(File.getContent(path));
-		#else
-		var path = Paths.getPreloadPath("images/gfDanceTitle.json");
-		titleJSON = Json.parse(Assets.getText(path));
-		#end
-
-		#if (polymod && !html5)
-		if (sys.FileSystem.exists('mods/'))
-		{
-=======
 		
 		//trace(path, FileSystem.exists(path));
 		titleJSON = Json.parse(Paths.getTextFromFile('images/gfDanceTitle.json'));
 
 		/*#if (polymod && !html5)
 		if (sys.FileSystem.exists('mods/')) {
->>>>>>> upstream/main
 			var folders:Array<String> = [];
 			for (file in sys.FileSystem.readDirectory('mods/'))
 			{
@@ -155,13 +128,8 @@ class TitleState extends MusicBeatState
 				polymod.Polymod.init({modRoot: "mods", dirs: folders});
 			}
 		}
-<<<<<<< HEAD
-		#end
-
-=======
 		#end*/
 		
->>>>>>> upstream/main
 		#if CHECK_FOR_UPDATES
 		if (!closedState)
 		{
@@ -283,7 +251,6 @@ class TitleState extends MusicBeatState
 		}
 		persistentUpdate = true;
 
-<<<<<<< HEAD
 		bgGrad = FlxGradient.createGradientFlxSprite(1460, 821, [FlxColor.TRANSPARENT, FlxColor.fromInt(0xFFDF52A7)]);
 		bgGrad.antialiasing = ClientPrefs.globalAntialiasing;
 		bgGrad.updateHitbox();
@@ -291,28 +258,7 @@ class TitleState extends MusicBeatState
 		bgGrad.alpha = 0;
 		FlxTween.tween(bgGrad, {y: bgGrad.y - 300, alpha: 1}, 0.6);
 		add(bgGrad);
-
-		logoBl = new FlxSprite(titleJSON.titlex, titleJSON.titley);
-
-		#if (desktop && MODS_ALLOWED)
-		var path = "mods/" + Paths.currentModDirectory + "/images/logoBumpin.png";
-		// trace(path, FileSystem.exists(path));
-		if (!FileSystem.exists(path))
-		{
-			path = "mods/images/logoBumpin.png";
-		}
-		// trace(path, FileSystem.exists(path));
-		if (!FileSystem.exists(path))
-		{
-			path = "assets/images/logoBumpin.png";
-		}
-		// trace(path, FileSystem.exists(path));
-		logoBl.frames = FlxAtlasFrames.fromSparrow(BitmapData.fromFile(path), File.getContent(StringTools.replace(path, ".png", ".xml")));
-		#else
-		logoBl.frames = Paths.getSparrowAtlas('logoBumpin');
-		#end
-
-=======
+		
 		var bg:FlxSprite = new FlxSprite();
 		
 		if (titleJSON.backgroundSprite != null && titleJSON.backgroundSprite.length > 0 && titleJSON.backgroundSprite != "none"){
@@ -329,7 +275,6 @@ class TitleState extends MusicBeatState
 		logoBl = new FlxSprite(titleJSON.titlex, titleJSON.titley);
 		logoBl.frames = Paths.getSparrowAtlas('logoBumpin');
 		
->>>>>>> upstream/main
 		logoBl.antialiasing = ClientPrefs.globalAntialiasing;
 		logoBl.setGraphicSize(Std.int(logoBl.width * 0.8));
 		logoBl.animation.addByPrefix('bump', 'logo bumpin', 24, false);
@@ -347,38 +292,11 @@ class TitleState extends MusicBeatState
 
 		swagShader = new ColorSwap();
 		gfDance = new FlxSprite(titleJSON.gfx, titleJSON.gfy);
-<<<<<<< HEAD
-
-		#if (desktop && MODS_ALLOWED)
-		var path = "mods/" + Paths.currentModDirectory + "/images/gfDanceTitle.png";
-		// trace(path, FileSystem.exists(path));
-		if (!FileSystem.exists(path))
-		{
-			path = "mods/images/gfDanceTitle.png";
-			// trace(path, FileSystem.exists(path));
-		}
-		if (!FileSystem.exists(path))
-		{
-			path = "assets/images/gfDanceTitle.png";
-			if (ClientPrefs.lowQuality)
-				path = "assets/images/lowQuality/gfDanceTitleLow.png";
-			// trace(path, FileSystem.exists(path));
-		}
-		gfDance.frames = FlxAtlasFrames.fromSparrow(BitmapData.fromFile(path), File.getContent(StringTools.replace(path, ".png", ".xml")));
-		#else
-		gfDance.frames = Paths.getSparrowAtlas('gfDanceTitle.png');
-		if (ClientPrefs.lowQuality)
-			gfDance.frames = Paths.getSparrowAtlas('lowQuality/gfDanceTitleLow.png');
-		#end
-		gfDance.animation.addByIndices('danceLeft', 'GF Dancing Beat', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
-		gfDance.animation.addByIndices('danceRight', 'GF Dancing Beat', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
-		gfDance.animation.addByPrefix('Hey', 'GF Cheer', 24, false);
-=======
 		gfDance.frames = Paths.getSparrowAtlas('gfDanceTitle');
 
 		gfDance.animation.addByIndices('danceLeft', 'gfDance', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
 		gfDance.animation.addByIndices('danceRight', 'gfDance', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
->>>>>>> upstream/main
+		gfDance.animation.addByPrefix('Hey', 'GF Cheer', 24, false);
 		gfDance.antialiasing = ClientPrefs.globalAntialiasing;
 		
 		add(gfDance);

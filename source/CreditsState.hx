@@ -250,7 +250,6 @@ class CreditsState extends MusicBeatState
 			],
 			[''],
 			['Psych Engine Team'],
-<<<<<<< HEAD
 			[
 				'Shadow Mario',
 				'shadowmario',
@@ -266,9 +265,17 @@ class CreditsState extends MusicBeatState
 				'C30085'
 			],
 			[
-				'bb-panzu',
-				'bb-panzu',
+				'Shubs',
+				'shubs',
 				'Additional Programmer of Psych Engine',
+				'https://twitter.com/bbsub3',
+				'389A58'
+			],
+			['Former Engine Members'],
+			[
+				'bb-panzu',
+				'bb-panzu',
+				'Ex-Programmer of Psych Engine',
 				'https://twitter.com/bbsub3',
 				'389A58'
 			],
@@ -316,44 +323,6 @@ class CreditsState extends MusicBeatState
 				'https://twitter.com/Smokey_5_',
 				'0033CC'
 			],
-			/* SHADER PEOPLE. ADDING EM IN ONCE IT'S FINISHEDDD
-				[
-					'kem0x',
-					'kem0x',
-					'External Shader Support',
-					'https://twitter.com/Smokey_5_',
-					'0033CC'
-				],
-				[
-					'SqirraRNG',
-					'gedehari',
-					'Runtime shaders workaround.',
-					'https://twitter.com/Smokey_5_',
-					'0033CC'
-				],
-				[
-					'Fireable',
-					'fireable',
-					'Lua Implementation',
-					'https://twitter.com/Smokey_5_',
-					'0033CC'
-				],
-			 */
-=======
-			['Shadow Mario',		'shadowmario',		'Main Programmer of Psych Engine',						'https://twitter.com/Shadow_Mario_',	'444444'],
-			['RiverOaken',			'riveroaken',		'Main Artist/Animator of Psych Engine',					'https://twitter.com/river_oaken',		'C30085'],
-			['shubs',				'shubs',			'Additional Programmer of Psych Engine',				'https://twitter.com/yoshubs',			'4494E6'],
-			[''],
-			['Former Engine Members'],
-			['bb-panzu',			'bb-panzu',			'Ex-Programmer of Psych Engine',						'https://twitter.com/bbsub3',			'389A58'],
-			[''],
-			['Engine Contributors'],
-			['SqirraRNG',			'gedehari',			'Chart Editor\'s Sound Waveform base',					'https://twitter.com/gedehari',			'FF9300'],
-			['iFlicky',				'iflicky',			'Delay/Combo Menu Song Composer\nand Dialogue Sounds',	'https://twitter.com/flicky_i',			'C549DB'],
-			['PolybiusProxy',		'polybiusproxy',	'.MP4 Video Loader Extension',							'https://twitter.com/polybiusproxy',	'FFEAA6'],
-			['Keoiki',				'keoiki',			'Note Splash Animations',								'https://twitter.com/Keoiki_',			'FFFFFF'],
-			['Smokey',				'smokey',			'Spritemap Texture Support',							'https://twitter.com/Smokey_5_',		'0033CC'],
->>>>>>> upstream/main
 			[''],
 			["Funkin' Crew"],
 			[
@@ -436,17 +405,8 @@ class CreditsState extends MusicBeatState
 		descBox.alpha = 0.6;
 		add(descBox);
 
-<<<<<<< HEAD
-		descBox = new FlxSprite().makeGraphic(1, 1, FlxColor.BLACK);
-		descBox.alpha = 0.6;
-		add(descBox);
-
-		descText = new FlxText(50, 600, 1180, "", 32);
-		descText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-=======
 		descText = new FlxText(50, FlxG.height + offsetThing - 25, 1180, "", 32);
 		descText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER/*, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK*/);
->>>>>>> upstream/main
 		descText.scrollFactor.set();
 		//descText.borderSize = 2.4;
 		descBox.sprTracker = descText;
@@ -468,13 +428,8 @@ class CreditsState extends MusicBeatState
 		super.create();
 	}
 
-<<<<<<< HEAD
-	var holdTime:Float = 0;
-
-=======
 	var quitting:Bool = false;
 	var holdTime:Float = 0;
->>>>>>> upstream/main
 	override function update(elapsed:Float)
 	{
 		warningDialogue.setText("YOU ARE ABOUT TO GO TO: \n"
@@ -492,40 +447,6 @@ class CreditsState extends MusicBeatState
 				var shiftMult:Int = 1;
 				if(FlxG.keys.pressed.SHIFT) shiftMult = 3;
 
-<<<<<<< HEAD
-		var shiftMult:Int = 1;
-		if (FlxG.keys.pressed.SHIFT)
-			shiftMult = 3;
-
-		if (upP)
-		{
-			changeSelection(-shiftMult);
-			holdTime = 0;
-		}
-		if (downP)
-		{
-			changeSelection(shiftMult);
-			holdTime = 0;
-		}
-
-		if (controls.UI_DOWN || controls.UI_UP)
-		{
-			var checkLastHold:Int = Math.floor((holdTime - 0.5) * 10);
-			holdTime += elapsed;
-			var checkNewHold:Int = Math.floor((holdTime - 0.5) * 10);
-
-			if (holdTime > 0.5 && checkNewHold - checkLastHold > 0)
-			{
-				changeSelection((checkNewHold - checkLastHold) * (controls.UI_UP ? -shiftMult : shiftMult));
-			}
-		}
-
-		if (controls.BACK)
-		{
-			if (colorTween != null)
-			{
-				colorTween.cancel();
-=======
 				var upP = controls.UI_UP_P;
 				var downP = controls.UI_DOWN_P;
 
@@ -564,14 +485,8 @@ class CreditsState extends MusicBeatState
 				FlxG.sound.play(Paths.sound('cancelMenu'));
 				MusicBeatState.switchState(new MainMenuState());
 				quitting = true;
->>>>>>> upstream/main
 			}
 		}
-<<<<<<< HEAD
-		if (FlxG.keys.pressed.ENTER)
-		{
-			warningDialogue.show();
-=======
 		
 		for (item in grpOptions.members)
 		{
@@ -591,17 +506,12 @@ class CreditsState extends MusicBeatState
 					item.forceX = item.x;
 				}
 			}
->>>>>>> upstream/main
 		}
 		super.update(elapsed);
 	}
 
-<<<<<<< HEAD
-	function changeSelection(change:Int = 0, playSound:Bool = true)
-=======
 	var moveTween:FlxTween = null;
 	function changeSelection(change:Int = 0)
->>>>>>> upstream/main
 	{
 		if (playSound)
 			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
@@ -650,18 +560,11 @@ class CreditsState extends MusicBeatState
 		}
 
 		descText.text = creditsStuff[curSelected][2];
-<<<<<<< HEAD
-		descText.screenCenter(Y);
-		descText.y += 270;
-
-		descBox.setPosition(descText.x - 10, descText.y - 10);
-=======
 		descText.y = FlxG.height - descText.height + offsetThing - 60;
 
 		if(moveTween != null) moveTween.cancel();
 		moveTween = FlxTween.tween(descText, {y : descText.y + 75}, 0.25, {ease: FlxEase.sineOut});
 
->>>>>>> upstream/main
 		descBox.setGraphicSize(Std.int(descText.width + 20), Std.int(descText.height + 25));
 		descBox.updateHitbox();
 	}

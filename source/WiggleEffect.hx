@@ -66,14 +66,8 @@ class WiggleEffect
 
 class WiggleShader extends FlxShader
 {
-<<<<<<< HEAD
-	public function new()
-	{
-		super('#pragma header
-=======
 	@:glFragmentSource('
 		#pragma header
->>>>>>> upstream/main
 		//uniform float tx, ty; // x,y waves phase
 		uniform float uTime;
 		
@@ -136,14 +130,9 @@ class WiggleShader extends FlxShader
 		{
 			vec2 uv = sineWave(openfl_TextureCoordv);
 			gl_FragColor = texture2D(bitmap, uv);
-<<<<<<< HEAD
-		}');
-
-=======
 		}')
 	public function new()
 	{
 		super();
->>>>>>> upstream/main
 	}
 }
