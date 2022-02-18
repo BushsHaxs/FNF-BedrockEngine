@@ -89,9 +89,6 @@ class PlayState extends MusicBeatState
 	public static var STRUM_X_MIDDLESCROLL = -278;
 	public static var animatedShaders:Map<String, DynamicShaderHandler> = new Map<String, DynamicShaderHandler>();
 
-	public var percent:Float;
-	public var accuracy:Float = Highscore.floorDecimal(percent * 100, 2);
-
 	public var modchartTweens:Map<String, FlxTween> = new Map<String, FlxTween>();
 	public var modchartSprites:Map<String, ModchartSprite> = new Map<String, ModchartSprite>();
 	public var modchartTimers:Map<String, FlxTimer> = new Map<String, FlxTimer>();
@@ -2806,22 +2803,12 @@ class PlayState extends MusicBeatState
 		super.update(elapsed);
 		
 		// Info Bar
+		var accuracy:Float = Highscore.floorDecimal(ratingPercent * 100, 2);
 		var ratingNameTwo:String = ratingName;
-		var dividerdir:String =  File.getContent(Paths.mods("divider/") + "divider.divider");
-		var divider:String;
-		#if MODS_ALLOWED
-		divider = ' ' + dividerdir + ' ';
-
-		if (!FileSystem.exists(dividerdir))
-		{
-			divider = ' ' + '-' + ' ';
-		}
-		#else
-		divider = ' ' + '-' + ' ';
-		#end
+		var divider:String = ' ' + '-' + ' ';
 
 		scoreTxt.text = 'Score: ' + songScore;
-		scoreTxt.text += divider + 'Accuracy:' + accuracy + '%';
+		scoreTxt.text += divider + 'Accuracy:' + Highscore.floorDecimal(ratingPercent * 100, 2) + '%';
 
 		if (ratingFC == "" || totalMisses > 0)
 			scoreTxt.text += '';
@@ -3962,7 +3949,7 @@ class PlayState extends MusicBeatState
 			if (SONG.validScore)
 			{
 				#if !switch
-				percent = ratingPercent;
+				var percent:Float = ratingPercent;
 				if (Math.isNaN(percent))
 					percent = 0;
 				Highscore.saveScore(SONG.song, songScore, storyDifficulty, percent);
@@ -4009,10 +3996,10 @@ class PlayState extends MusicBeatState
 
 						FlxG.save.data.weekCompleted = StoryMenuState.weekCompleted;
 						FlxG.save.flush();
+
+						openSubState(new ResultsSubState());
 					}
 					changedDifficulty = false;
-
-					openSubState(new ResultsSubState());
 				}
 				else
 				{
@@ -4057,7 +4044,8 @@ class PlayState extends MusicBeatState
 					}
 				}
 
-				openSubState(new ResultsSubState());
+				if (!ClientPrefs.getGameplaySetting('practice', false) && !ClientPrefs.getGameplaySetting('botplay', false))
+					openSubState(new ResultsSubState());
 			}
 			else
 			{
@@ -4259,6 +4247,14 @@ class PlayState extends MusicBeatState
 
 		//uiSkin = BedrockUtils.uiSkin;
 
+		/*
+			gonna try to make it so a "early" or "late" graphic shows up
+			near your current rating, it will probably look kinda janky
+			but I will try my best, if I can't, then I will just leave
+			the idea to someone else
+			- Gui iago
+		*/
+
 		rating.loadGraphic(Paths.image(getUiSkin(uiSkin, daRating, altPart)));
 		rating.cameras = [camHUD];
 		rating.screenCenter();
@@ -4320,13 +4316,14 @@ class PlayState extends MusicBeatState
 		var daLoop:Int = 0;
 		for (i in seperatedScore)
 		{
-			/* I will probably try to change this in the future
+			/* 
+			   I will probably try to change this in the future
 			   I wanna make it so numbers spawn depending on the current combo value
 			   ex: if combo is at 1, then spawn number 1 and nothing else, then keep counting up if needed
 				   if combo is at 10, then spawn number 1 and number 0, nothing else, then keep counting up if needed
-				   if combo is at 100, then spawn number 1, then 0, then 0, nothing else, then keep counting up if needed
-			  etc...
-			-Gui iago */
+				   if combo is at 100, then spawn number 1, then 0, then 0, nothing else, then keep counting up if needed, etc...
+				   -Gui iago
+			*/
 			var numScore:FlxSprite = new FlxSprite().loadGraphic(Paths.image(getUiSkin(uiSkin, '', altPart, true, Std.int(i))));
 			add(numScore);
 			numScore.cameras = [camHUD];
