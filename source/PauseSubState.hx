@@ -13,7 +13,6 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.FlxCamera;
-import JsonSettings;
 
 class PauseSubState extends MusicBeatSubstate
 {
@@ -221,11 +220,9 @@ class PauseSubState extends MusicBeatSubstate
 
 	function iconanimation()
 	{
-		JsonSettings.dev(JsonSettings.dir);
-
 		if (PlayState.instance.healthBar.percent > 85)
 			icon.animation.curAnim.curFrame = 1;
-		else if (PlayState.instance.healthBar.percent < 20 && JsonSettings.iconSupport)
+		else if (PlayState.instance.healthBar.percent < 20)
 			icon.animation.curAnim.curFrame = 2;
 		else
 			icon.animation.curAnim.curFrame = 0;

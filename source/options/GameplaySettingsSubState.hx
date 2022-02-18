@@ -34,12 +34,11 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		title = 'Gameplay Settings';
 		rpcTitle = 'Adjusting the Gameplay Settings'; // for Discord Rich Presence
 
-		/*var Option = new Option('Complex Accuracy',
-				"If checked, the accuracy will follow a harsher system, Based on Etterna and Kade Engine.",
-				'keAccuracy',
-				'bool',
-				false);
-			addOption(Option); */
+		var Option = new Option('Complex Accuracy', "If checked, the accuracy will follow a harsher system, Based on Etterna.", 'keAccuracy', 'bool', false);
+		addOption(Option);
+
+		var Option = new Option('Antimash', "If unchecked, antimash will be disabled.", 'antiMash', 'bool', true);
+		addOption(Option);
 
 		var option:Option = new Option('Disable Reset Button', "If checked, pressing Reset won't do anything.", 'noReset', 'bool', false);
 		addOption(option);
@@ -52,20 +51,18 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 			'If checked, notes go Down instead of Up, simple enough.', // Description
 			'downScroll', // Save data variable name
 			'bool', // Variable type
-			false); // Default value
+			false // Default value
+		);
 		addOption(option);
 
 		var option:Option = new Option('Ghost Tapping', "If checked, you won't get misses from pressing keys\nwhile there are no notes able to be hit.",
 			'ghostTapping', 'bool', true);
 		addOption(option);
 
-		var option:Option = new Option('Hide Opponent Notes', 'If checked, will hide opponent notes on middlescroll.', 'hideStrumsMiddle', 'bool', false);
-		addOption(option);
-
 		var option:Option = new Option('Instant Respawn', "If checked, skips the Game Over Screen entirely.", 'instantRespawn', 'bool', false);
 		addOption(option);
 
-		var option:Option = new Option('Marvelous Ratings', 'If unchecked, marvelous ratings will disappear.', 'marvelouses', 'bool', false);
+		var option:Option = new Option('Marvelous Ratings', 'If unchecked, marvelous ratings will not be used.', 'marvelouses', 'bool', false);
 		addOption(option);
 
 		var option:Option = new Option('Middlescroll', 'If checked, your notes get centered.', 'middleScroll', 'bool', false);
@@ -76,6 +73,10 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 
 		var option:Option = new Option('Play Miss Sounds', "If unchecked, sounds for when you miss a Note will be disabled entirely", 'playMissSounds',
 			'bool', true);
+		addOption(option);
+
+		var option:Option = new Option('Rating System:', "What should your Rating System be?", 'ratingSystem', 'string', 'Bedrock',
+			['Bedrock', 'Psych', 'Forever', 'Andromeda', "Accurate", "None"]);
 		addOption(option);
 
 		/*var option:Option = new Option('Note Delay',

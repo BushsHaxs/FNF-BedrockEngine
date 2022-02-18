@@ -342,8 +342,7 @@ class TitleState extends MusicBeatState
 		gfDance.antialiasing = ClientPrefs.globalAntialiasing;
 		add(gfDance);
 		add(logoBl);
-		gfDance.shader = swagShader.shader;
-		// logoBl.shader = swagShader.shader;
+		logoBl.shader = swagShader.shader;
 
 		titleText = new FlxSprite(titleJSON.startx, titleJSON.starty);
 		#if (desktop && MODS_ALLOWED)

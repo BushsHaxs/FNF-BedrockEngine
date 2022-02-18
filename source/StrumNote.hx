@@ -14,30 +14,31 @@ using StringTools;
 class StrumNote extends FlxSprite
 {
 	private var colorSwap:ColorSwap;
+
 	public var resetAnim:Float = 0;
+
 	private var noteData:Int = 0;
-	public var direction:Float = 90;//plan on doing scroll directions soon -bb
-	public var downScroll:Bool = false;//plan on doing scroll directions soon -bb
+
+	public var direction:Float = 90; // plan on doing scroll directions soon -bb
+	public var downScroll:Bool = false; // plan on doing scroll directions soon -bb
 	public var sustainReduce:Bool = true;
-	
-	
-	
+
 	private var player:Int;
-	
+
 	public var texture(default, set):String = null;
-	private function set_texture(value:String):String {
-		if(texture != value) {
+
+	private function set_texture(value:String):String
+	{
+		if (texture != value)
+		{
 			texture = value;
 			reloadNote();
 		}
 		return value;
 	}
 
-
-	public function new(x:Float, y:Float, leData:Int, player:Int) {
-
-		JsonSettings.offdev(JsonSettings.offdir);
-
+	public function new(x:Float, y:Float, leData:Int, player:Int)
+	{
 		colorSwap = new ColorSwap();
 		shader = colorSwap.shader;
 		noteData = leData;
@@ -45,12 +46,13 @@ class StrumNote extends FlxSprite
 		this.noteData = leData;
 		super(x, y);
 
-		var skin:String = 'noteskins/' + JsonSettings.noteSkin;
+		var skin:String = BedrockUtil.getNoteSkin(ClientPrefs.noteSkin);
 
-		if(PlayState.SONG.arrowSkin != null && PlayState.SONG.arrowSkin.length > 1) skin = PlayState.SONG.arrowSkin; 
+		if (PlayState.SONG.arrowSkin != null && PlayState.SONG.arrowSkin.length > 1)
+			skin = PlayState.SONG.arrowSkin;
 		/*this will probably wont work, unless you change it because arrowSkin will allways be null*/
 
-		texture = skin; //Load texture and anims
+		texture = skin; // Load texture and anims
 
 		scrollFactor.set();
 	}
@@ -58,9 +60,10 @@ class StrumNote extends FlxSprite
 	public function reloadNote()
 	{
 		var lastAnim:String = null;
-		if(animation.curAnim != null) lastAnim = animation.curAnim.name;
+		if (animation.curAnim != null)
+			lastAnim = animation.curAnim.name;
 
-		if(PlayState.isPixelStage)
+		if (PlayState.isPixelStage)
 		{
 			loadGraphic(Paths.image('pixelUI/' + texture));
 			width = width / 4;
@@ -127,13 +130,14 @@ class StrumNote extends FlxSprite
 		}
 		updateHitbox();
 
-		if(lastAnim != null)
+		if (lastAnim != null)
 		{
 			playAnim(lastAnim, true);
 		}
 	}
 
-	public function postAddedToGroup() {
+	public function postAddedToGroup()
+	{
 		playAnim('static');
 		x += Note.swagWidth * noteData;
 		x += 50;
@@ -141,37 +145,46 @@ class StrumNote extends FlxSprite
 		ID = noteData;
 	}
 
-	override function update(elapsed:Float) {
-		if(resetAnim > 0) {
+	override function update(elapsed:Float)
+	{
+		if (resetAnim > 0)
+		{
 			resetAnim -= elapsed;
-			if(resetAnim <= 0) {
+			if (resetAnim <= 0)
+			{
 				playAnim('static');
 				resetAnim = 0;
 			}
 		}
-		//if(animation.curAnim != null){ //my bad i was upset
-		if(animation.curAnim.name == 'confirm' && !PlayState.isPixelStage) {
+		// if(animation.curAnim != null){ //my bad i was upset
+		if (animation.curAnim.name == 'confirm' && !PlayState.isPixelStage)
+		{
 			centerOrigin();
-		//}
+			// }
 		}
 
 		super.update(elapsed);
 	}
 
-	public function playAnim(anim:String, ?force:Bool = false) {
+	public function playAnim(anim:String, ?force:Bool = false)
+	{
 		animation.play(anim, force);
 		centerOffsets();
 		centerOrigin();
-		if(animation.curAnim == null || animation.curAnim.name == 'static') {
+		if (animation.curAnim == null || animation.curAnim.name == 'static')
+		{
 			colorSwap.hue = 0;
 			colorSwap.saturation = 0;
 			colorSwap.brightness = 0;
-		} else {
+		}
+		else
+		{
 			colorSwap.hue = ClientPrefs.arrowHSV[noteData % 4][0] / 360;
 			colorSwap.saturation = ClientPrefs.arrowHSV[noteData % 4][1] / 100;
 			colorSwap.brightness = ClientPrefs.arrowHSV[noteData % 4][2] / 100;
 
-			if(animation.curAnim.name == 'confirm' && !PlayState.isPixelStage) {
+			if (animation.curAnim.name == 'confirm' && !PlayState.isPixelStage)
+			{
 				centerOrigin();
 			}
 		}

@@ -14,8 +14,7 @@ Credits:
 * [XtraXD1](https://github.com/ShadowMario/FNF-PsychEngine/pull/3192) - Show/Hide Weeks temporally + Getting/Setting on Source Code
 * [Yoshubs](https://github.com/Yoshubs/Forever-Engine-Legacy) - made Forever Engine, Main Inspiration
 
-## Currently being Rewriten:
-https://github.com/Gui-iago/FNF-BedrockEngineRewrite
+> **Remember: this engine should be treated as nothing but a Mod/Fork of Psych Engine**
 
 # Sections:
 
@@ -29,7 +28,7 @@ https://github.com/Gui-iago/FNF-BedrockEngineRewrite
 > ### Dependencies
 
 - Git
-- Haxel (LATEST VERSION ONLY, PLEASE, STOP USING 4.1.5!!!!)
+- Haxe (LATEST VERSION ONLY, PLEASE, STOP USING 4.1.5!!!!)
 - Visual Studio Community (Windows Only)
 
 > ### OPTIONAL Dependencies
@@ -111,7 +110,15 @@ https://my.visualstudio.com/Downloads?q=visual%20studio%202017&wt.mc_id=o~msft~v
 
 > ### Visual Studo Community Setup
 
-Once you download and install VS Community, on the "Workloads" tab, select "Desktop Development with C++"
+Once you download and install VS Community, on the "Individual Components" tab, select:
+
+```
+MSVC v142 - VS 2019 C++ x64/x86 build tools
+Windows SDK (10.0.17763.0)
+```
+
+
+Desktop Development with C++
 Near the "Install" button, there's a Drop-Down menu, click on it, Select "Download first, then Install"
 Now wait until it finishes, it is recommended to reboot your PC once it finishes, but it's not needed at all
 

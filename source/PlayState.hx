@@ -1,12 +1,16 @@
 package;
 
-import flixel.graphics.FlxGraphic;
-#if desktop
-import Discord.DiscordClient;
-#end
+import Achievements;
+import DialogueBoxPsych;
+import FunkinLua;
+import Note.EventNote;
 import Section.SwagSection;
+import Shaders;
 import Song.SwagSong;
+import StageData;
 import WiggleEffect.WiggleEffectType;
+import editors.CharacterEditorState;
+import editors.ChartingState;
 import flixel.FlxBasic;
 import flixel.FlxCamera;
 import flixel.FlxG;
@@ -21,12 +25,16 @@ import flixel.addons.effects.FlxTrailArea;
 import flixel.addons.effects.chainable.FlxEffectSprite;
 import flixel.addons.effects.chainable.FlxWaveEffect;
 import flixel.addons.transition.FlxTransitionableState;
+import flixel.graphics.FlxGraphic;
 import flixel.graphics.atlas.FlxAtlas;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.group.FlxSpriteGroup;
+import flixel.input.gamepad.FlxGamepad;
+import flixel.input.keyboard.FlxKey;
+import flixel.math.FlxAngle;
 import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
-import flixel.math.FlxAngle;
 import flixel.math.FlxRect;
 import flixel.system.FlxAssets.FlxShader;
 import flixel.system.FlxSound;
@@ -45,6 +53,7 @@ import openfl.Lib;
 import openfl.display.BlendMode;
 import openfl.display.Shader;
 import openfl.display.StageQuality;
+import openfl.events.KeyboardEvent;
 import openfl.filters.BitmapFilter;
 import openfl.filters.ShaderFilter;
 import openfl.utils.Assets as OpenFlAssets;
@@ -54,23 +63,31 @@ import flixel.group.FlxSpriteGroup;
 import flixel.input.keyboard.FlxKey;
 import Note.EventNote;
 import openfl.events.KeyboardEvent;
-import flixel.input.gamepad.FlxGamepad;
 import Achievements;
 import StageData;
 import FunkinLua;
 import DialogueBoxPsych;
 import Shaders;
+import DynamicShaderHandler;
+#if sys
+import sys.FileSystem;
+#end
+
+using StringTools;
+
+#if desktop
+import Discord.DiscordClient;
+#end
 #if sys
 import sys.FileSystem;
 import sys.io.File;
 #end
 
-using StringTools;
-
 class PlayState extends MusicBeatState
 {
 	public static var STRUM_X = 42;
 	public static var STRUM_X_MIDDLESCROLL = -278;
+	public static var animatedShaders:Map<String, DynamicShaderHandler> = new Map<String, DynamicShaderHandler>();
 
 	public var modchartTweens:Map<String, FlxTween> = new Map<String, FlxTween>();
 	public var modchartSprites:Map<String, ModchartSprite> = new Map<String, ModchartSprite>();
@@ -154,6 +171,11 @@ class PlayState extends MusicBeatState
 	public var gfSpeed:Int = 1;
 	public var health:Float = 1;
 	public var combo:Int = 0;
+
+	// stores the last judgement object
+	public static var lastRating:FlxSprite;
+	// stores the last combo objects in an array
+	public static var lastCombo:Array<FlxSprite>;
 
 	private var healthBarBG:AttachedSprite;
 
@@ -288,6 +310,7 @@ class PlayState extends MusicBeatState
 
 	public var introSoundsSuffix:String = '';
 	public var opponentdiscordtxt:String = "";
+	public var luaShaders:Map<String, DynamicShaderHandler> = new Map<String, DynamicShaderHandler>();
 
 	// Debug buttons
 	private var debugKeysChart:Array<FlxKey>;
@@ -297,7 +320,7 @@ class PlayState extends MusicBeatState
 	private var keysArray:Array<Dynamic>;
 
 	// Shit used for controller
-	// private var keyPressByController:Bool = false;
+	private var keyPressByController:Bool = false;
 
 	override public function create()
 	{
@@ -305,6 +328,9 @@ class PlayState extends MusicBeatState
 
 		// for lua
 		instance = this;
+
+		// sets up the combo object array
+		lastCombo = [];
 
 		debugKeysChart = ClientPrefs.copyKey(ClientPrefs.keyBinds.get('debug_1'));
 		debugKeysCharacter = ClientPrefs.copyKey(ClientPrefs.keyBinds.get('debug_2'));
@@ -448,7 +474,6 @@ class PlayState extends MusicBeatState
 				stageFront.setGraphicSize(Std.int(stageFront.width * 1.1));
 				stageFront.updateHitbox();
 				add(stageFront);
-
 				if (!ClientPrefs.lowQuality)
 				{
 					var stageLight:BGSprite = new BGSprite('stage_light', -125, -100, 0.9, 0.9);
@@ -1249,13 +1274,11 @@ class PlayState extends MusicBeatState
 		judgementCounter.scrollFactor.set();
 		judgementCounter.screenCenter(Y);
 
-		JsonSettings.devtwo(JsonSettings.dirtwo);
-
 		// Just in case.
 		if (ClientPrefs.marvelouses)
-			judgementCounter.text = 'Marvs: ${marvelouses}\nSicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${totalMisses}';
+			judgementCounter.text = 'Marvs: ${marvelouses}\nSicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nCombo Breaks: ${songMisses}';
 		else
-			judgementCounter.text = 'Sicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}${songMisses}\nMisses: ${totalMisses}';
+			judgementCounter.text = 'Sicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}$\nCombo Breaks: ${songMisses}';
 
 		// then we add them
 		add(judgementCounter);
@@ -1428,20 +1451,17 @@ class PlayState extends MusicBeatState
 		DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconP2.getCharacter());
 		#end
 
-		if (!ClientPrefs.controllerMode)
-		{
-			FlxG.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
-			FlxG.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyRelease);
-		}
-
-		/*FlxG.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
-			FlxG.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyRelease); */
+		FlxG.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
+		FlxG.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyRelease);
 		/* ^ these may be the reason why automatic controller detection 
 			just fucks up the inputs, both here and on EditorPlayState
 			but I'm not really sure since my knowledge on haxe doesn't go that far,
 			it might even just be something with controlArray,
 			I will just leave them as they were on Psych until I find
-			a way to fix the inputs while also making the input system work - Gui iago */
+			a way to fix the inputs while also making the input system work - Gui iago
+
+			im lazy to recode my controller support, so go to hell bruh - Stilic
+		 */
 
 		Conductor.safeZoneOffset = (ClientPrefs.safeFrames / 60) * 1000;
 		callOnLuas('onCreatePost', []);
@@ -1585,9 +1605,8 @@ class PlayState extends MusicBeatState
 		#end
 	}
 
-	public function addShaderToCamera(cam:String, effect:ShaderEffect)
+	public function addShaderToCamera(cam:String, effect:Dynamic)
 	{ // STOLE FROM ANDROMEDA
-
 		switch (cam.toLowerCase())
 		{
 			case 'camhud' | 'hud':
@@ -1652,13 +1671,19 @@ class PlayState extends MusicBeatState
 				}
 				camOther.setFilters(newCamEffects);
 			default:
-				camGameShaders.remove(effect);
-				var newCamEffects:Array<BitmapFilter> = [];
-				for (i in camGameShaders)
+				if (modchartSprites.exists(cam))
 				{
-					newCamEffects.push(new ShaderFilter(i.shader));
+					Reflect.setProperty(modchartSprites.get(cam), "shader", null);
 				}
-				camGame.setFilters(newCamEffects);
+				else if (modchartTexts.exists(cam))
+				{
+					Reflect.setProperty(modchartTexts.get(cam), "shader", null);
+				}
+				else
+				{
+					var OBJ = Reflect.getProperty(PlayState.instance, cam);
+					Reflect.setProperty(OBJ, "shader", null);
+				}
 		}
 	}
 
@@ -1674,6 +1699,10 @@ class PlayState extends MusicBeatState
 				camOtherShaders = [];
 				var newCamEffects:Array<BitmapFilter> = [];
 				camOther.setFilters(newCamEffects);
+			case 'camgame' | 'game':
+				camGameShaders = [];
+				var newCamEffects:Array<BitmapFilter> = [];
+				camGame.setFilters(newCamEffects);
 			default:
 				camGameShaders = [];
 				var newCamEffects:Array<BitmapFilter> = [];
@@ -1929,10 +1958,7 @@ class PlayState extends MusicBeatState
 			{
 				setOnLuas('defaultOpponentStrumX' + i, opponentStrums.members[i].x);
 				setOnLuas('defaultOpponentStrumY' + i, opponentStrums.members[i].y);
-				if (ClientPrefs.hideStrumsMiddle)
-				{
-					opponentStrums.members[i].visible = false;
-				}
+				// opponentStrums.members[i].visible = false;
 			}
 
 			startedCountdown = true;
@@ -2609,8 +2635,6 @@ class PlayState extends MusicBeatState
 		{
 			iconP1.swapOldIcon();
 	}*/
-
-		JsonSettings.devtwo(JsonSettings.dirtwo);
 		if (cpuControlled && !alreadyChanged)
 		{
 			scoreTxt.visible = false;
@@ -2777,11 +2801,11 @@ class PlayState extends MusicBeatState
 		}
 
 		super.update(elapsed);
-		JsonSettings.devtwo(JsonSettings.dirtwo);
-
+		
 		// Info Bar
+		var accuracy:Float = Highscore.floorDecimal(ratingPercent * 100, 2);
 		var ratingNameTwo:String = ratingName;
-		var divider:String = ' ' + JsonSettings.divider + ' ';
+		var divider:String = ' ' + '-' + ' ';
 
 		scoreTxt.text = 'Score: ' + songScore;
 		scoreTxt.text += divider + 'Accuracy:' + Highscore.floorDecimal(ratingPercent * 100, 2) + '%';
@@ -2791,12 +2815,15 @@ class PlayState extends MusicBeatState
 		else
 			scoreTxt.text += ' [' + ratingFC + ']';
 
-		scoreTxt.text += divider + 'Combo Breaks:' + songMisses;
+		scoreTxt.text += divider + 'Misses:' + songMisses;
 
 		if (ratingFC == "")
-			scoreTxt.text += divider + 'Rank: ?';
+			scoreTxt.text += divider + '?';
 		else
-			scoreTxt.text += divider + 'Rank: ' + ratingName;
+			scoreTxt.text += divider + ratingName;
+
+		if (ClientPrefs.ratingSystem == "None")
+			scoreTxt.text = 'Score: ${songScore} Misses: ${totalMisses}';
 
 		if (botplayTxt.visible)
 		{
@@ -2843,9 +2870,19 @@ class PlayState extends MusicBeatState
 		if (health > 2)
 			health = 2;
 
-		JsonSettings.dev(JsonSettings.dir);
+		//note to self: add old icons back?? - Gui iago
+		if (healthBar.percent < 20) {
+            iconP2.animation.curAnim.curFrame = 2;
+            iconP1.animation.curAnim.curFrame = 1;
+        } else if (healthBar.percent > 80) {
+            iconP2.animation.curAnim.curFrame = 1;
+            iconP1.animation.curAnim.curFrame = 2;
+        } else {
+            iconP2.animation.curAnim.curFrame = 0;
+            iconP1.animation.curAnim.curFrame = 0;
+        }
 
-		if (healthBar.percent < 20)
+		/*if (healthBar.percent < 20)
 		{
 			(opponentChart ? iconP2 : iconP1).animation.curAnim.curFrame = 1;
 			(opponentChart ? iconP1 : iconP2).animation.curAnim.curFrame = 2;
@@ -2872,7 +2909,7 @@ class PlayState extends MusicBeatState
 		{
 			(opponentChart ? iconP2 : iconP1).animation.curAnim.curFrame = 0;
 			(opponentChart ? iconP1 : iconP2).animation.curAnim.curFrame = 0;
-		}
+		}*/
 
 		if (FlxG.keys.anyJustPressed(debugKeysCharacter) && !endingSong && !inCutscene)
 		{
@@ -3169,6 +3206,16 @@ class PlayState extends MusicBeatState
 		setOnLuas('cameraY', camFollowPos.y);
 		setOnLuas('botPlay', cpuControlled);
 
+		for (shader in animatedShaders)
+		{
+			shader.update(elapsed);
+		}
+		#if LUA_ALLOWED
+		for (key => value in luaShaders)
+		{
+			value.update(elapsed);
+		}
+		#end
 		callOnLuas('onUpdatePost', [elapsed]);
 		for (i in shaderUpdates)
 		{
@@ -3949,6 +3996,8 @@ class PlayState extends MusicBeatState
 
 						FlxG.save.data.weekCompleted = StoryMenuState.weekCompleted;
 						FlxG.save.flush();
+
+						openSubState(new ResultsSubState());
 					}
 					changedDifficulty = false;
 				}
@@ -4012,6 +4061,9 @@ class PlayState extends MusicBeatState
 				changedDifficulty = false;
 			}
 			transitioning = true;
+
+			if (!ClientPrefs.getGameplaySetting('practice', false) && !ClientPrefs.getGameplaySetting('botplay', false))
+				openSubState(new ResultsSubState());
 		}
 	}
 
@@ -4078,11 +4130,6 @@ class PlayState extends MusicBeatState
 	{
 		var noteDiff:Float = Math.abs(note.strumTime - Conductor.songPosition + ClientPrefs.ratingOffset);
 
-		/*if (ClientPrefs.keAccuracy)
-		totalNotesHit += Etterna.wife3(-noteDiff, Conductor.timeScale); */
-
-		// trace(noteDiff, ' ' + Math.abs(note.strumTime - Conductor.songPosition));
-
 		if (ClientPrefs.playHitSounds)
 			FlxG.sound.play(Paths.sound('Tick'));
 
@@ -4099,59 +4146,81 @@ class PlayState extends MusicBeatState
 		var rating:FlxSprite = new FlxSprite();
 		var score:Int = 350;
 
+		if (ClientPrefs.keAccuracy)
+			totalNotesHit += Etterna.wife3(-noteDiff, Conductor.safeZoneOffset / 166);
+
+		// deletes all combo sprites prior to initalizing new ones
+		if (lastCombo != null)
+		{
+			while (lastCombo.length > 0)
+			{
+				lastCombo[0].kill();
+				lastCombo.remove(lastCombo[0]);
+			}
+		}
+
 		// tryna do MS based judgment due to popular demand
 		var daRating:String = Conductor.judgeNote(note, noteDiff);
 
-		switch (daRating)
+		if (!ClientPrefs.keAccuracy)
 		{
-			case "shit": // shit
-				if (ClientPrefs.keAccuracy)
-				{
-					totalMisses++;
-					songMisses++;
-					combo = 0;
-				}
-				totalNotesHit += 0;
-				score = 50;
-				shits++;
-			case "bad": // bad
-				if (ClientPrefs.keAccuracy)
-				{
-					health -= 0.03 * healthLoss;
-				}
-				totalNotesHit += 0.5;
-				score = 100;
-				bads++;
-			case "good": // good
-				if (ClientPrefs.keAccuracy)
-				{
-					health = note.hitHealth * healthGain;
-				}
-				totalNotesHit += 0.75;
-				score = 200;
-				goods++;
-			case "sick": // sick
-				if (!ClientPrefs.marvelouses)
+			switch (daRating)
+			{
+				case "shit":
+					totalNotesHit += 0;
+					score = 50;
+					shits++;
+				case "bad":
+					totalNotesHit += 0.5;
+					score = 100;
+					bads++;
+				case "good": // good
+					totalNotesHit += 0.75;
+					score = 200;
+					goods++;
+				case "sick":
+					if (!ClientPrefs.marvelouses)
+						totalNotesHit += 1;
+					else
+						totalNotesHit += 0.95;
+					sicks++;
+				case "marvelous":
 					totalNotesHit += 1;
-				else
-					totalNotesHit += 0.95;
-				sicks++;
-			case "marvelous": // marvelous
-				totalNotesHit += 1;
-				marvelouses++;
+					marvelouses++;
+			}
+		}
+		else
+		{
+			switch (daRating)
+			{
+				case 'shit':
+					score = -300;
+					combo = 0;
+					songMisses++;
+					health -= 0.1;
+					shits++;
+				case 'bad':
+					daRating = 'bad';
+					score = 0;
+					health -= 0.06;
+					bads++;
+				case 'good':
+					daRating = 'good';
+					score = 200;
+					goods++;
+				case 'sick':
+					if (health < 2)
+						health += 0.04;
+					sicks++;
+			}
 		}
 
 		if (daRating == (ClientPrefs.marvelouses ? 'marvelous' : 'sick') && !note.noteSplashDisabled)
 			spawnNoteSplashOnNote(note, false);
 
-		JsonSettings.devtwo(JsonSettings.dirtwo);
-
 		if (!practiceMode && !cpuControlled)
 		{
-			if (ClientPrefs.keAccuracy)
-				songScore += Math.round(score);
-			else
-				songScore += score;
+			songScore += score;
 			songHits++;
 			totalPlayed++;
 			RecalculateRating();
@@ -4173,12 +4242,18 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		var uiSkin:String = '';
+		var uiSkin:String = ClientPrefs.judgementSkin.toLowerCase();
 		var altPart:String = isPixelStage ? '-pixel' : '';
 
-		JsonSettings.dev(JsonSettings.dir);
+		//uiSkin = BedrockUtils.uiSkin;
 
-		uiSkin = JsonSettings.judgementSkin;
+		/*
+			gonna try to make it so a "early" or "late" graphic shows up
+			near your current rating, it will probably look kinda janky
+			but I will try my best, if I can't, then I will just leave
+			the idea to someone else
+			- Gui iago
+		*/
 
 		rating.loadGraphic(Paths.image(getUiSkin(uiSkin, daRating, altPart)));
 		rating.cameras = [camHUD];
@@ -4191,6 +4266,13 @@ class PlayState extends MusicBeatState
 		rating.visible = !ClientPrefs.hideHud;
 		rating.x += ClientPrefs.comboOffset[0];
 		rating.y -= ClientPrefs.comboOffset[1];
+
+		if (lastRating != null)
+		{
+			lastRating.kill();
+		}
+		add(rating);
+		lastRating = rating;
 
 		var comboSpr:FlxSprite = new FlxSprite().loadGraphic(Paths.image(getUiSkin(uiSkin, 'combo', altPart)));
 		comboSpr.cameras = [camHUD];
@@ -4234,7 +4316,16 @@ class PlayState extends MusicBeatState
 		var daLoop:Int = 0;
 		for (i in seperatedScore)
 		{
+			/* 
+			   I will probably try to change this in the future
+			   I wanna make it so numbers spawn depending on the current combo value
+			   ex: if combo is at 1, then spawn number 1 and nothing else, then keep counting up if needed
+				   if combo is at 10, then spawn number 1 and number 0, nothing else, then keep counting up if needed
+				   if combo is at 100, then spawn number 1, then 0, then 0, nothing else, then keep counting up if needed, etc...
+				   -Gui iago
+			*/
 			var numScore:FlxSprite = new FlxSprite().loadGraphic(Paths.image(getUiSkin(uiSkin, '', altPart, true, Std.int(i))));
+			add(numScore);
 			numScore.cameras = [camHUD];
 			numScore.screenCenter();
 			numScore.x = coolText.x + (43 * daLoop) - 90;
@@ -4242,6 +4333,8 @@ class PlayState extends MusicBeatState
 
 			numScore.x += ClientPrefs.comboOffset[2];
 			numScore.y -= ClientPrefs.comboOffset[3];
+
+			lastCombo.push(numScore);
 
 			if (!PlayState.isPixelStage)
 			{
@@ -4298,15 +4391,11 @@ class PlayState extends MusicBeatState
 
 	private function onKeyPress(event:KeyboardEvent):Void
 	{
-		JsonSettings.devtwo(JsonSettings.dirtwo);
 		var eventKey:FlxKey = event.keyCode;
 		var key:Int = getKeyFromEvent(eventKey);
 		// trace('Pressed: ' + eventKey);
 
-		if (!cpuControlled
-			&& !paused
-			&& key > -1
-			&& (FlxG.keys.checkStatus(eventKey, JUST_PRESSED) || ClientPrefs.controllerMode /*keyPressByController*/))
+		if (!cpuControlled && !paused && key > -1 && (FlxG.keys.checkStatus(eventKey, JUST_PRESSED) || keyPressByController))
 		{
 			if (!boyfriend.stunned && generatedMusic && !endingSong)
 			{
@@ -4331,7 +4420,7 @@ class PlayState extends MusicBeatState
 							sortedNotesList.push(daNote);
 							// notesDatas.push(daNote.noteData);
 						}
-						if (JsonSettings.antiMash)
+						if (ClientPrefs.antiMash)
 							canMiss = true;
 					}
 				});
@@ -4434,11 +4523,11 @@ class PlayState extends MusicBeatState
 		var left = controls.NOTE_LEFT;
 		var controlHoldArray:Array<Bool> = [left, down, up, right];
 
-		/*var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
-		keyPressByController = (gamepad != null && (!gamepad.justReleased.ANY || gamepad.pressed.ANY)); */
+		var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
+		keyPressByController = (gamepad != null && (!gamepad.justReleased.ANY || gamepad.pressed.ANY));
 
 		// TO DO: Find a better way to handle controller inputs, this should work for now
-		if (ClientPrefs.controllerMode)
+		if (keyPressByController)
 		{
 			var controlArray:Array<Bool> = [
 				controls.NOTE_LEFT_P,
@@ -4500,7 +4589,7 @@ class PlayState extends MusicBeatState
 		}
 
 		// TO DO: Find a better way to handle controller inputs, this should work for now
-		if (ClientPrefs.controllerMode)
+		if (keyPressByController)
 		{
 			var controlArray:Array<Bool> = [
 				controls.NOTE_LEFT_R,
@@ -4895,8 +4984,7 @@ class PlayState extends MusicBeatState
 
 	public function spawnNoteSplash(x:Float, y:Float, data:Int, ?note:Note = null, opponent:Bool = true)
 	{
-		JsonSettings.offdev(JsonSettings.offdir);
-		var skin:String = JsonSettings.noteSplashSkin;
+		var skin:String = 'noteSplashes';
 		if (PlayState.SONG.splashSkin != null && PlayState.SONG.splashSkin.length > 0)
 			skin = PlayState.SONG.splashSkin;
 
@@ -5098,13 +5186,8 @@ class PlayState extends MusicBeatState
 		}
 		luaArray = [];
 
-		if (!ClientPrefs.controllerMode)
-		{
-			FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
-			FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyRelease);
-		}
-		/*FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
-		FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyRelease); */
+		FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
+		FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyRelease);
 
 		super.destroy();
 	}
@@ -5358,8 +5441,6 @@ class PlayState extends MusicBeatState
 		setOnLuas('misses', songMisses);
 		setOnLuas('hits', songHits);
 
-		JsonSettings.devtwo(JsonSettings.dirtwo);
-
 		var ret:Dynamic = callOnLuas('onRecalculateRating', []);
 		if (ret != FunkinLua.Function_Stop)
 		{
@@ -5369,36 +5450,36 @@ class PlayState extends MusicBeatState
 				// Rating Percent
 				ratingPercent = Math.min(1, Math.max(0, totalNotesHit / totalPlayed));
 
+			// i swear to the guy who made the old rating code
+			var ratings:Array<Dynamic> = Ratings.bedrockRatings;
+			switch (ClientPrefs.ratingSystem)
+			{
+				case "Psych":
+					ratings = Ratings.psychRatings;
+				// GO CHECK FOREVER ENGINE OUT!! https://github.com/Yoshubs/Forever-Engine-Legacy
+				case "Forever":
+					ratings = Ratings.foreverRatings;
+				// ALSO TRY ANDROMEDA!! https://github.com/nebulazorua/andromeda-engine
+				case "Andromeda":
+					ratings = Ratings.andromedaRatings;
+				case "Accurate":
+					ratings = Ratings.accurateRatings;
+			}
+
 			// Rating Name
 			if (ratingPercent >= 1)
 			{
-				if (JsonSettings.letterGrader)
-					ratingName = Ratings.ratingStuff[Ratings.ratingStuff.length - 1][0]; // Uses last string
-				else
-					ratingName = Ratings.ratingSimple[Ratings.ratingSimple.length - 1][0];
+				var dummyRating = ratings[ratings.length - 1][0];
+				ratingName = dummyRating;
 			}
 			else
 			{
-				if (JsonSettings.letterGrader)
+				for (i in 0...ratings.length - 1)
 				{
-					for (i in 0...Ratings.ratingStuff.length - 1)
+					if (ratingPercent < ratings[i][1])
 					{
-						if (ratingPercent < Ratings.ratingStuff[i][1])
-						{
-							ratingName = Ratings.ratingStuff[i][0];
-							break;
-						}
-					}
-				}
-				else
-				{
-					for (i in 0...Ratings.ratingSimple.length - 1)
-					{
-						if (ratingPercent < Ratings.ratingSimple[i][1])
-						{
-							ratingName = Ratings.ratingSimple[i][0];
-							break;
-						}
+						ratingName = ratings[i][0];
+						break;
 					}
 				}
 			}
@@ -5413,25 +5494,15 @@ class PlayState extends MusicBeatState
 				ratingFC = "GFC"; // Good Full Combo
 			if (bads > 0 || shits > 0)
 				ratingFC = "FC"; // Full Combo
-
-			// stars, removed for now
-			/*☆☆☆☆
-			☆☆☆
-			☆☆
-			☆ */
-			/*andromeda engine was  probably 
-			the first to have the stars idea, check them out!
-			https://github.com/nebulazorua/andromeda-engine */
 		}
-		JsonSettings.devtwo(JsonSettings.dirtwo);
 
 		setOnLuas('rating', ratingPercent);
 		setOnLuas('ratingName', ratingName);
 		setOnLuas('ratingFC', ratingFC);
 		if (ClientPrefs.marvelouses)
-			judgementCounter.text = 'Marvs: ${marvelouses}\nSicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${totalMisses}\n';
+			judgementCounter.text = 'Marvs: ${marvelouses}\nSicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nCombo Breaks: ${songMisses}\n';
 		else
-			judgementCounter.text = 'Sicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${totalMisses}\n';
+			judgementCounter.text = 'Sicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nCombo Breaks: ${songMisses}\n';
 	}
 
 	public static var othersCodeName:String = 'otherAchievements';

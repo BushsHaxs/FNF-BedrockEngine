@@ -105,7 +105,7 @@ class NoteOffsetState extends MusicBeatState
 		coolText.x = FlxG.width * 0.35;
 
 		var uiSkin:String = '';
-		uiSkin = JsonSettings.judgementSkin;
+		//uiSkin = BedrockUtils.uiSkin;
 
 		rating = new FlxSprite().loadGraphic(Paths.image('judgements/classic/sick'));
 		rating.cameras = [camHUD];

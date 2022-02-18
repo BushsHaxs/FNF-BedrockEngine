@@ -1,15 +1,8 @@
 package;
 
-import flixel.math.FlxMath;
 import flixel.FlxSprite;
+import flixel.math.FlxMath;
 import openfl.utils.Assets as OpenFlAssets;
-import haxe.Json;
-import haxe.format.JsonParser;
-#if sys
-import sys.io.File;
-import sys.FileSystem;
-#end
-import haxe.Json;
 
 using StringTools;
 
@@ -17,7 +10,6 @@ class HealthIcon extends FlxSprite
 {
 	public var sprTracker:FlxSprite;
 	public var canBounce:Bool = false;
-
 	private var isOldIcon:Bool = false;
 	private var isPlayer:Bool = false;
 	private var char:String = '';
@@ -46,73 +38,60 @@ class HealthIcon extends FlxSprite
 		}
 	}
 
-	public function swapOldIcon()
-	{
-		if (isOldIcon = !isOldIcon)
-			changeIcon('bf-old');
-		else
-			changeIcon('bf');
+	public function swapOldIcon() {
+		if(isOldIcon = !isOldIcon) changeIcon('bf-old');
+		else changeIcon('bf');
 	}
 
 	private var iconOffsets:Array<Float> = [0, 0, 0];
+	public var int:Int = 3;
 
-	public function changeIcon(char:String) // this should stay like this until i find a way to softcode
-	{
-		JsonSettings.dev(JsonSettings.dir);
-		if (this.char != char)
+	
+
+	public function changeIcon(char:String) {
+		if (ClientPrefs.iconSupport)
 		{
-			
-			if (!JsonSettings.iconSupport)
+			iconOffsets = [0, 0];
+			int = 2;
+		}
+		if(this.char != char) {
+			var name:String = 'icons/' + char;
+			if (ClientPrefs.iconSupport)
+				name = "icons-old/" + char;
+			if(!Paths.fileExists('images/' + name + '.png', IMAGE)) 
 			{
-				var name:String = 'icons/' + char;
-				if (!Paths.fileExists('images/' + name + '.png', IMAGE))
-					name = 'icons/icon-' + char; // Older versions of psych engine's support
-				if (!Paths.fileExists('images/' + name + '.png', IMAGE))
-					name = 'icons/icon-face'; // Prevents crash from missing icon
-				var file:Dynamic = Paths.image(name);
-
-				loadGraphic(file); // Load stupidly first for getting the file size
-				loadGraphic(file, true, Math.floor(width / 3), Math.floor(height)); // Then load it fr
-				iconOffsets[0] = (width - 150) / 3;
-				iconOffsets[1] = (width - 150) / 3;
-				iconOffsets[1] = (width - 150) / 3;
-				updateHitbox();
-
-				animation.add(char, [0, 1, 2], 0, false, isPlayer);
-				animation.play(char);
-				this.char = char;
-
-				antialiasing = ClientPrefs.globalAntialiasing;
-				if (char.endsWith('-pixel'))
-				{
-					antialiasing = false;
-				}
+				name = 'icons/icon-' + char; //Older versions of psych engine's support
+				if (ClientPrefs.iconSupport)
+					name = "icons-old/icon-" + char;
 			}
-			else
-			{
-				iconOffsets = [0, 0];
-				var name:String = 'icons-old/' + char;
-				if (!Paths.fileExists('images/' + name + '.png', IMAGE))
-					name = 'icons-old/icon-' + char;
-				if (!Paths.fileExists('images/' + name + '.png', IMAGE))
-					name = 'icons-old/icon-face';
-				var file:Dynamic = Paths.image(name);
 
-				loadGraphic(file);
-				loadGraphic(file, true, Math.floor(width / 2), Math.floor(height));
-				iconOffsets[0] = (width - 150) / 2;
-				iconOffsets[1] = (width - 150) / 2;
-				updateHitbox();
+			if(!Paths.fileExists('images/' + name + '.png', IMAGE))
+			{	 
+				name = 'icons/icon-face'; //Prevents crash from missing icon
+			 	if (ClientPrefs.iconSupport)
+					name = "icons-old/icon-face";
+			}
+			var file:Dynamic = Paths.image(name);
 
+			loadGraphic(file); //Load stupidly first for getting the file size
+			loadGraphic(file, true, Math.floor(width / int), Math.floor(height)); //Then load it fr
+			iconOffsets[0] = (width - 150) / 2;
+			iconOffsets[1] = (width - 150) / 2;
+			if (!ClientPrefs.iconSupport)
+				iconOffsets[2] = (width - 150) / 2;
+			updateHitbox();
+
+			if (ClientPrefs.iconSupport)
 				animation.add(char, [0, 1], 0, false, isPlayer);
-				animation.play(char);
-				this.char = char;
+			else
+				animation.add(char, [0, 1, 2], 0, false, isPlayer);
+			
+			animation.play(char);
+			this.char = char;
 
-				antialiasing = ClientPrefs.globalAntialiasing;
-				if (char.endsWith('-pixel'))
-				{
-					antialiasing = false;
-				}
+			antialiasing = ClientPrefs.globalAntialiasing;
+			if(char.endsWith('-pixel')) {
+				antialiasing = false;
 			}
 		}
 	}
@@ -134,8 +113,7 @@ class HealthIcon extends FlxSprite
 		}
 	}
 
-	public function getCharacter():String
-	{
+	public function getCharacter():String {
 		return char;
 	}
 }

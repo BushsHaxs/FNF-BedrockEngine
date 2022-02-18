@@ -70,6 +70,9 @@ class Main extends Sprite
 	{
 		var stageWidth:Int = Lib.current.stage.stageWidth;
 		var stageHeight:Int = Lib.current.stage.stageHeight;
+		var res = ClientPrefs.screenRes.split('x');
+		gameWidth = Std.parseInt(res[0]);
+		gameHeight = Std.parseInt(res[1]);
 
 		if (zoom == -1)
 		{

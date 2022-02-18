@@ -48,25 +48,6 @@ class NotesSubState extends MusicBeatSubstate
 
 	var posX = 230;
 
-	public var noteSkin:String;
-	public var dir:String = "settings/uiSettings.json";
-
-	public function dev(dir:String)
-	{
-		if (FileSystem.exists(dir))
-		{
-			var customJson:String = File.getContent(dir);
-			if (customJson != null && customJson.length > 0)
-			{
-				var shit:Dynamic = Json.parse(customJson);
-				var noteSkin = Reflect.getProperty(shit, "noteSkin");
-
-				if (noteSkin != null && noteSkin.length > 0)
-					this.noteSkin = noteSkin;
-			}
-		}
-	}
-
 	public function new()
 	{
 		super();
@@ -97,15 +78,7 @@ class NotesSubState extends MusicBeatSubstate
 			}
 
 			var note:FlxSprite = new FlxSprite(posX, yPos);
-
-			dev(dir);
-
-			note.frames = Paths.getSparrowAtlas('noteskins/' + noteSkin);
-
-			var animations:Array<String> = ['purple0', 'blue0', 'green0', 'red0'];
-			note.animation.addByPrefix('idle', animations[i]);
-			note.animation.play('idle');
-			note.antialiasing = ClientPrefs.globalAntialiasing;
+			note.ID = i;
 			grpNotes.add(note);
 
 			var newShader:ColorSwap = new ColorSwap();
@@ -115,6 +88,8 @@ class NotesSubState extends MusicBeatSubstate
 			newShader.brightness = ClientPrefs.arrowHSV[i][2] / 100;
 			shaderArray.push(newShader);
 		}
+
+		reloadNotes();
 
 		hsbText = new Alphabet(0, 0, "Hue    Saturation  Brightness", false, false, 0, 0.65);
 		hsbText.x = posX + 240;
@@ -249,6 +224,13 @@ class NotesSubState extends MusicBeatSubstate
 				super.update(elapsed);
 				return;
 			}
+
+			if (FlxG.keys.justPressed.S)
+			{
+				var prompt = new NotesPromptSubState();
+				prompt.closeCallback = reloadNotes;
+				openSubState(prompt);
+			}
 		}
 
 		if (controls.BACK || (changingNote && controls.ACCEPT))
@@ -348,6 +330,9 @@ class NotesSubState extends MusicBeatSubstate
 		var item = grpNumbers.members[(selected * 3) + type];
 		item.changeText('0');
 		item.offset.x = (40 * (item.lettersArray.length - 1)) / 2;
+
+		ClientPrefs.noteSkin = 'normal';
+		reloadNotes();
 	}
 
 	function updateValue(change:Float = 0)
@@ -387,5 +372,18 @@ class NotesSubState extends MusicBeatSubstate
 		item.offset.x = (40 * (item.lettersArray.length - 1)) / 2;
 		if (roundedValue < 0)
 			item.offset.x += 10;
+	}
+
+	function reloadNotes()
+	{
+		grpNotes.forEach(function(spr:FlxSprite)
+		{
+			spr.frames = Paths.getSparrowAtlas(BedrockUtil.getNoteSkin(ClientPrefs.noteSkin));
+
+			var animations:Array<String> = ['purple0', 'blue0', 'green0', 'red0'];
+			spr.animation.addByPrefix('idle', animations[spr.ID]);
+			spr.animation.play('idle');
+			spr.antialiasing = ClientPrefs.globalAntialiasing;
+		});
 	}
 }
