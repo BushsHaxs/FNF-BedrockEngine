@@ -13,6 +13,7 @@ import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
 import flixel.tweens.FlxTween;
+import flixel.tweens.FlxEase;
 #if MODS_ALLOWED
 import sys.FileSystem;
 import sys.io.File;
@@ -33,10 +34,12 @@ class CreditsState extends MusicBeatState
 	public var creditsStuff:Array<Array<String>> = [];
 
 	var bg:FlxSprite;
-	var descBox:FlxSprite;
 	var descText:FlxText;
 	var intendedColor:Int;
 	var colorTween:FlxTween;
+	var descBox:AttachedSprite;
+
+	var offsetThing:Float = -75;
 
 	override function create()
 	{
@@ -45,6 +48,7 @@ class CreditsState extends MusicBeatState
 		DiscordClient.changePresence("Reading the Credits", null);
 		#end
 
+		persistentUpdate = true;
 		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		add(bg);
 		bg.screenCenter();
@@ -260,9 +264,17 @@ class CreditsState extends MusicBeatState
 				'C30085'
 			],
 			[
-				'bb-panzu',
-				'bb-panzu',
+				'Shubs',
+				'shubs',
 				'Additional Programmer of Psych Engine',
+				'https://twitter.com/bbsub3',
+				'389A58'
+			],
+			['Former Engine Members'],
+			[
+				'bb-panzu',
+				'bb-panzu',
+				'Ex-Programmer of Psych Engine',
 				'https://twitter.com/bbsub3',
 				'389A58'
 			],
@@ -310,29 +322,6 @@ class CreditsState extends MusicBeatState
 				'https://twitter.com/Smokey_5_',
 				'0033CC'
 			],
-			/* SHADER PEOPLE. ADDING EM IN ONCE IT'S FINISHEDDD
-				[
-					'kem0x',
-					'kem0x',
-					'External Shader Support',
-					'https://twitter.com/Smokey_5_',
-					'0033CC'
-				],
-				[
-					'SqirraRNG',
-					'gedehari',
-					'Runtime shaders workaround.',
-					'https://twitter.com/Smokey_5_',
-					'0033CC'
-				],
-				[
-					'Fireable',
-					'fireable',
-					'Lua Implementation',
-					'https://twitter.com/Smokey_5_',
-					'0033CC'
-				],
-			 */
 			[''],
 			["Funkin' Crew"],
 			[
@@ -406,15 +395,20 @@ class CreditsState extends MusicBeatState
 					curSelected = i;
 			}
 		}
-
-		descBox = new FlxSprite().makeGraphic(1, 1, FlxColor.BLACK);
+		
+		descBox = new AttachedSprite();
+		descBox.makeGraphic(1, 1, FlxColor.BLACK);
+		descBox.xAdd = -10;
+		descBox.yAdd = -10;
+		descBox.alphaMult = 0.6;
 		descBox.alpha = 0.6;
 		add(descBox);
 
-		descText = new FlxText(50, 600, 1180, "", 32);
-		descText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		descText = new FlxText(50, FlxG.height + offsetThing - 25, 1180, "", 32);
+		descText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER/*, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK*/);
 		descText.scrollFactor.set();
-		descText.borderSize = 2.4;
+		//descText.borderSize = 2.4;
+		descBox.sprTracker = descText;
 		add(descText);
 
 		warningDialogue = new FunkinConfirm(null, "WARNING!!!", null, (action:FunkinConfirmAction) ->
@@ -433,8 +427,8 @@ class CreditsState extends MusicBeatState
 		super.create();
 	}
 
+	var quitting:Bool = false;
 	var holdTime:Float = 0;
-
 	override function update(elapsed:Float)
 	{
 		warningDialogue.setText("YOU ARE ABOUT TO GO TO: \n"
@@ -445,56 +439,80 @@ class CreditsState extends MusicBeatState
 			FlxG.sound.music.volume += 0.5 * FlxG.elapsed;
 		}
 
-		var upP = controls.UI_UP_P;
-		var downP = controls.UI_DOWN_P;
-
-		var shiftMult:Int = 1;
-		if (FlxG.keys.pressed.SHIFT)
-			shiftMult = 3;
-
-		if (upP)
+		if(!quitting)
 		{
-			changeSelection(-shiftMult);
-			holdTime = 0;
-		}
-		if (downP)
-		{
-			changeSelection(shiftMult);
-			holdTime = 0;
-		}
-
-		if (controls.UI_DOWN || controls.UI_UP)
-		{
-			var checkLastHold:Int = Math.floor((holdTime - 0.5) * 10);
-			holdTime += elapsed;
-			var checkNewHold:Int = Math.floor((holdTime - 0.5) * 10);
-
-			if (holdTime > 0.5 && checkNewHold - checkLastHold > 0)
+			if(creditsStuff.length > 1)
 			{
-				changeSelection((checkNewHold - checkLastHold) * (controls.UI_UP ? -shiftMult : shiftMult));
+				var shiftMult:Int = 1;
+				if(FlxG.keys.pressed.SHIFT) shiftMult = 3;
+
+				var upP = controls.UI_UP_P;
+				var downP = controls.UI_DOWN_P;
+
+				if (upP)
+				{
+					changeSelection(-1 * shiftMult);
+					holdTime = 0;
+				}
+				if (downP)
+				{
+					changeSelection(1 * shiftMult);
+					holdTime = 0;
+				}
+
+				if(controls.UI_DOWN || controls.UI_UP)
+				{
+					var checkLastHold:Int = Math.floor((holdTime - 0.5) * 10);
+					holdTime += elapsed;
+					var checkNewHold:Int = Math.floor((holdTime - 0.5) * 10);
+
+					if(holdTime > 0.5 && checkNewHold - checkLastHold > 0)
+					{
+						changeSelection((checkNewHold - checkLastHold) * (controls.UI_UP ? -shiftMult : shiftMult));
+					}
+				}
+			}
+
+			if(controls.ACCEPT) {
+				CoolUtil.browserLoad(creditsStuff[curSelected][3]);
+			}
+			if (controls.BACK)
+			{
+				if(colorTween != null) {
+					colorTween.cancel();
+				}
+				FlxG.sound.play(Paths.sound('cancelMenu'));
+				MusicBeatState.switchState(new MainMenuState());
+				quitting = true;
 			}
 		}
-
-		if (controls.BACK)
+		
+		for (item in grpOptions.members)
 		{
-			if (colorTween != null)
+			if(!item.isBold)
 			{
-				colorTween.cancel();
+				var lerpVal:Float = CoolUtil.boundTo(elapsed * 12, 0, 1);
+				if(item.targetY == 0)
+				{
+					var lastX:Float = item.x;
+					item.screenCenter(X);
+					item.x = FlxMath.lerp(lastX, item.x - 70, lerpVal);
+					item.forceX = item.x;
+				}
+				else
+				{
+					item.x = FlxMath.lerp(item.x, 200 + -40 * Math.abs(item.targetY), lerpVal);
+					item.forceX = item.x;
+				}
 			}
-			FlxG.sound.play(Paths.sound('cancelMenu'));
-			MusicBeatState.switchState(new MainMenuState());
-		}
-		if (FlxG.keys.pressed.ENTER)
-		{
-			warningDialogue.show();
 		}
 		super.update(elapsed);
 	}
 
-	function changeSelection(change:Int = 0, playSound:Bool = true)
+	var moveTween:FlxTween = null;
+	function changeSelection(change:Int = 0)
 	{
-		if (playSound)
-			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 		do
 		{
 			curSelected += change;
@@ -540,10 +558,11 @@ class CreditsState extends MusicBeatState
 		}
 
 		descText.text = creditsStuff[curSelected][2];
-		descText.screenCenter(Y);
-		descText.y += 270;
+		descText.y = FlxG.height - descText.height + offsetThing - 60;
 
-		descBox.setPosition(descText.x - 10, descText.y - 10);
+		if(moveTween != null) moveTween.cancel();
+		moveTween = FlxTween.tween(descText, {y : descText.y + 75}, 0.25, {ease: FlxEase.sineOut});
+
 		descBox.setGraphicSize(Std.int(descText.width + 20), Std.int(descText.height + 25));
 		descBox.updateHitbox();
 	}
